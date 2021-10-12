@@ -8,6 +8,7 @@ import androidx.room.Transaction;
 import androidx.room.Update;
 
 import com.example.daoforutsproject.Model.HotelRoom;
+import com.example.daoforutsproject.Model.RoomReview;
 
 import java.util.List;
 
@@ -25,4 +26,8 @@ public interface HotelDao {
 
     @Delete
     void deleteRoom(HotelRoom hotelRoom);
+
+    // ambil review yang dibuat untuk kamar yang iodnya sama dengan room_id
+    @Query("SELECT * FROM room_review where fk_room_id = :room_id")
+    List<RoomReview> getRoomReview(String room_id);
 }

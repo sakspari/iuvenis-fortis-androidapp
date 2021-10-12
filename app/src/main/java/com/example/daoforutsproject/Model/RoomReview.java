@@ -10,15 +10,17 @@ import java.util.Date;
 
 @Entity(tableName = "room_review")
 public class RoomReview {
-    @NonNull
-    @PrimaryKey(autoGenerate = true)
-    private int review_id;
 
     @NonNull
+    @PrimaryKey(autoGenerate = true)
+    @ColumnInfo(name = "review_id")
+    private int review_id;
+
+//    @NonNull
     @ColumnInfo(name = "fk_room_id")
     private String fk_room_id;
 
-    @NonNull
+//    @NonNull
     @ColumnInfo(name = "fk_username")
     private String fk_username;
 
@@ -39,21 +41,21 @@ public class RoomReview {
         this.review_id = review_id;
     }
 
-    @NonNull
+//    @NonNull
     public String getFk_room_id() {
         return fk_room_id;
     }
 
-    public void setFk_room_id(@NonNull String fk_room_id) {
+    public void setFk_room_id(String fk_room_id) {
         this.fk_room_id = fk_room_id;
     }
 
-    @NonNull
+//    @NonNull
     public String getFk_username() {
         return fk_username;
     }
 
-    public void setFk_username(@NonNull String fk_username) {
+    public void setFk_username(String fk_username) {
         this.fk_username = fk_username;
     }
 
