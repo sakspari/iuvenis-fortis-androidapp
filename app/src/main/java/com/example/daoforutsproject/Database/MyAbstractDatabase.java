@@ -3,15 +3,23 @@ package com.example.daoforutsproject.Database;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
+import androidx.room.TypeConverters;
 
+import com.example.daoforutsproject.Converters.Converters;
 import com.example.daoforutsproject.Dao.MyDao;
+import com.example.daoforutsproject.Model.BookDetail;
 import com.example.daoforutsproject.Model.HotelRoom;
 import com.example.daoforutsproject.Model.RoomDetail;
+import com.example.daoforutsproject.Model.RoomReview;
+import com.example.daoforutsproject.Model.User;
 
 @Database(entities = {
         HotelRoom.class,
-        RoomDetail.class
+        RoomReview.class,
+        BookDetail.class,
+        User.class
 },version = 1)
+@TypeConverters({Converters.class})
 public abstract class MyAbstractDatabase extends RoomDatabase {
     public abstract MyDao myDao();
 }
