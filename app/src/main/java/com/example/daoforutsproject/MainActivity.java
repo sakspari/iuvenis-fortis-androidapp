@@ -2,120 +2,212 @@ package com.example.daoforutsproject;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.daoforutsproject.Database.MyAppDatabase;
+import com.example.daoforutsproject.Dao.HotelDao;
+import com.example.daoforutsproject.Database.MyDatabaseClient;
+import com.example.daoforutsproject.Model.BookDetail;
 import com.example.daoforutsproject.Model.HotelRoom;
-import com.example.daoforutsproject.Model.RoomDetail;
-import com.example.daoforutsproject.ModelRelation.RoomWithDetail;
+import com.example.daoforutsproject.Model.RoomReview;
+import com.example.daoforutsproject.Model.User;
 
-import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
-//        HotelRoom hotelRoom = new HotelRoom("");
-//        RoomDetail roomDetail = new RoomDetail();
-//        roomDetail.setFk_room_id("kamar5");
-////        roomDetail.setRoom_detail_id(1);
-//        roomDetail.setSize("5 x 1");
-////        addHotelRoom(hotelRoom);
-////        addRoomDetail(roomDetail);
-//        getRoomWithDetail();
-//
-//    }
-//
-//    private void addHotelRoom(HotelRoom hotelRoom) {
-//        class AddHotelRoom extends AsyncTask<Void, Void, Void> {
-//
-//            @Override
-//            protected Void doInBackground(Void... voids) {
-//                MyAppDatabase.getInstance(getApplicationContext())
-//                        .getDatabase()
-//                        .myDao()
-//                        .insertRoom(hotelRoom);
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void unused) {
-//                super.onPostExecute(unused);
-//                Toast.makeText(getApplicationContext(), "Berhasil menambahkan data kamar", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//        AddHotelRoom addHotelRoom = new AddHotelRoom();
-//        addHotelRoom.execute();
-//    }
-//
-//    private void addRoomDetail(RoomDetail roomDetail) {
-//        class AddRoomDetail extends AsyncTask<Void, Void, Void> {
-//
-//            @Override
-//            protected Void doInBackground(Void... voids) {
-//                MyAppDatabase.getInstance(getApplicationContext())
-//                        .getDatabase()
-//                        .myDao()
-//                        .insertRoomDetail(roomDetail);
-//                return null;
-//            }
-//
-//            @Override
-//            protected void onPostExecute(Void unused) {
-//                super.onPostExecute(unused);
-//                Toast.makeText(getApplicationContext(), "Berhasil menambahkan detail data kamar", Toast.LENGTH_SHORT).show();
-//            }
-//        }
-//        AddRoomDetail addRoomDetail = new AddRoomDetail();
-//        addRoomDetail.execute();
-//    }
-//
-//    private void getRoomWithDetail() {
-//        class GetRoomWithDetail extends AsyncTask<Void, Void, List<RoomWithDetail>> {
-//
-//            @Override
-//            protected List<RoomWithDetail> doInBackground(Void... voids) {
-//                List<RoomWithDetail> roomWithDetails = MyAppDatabase.getInstance(getApplicationContext())
-//                        .getDatabase()
-//                        .myDao()
-//                        .getAllRoomWithDetail();
-//                return roomWithDetails;
-//            }
-//
-////            @Override
-////            protected void onPostExecute(List<RoomWithDetail> roomWithDetails) {
-////                super.onPostExecute(roomWithDetails);
-////            }
-//
-//                        @Override
-//            protected void onPostExecute(List<RoomWithDetail> roomWithDetails) {
-//                super.onPostExecute(roomWithDetails);
-////                if (roomWithDetails!=null) {
-//                    for (int i = 0; i < roomWithDetails.size(); i++) {
-//                        System.out.println(roomWithDetails.get(i).getHotelRoom().getRoom_id());
-//                        System.out.println(roomWithDetails.get(i).getHotelRoom().getRoom_type());
-////                    if(roomWithDetails.get(i).getRoomDetail()!=null)
-////                        System.out.println("\tNo details");
-////                    else{
-//                        if(roomWithDetails.get(i).getRoomDetail()!=null)
-//                        System.out.println("\t"+roomWithDetails.get(i).getRoomDetail().getSize());
-//                        else
-//                            System.out.println("\t\tdidnt have details!");
-////                    }
-//                    }
-////                } else {
-////                    System.out.println("Data Kosong");
-////                }
-//
-//            }
-//        }
-//        GetRoomWithDetail getRoomWithDetail = new GetRoomWithDetail();
-//        getRoomWithDetail.execute();
-//    }
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        User user1 = new User("stella","password", "#",true);
+        User user2 = new User("oskadon","password", "#",true);
+        User user3 = new User("paramex","password", "#",false);
+        HotelRoom hotelRoom1 = new HotelRoom("IF-1","Deluxe","#","1",true,300_000.00);
+        HotelRoom hotelRoom2 = new HotelRoom("IF-2","Deluxe","#","1",true,300_000.00);
+
+        RoomReview roomReview1 = new RoomReview();
+        roomReview1.setFk_room_id("IF-1");
+        roomReview1.setReview_date(new Date());
+        roomReview1.setFk_username("stella");
+        roomReview1.setReview_description("Lorem ipsum dolor amet sit" +
+                "ini contoh review room pakai dB");
+
+        BookDetail bookDetail = new BookDetail();
+        bookDetail.setFk_room_id("IF-2");
+        bookDetail.setFk_username(user3.getUsername());
+        bookDetail.setCheck_in_date(new Date());
+        bookDetail.setCheck_out_date(new Date());
+
+//        insertUser(user1);
+//        insertUser(user2);
+//        insertUser(user3);
+//        insertHotelRoom(hotelRoom1);
+//        insertHotelRoom(hotelRoom2);
+
+        hotelRoom2.setStatus(false);
+
+        updateHotelRoom(hotelRoom2);
+        deleteHotelRoom(hotelRoom1);
+
+        getAllUser();
+        getAllRooms();
+    }
+
+//    ------------------USER FUNCTION--------------------
+
+    public void insertUser(User user){
+        class InsertUser extends AsyncTask<Void, Void, Void>{
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                MyDatabaseClient.getInstance(getApplicationContext())
+                        .getDatabase()
+                        .userDao()
+                        .insertUser(user);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void unused) {
+                super.onPostExecute(unused);
+                Toast.makeText(getApplicationContext(), "User Added Successfully", Toast.LENGTH_SHORT).show();
+            }
+        }
+        InsertUser insertUser = new InsertUser();
+        insertUser.execute();
+    }
+
+    public void getAllUser(){
+        class GetUser extends AsyncTask<Void, Void, List<User>>{
+
+            @Override
+            protected List<User> doInBackground(Void... voids) {
+                List<User> userList = MyDatabaseClient.getInstance(getApplicationContext())
+                        .getDatabase()
+                        .userDao()
+                        .getAllUser();
+                return userList;
+            }
+
+            @Override
+            protected void onPostExecute(List<User> users) {
+                super.onPostExecute(users);
+                //ganti bagian ini sesuai kebutuhan
+                if(users!=null){
+                    for(int i=0;i<users.size();i++){
+                        System.out.println(users.get(i).getUsername());
+                    }
+                }
+            }
+        }
+        GetUser getUser = new GetUser();
+        getUser.execute();
+    }
+
+//    -------------------HOTEL FUNCTION--------------------------
+    public void insertHotelRoom(HotelRoom hotelRoom){
+        class InsertHotelRoom extends AsyncTask<Void, Void, Void>{
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                MyDatabaseClient.getInstance(getApplicationContext())
+                        .getDatabase()
+                        .hotelDao()
+                        .insertRoom(hotelRoom);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void unused) {
+                super.onPostExecute(unused);
+                Toast.makeText(getApplicationContext(), "Room insert Succecssfully", Toast.LENGTH_SHORT).show();
+            }
+        }
+        InsertHotelRoom insertHotelRoom = new InsertHotelRoom();
+        insertHotelRoom.execute();
+    }
+
+    public void getAllRooms(){
+        class GetRooms extends AsyncTask<Void, Void, List<HotelRoom>>{
+
+            @Override
+            protected List<HotelRoom> doInBackground(Void... voids) {
+                List<HotelRoom> hotelRooms = MyDatabaseClient.getInstance(getApplicationContext())
+                        .getDatabase()
+                        .hotelDao()
+                        .getAllRoom();
+                return hotelRooms;
+            }
+
+            @Override
+            protected void onPostExecute(List<HotelRoom> hotelRooms) {
+                super.onPostExecute(hotelRooms);
+                //ganti bagian ini sesuai kebutuhan
+                if(hotelRooms!=null){
+                    for(int i=0;i<hotelRooms.size();i++){
+                        String status = "booked";
+                        if(hotelRooms.get(i).isStatus())
+                            status="available";
+                        System.out.println(hotelRooms.get(i).getRoom_id()+" "+status);
+                    }
+                }
+            }
+        }
+        GetRooms getRooms = new GetRooms();
+        getRooms.execute();
+    }
+
+    public void updateHotelRoom(HotelRoom hotelRoom){
+        class UpdateHotelRoom extends AsyncTask<Void, Void, Void>{
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                MyDatabaseClient.getInstance(getApplicationContext())
+                        .getDatabase()
+                        .hotelDao()
+                        .updateRoom(hotelRoom);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void unused) {
+                super.onPostExecute(unused);
+                Toast.makeText(getApplicationContext(), "Update Successfully", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        UpdateHotelRoom updateHotelRoom = new UpdateHotelRoom();
+        updateHotelRoom.execute();
+    }
+
+    public void deleteHotelRoom(HotelRoom hotelRoom){
+        class DeleteHotelRoom extends AsyncTask<Void, Void, Void>{
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                MyDatabaseClient.getInstance(getApplicationContext())
+                        .getDatabase()
+                        .hotelDao()
+                        .deleteRoom(hotelRoom);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void unused) {
+                super.onPostExecute(unused);
+                Toast.makeText(getApplicationContext(), "Room Delete Successfully", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        DeleteHotelRoom deleteHotelRoom = new DeleteHotelRoom();
+        deleteHotelRoom.execute();
+    }
+
+//    ---------------------REVIEW FUNCTION--------------------------------
+//    ---------------------BOOKING FUNCTION--------------------------------
+
 }

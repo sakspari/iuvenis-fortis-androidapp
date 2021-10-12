@@ -26,12 +26,7 @@ public class RoomReview {
     @ColumnInfo(name = "review_description")
     private String review_description;
 
-    public RoomReview(int review_id, String fk_room_id, String fk_username, Date review_date, String review_description) {
-        this.review_id = review_id;
-        this.fk_room_id = fk_room_id;
-        this.fk_username = fk_username;
-        this.review_date = review_date;
-        this.review_description = review_description;
+    public RoomReview() {
     }
 
     public int getReview_id() {

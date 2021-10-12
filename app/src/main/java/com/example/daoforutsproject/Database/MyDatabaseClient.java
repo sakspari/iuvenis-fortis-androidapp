@@ -4,23 +4,23 @@ import android.content.Context;
 
 import androidx.room.Room;
 
-public class MyAppDatabase {
+public class MyDatabaseClient {
     private Context context;
-    private static MyAppDatabase myAppDatabase;
+    private static MyDatabaseClient myDatabaseClient;
 
     private MyAbstractDatabase database;
 
-    public MyAppDatabase(Context context) {
+    public MyDatabaseClient(Context context) {
         this.context = context;
         database = Room.databaseBuilder(context, MyAbstractDatabase.class, "my_db")
                 .allowMainThreadQueries()
                 .build();
     }
-    public static synchronized MyAppDatabase getInstance(Context context){
-        if(myAppDatabase == null){
-            myAppDatabase = new MyAppDatabase(context);
+    public static synchronized MyDatabaseClient getInstance(Context context){
+        if(myDatabaseClient == null){
+            myDatabaseClient = new MyDatabaseClient(context);
         }
-        return myAppDatabase;
+        return myDatabaseClient;
     }
 
     public MyAbstractDatabase getDatabase() {

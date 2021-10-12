@@ -23,12 +23,7 @@ public class BookDetail {
     @ColumnInfo(name = "check_out_date")
     private Date check_out_date;
 
-    public BookDetail(int book_detail_id, String fk_room_id, String fk_username, Date check_in_date, Date check_out_date) {
-        this.book_detail_id = book_detail_id;
-        this.fk_room_id = fk_room_id;
-        this.fk_username = fk_username;
-        this.check_in_date = check_in_date;
-        this.check_out_date = check_out_date;
+    public BookDetail() {
     }
 
     public int getBook_detail_id() {

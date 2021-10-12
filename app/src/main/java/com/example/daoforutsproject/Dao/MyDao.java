@@ -25,18 +25,7 @@ import java.util.List;
 public interface MyDao {
 
 //    HotelRoom Operation
-    @Transaction
-    @Query("SELECT * FROM hotel_room")
-    List<HotelRoom> getAllRoom();
 
-    @Insert
-    void insertRoom(HotelRoom hotelRoom);
-
-    @Update
-    void updateRoom(HotelRoom hotelRoom);
-
-    @Delete
-    void deleteRoom(HotelRoom hotelRoom);
 
 //   Hotel RoomDetailOperation
 //    @Query("SELECT * FROM room_detail")
@@ -87,18 +76,7 @@ public interface MyDao {
         @Delete
         void deleteReview(RoomReview roomReview);
 //    ---------------------User operation------------------------
-        @Transaction
-        @Query("SELECT * FROM user")
-        List<User> getAllUser();
 
-        @Insert
-        void insertUser(User user);
-
-        @Update
-        void updateUser(User user);
-
-        @Delete
-        void deleteUser(User user);
 //    ---------------------BookAndRoom------------------------
         @Transaction
         @Query("SELECT * FROM hotel_room")
