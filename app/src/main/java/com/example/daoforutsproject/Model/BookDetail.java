@@ -1,5 +1,6 @@
 package com.example.daoforutsproject.Model;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -11,9 +12,11 @@ public class BookDetail {
     @PrimaryKey(autoGenerate = true)
     private int book_detail_id;
 
+    @NonNull
     @ColumnInfo(name = "fk_room_id")
     private String fk_room_id;
 
+    @NonNull
     @ColumnInfo(name = "fk_username")
     private String fk_username;
 

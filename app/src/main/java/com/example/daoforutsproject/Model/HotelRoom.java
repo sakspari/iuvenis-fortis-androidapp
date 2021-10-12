@@ -1,7 +1,5 @@
 package com.example.daoforutsproject.Model;
 
-import android.media.Image;
-
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
@@ -23,8 +21,8 @@ public class HotelRoom {
     @ColumnInfo(name = "facility_type")
     private String facility_type;
 
-    @ColumnInfo(name = "status")
-    private boolean status;
+    @ColumnInfo(name = "room_status")
+    private boolean room_status;
 
     @ColumnInfo(name = "price")
     private double price;
@@ -33,12 +31,12 @@ public class HotelRoom {
     //booked=false
 
 
-    public HotelRoom(@NonNull String room_id, String room_type, String room_photos_url, String facility_type, boolean status, double price) {
+    public HotelRoom(@NonNull String room_id, String room_type, String room_photos_url, String facility_type, boolean room_status, double price) {
         this.room_id = room_id;
         this.room_type = room_type;
         this.room_photos_url = room_photos_url;
         this.facility_type = facility_type;
-        this.status = status;
+        this.room_status = room_status;
         this.price = price;
     }
 
@@ -75,12 +73,12 @@ public class HotelRoom {
         this.facility_type = facility_type;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean isRoom_status() {
+        return room_status;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setRoom_status(boolean room_status) {
+        this.room_status = room_status;
     }
 
     public double getPrice() {

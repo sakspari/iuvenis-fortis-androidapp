@@ -12,23 +12,26 @@ public class User {
     @ColumnInfo(name = "username")
     private String username;
 
+    @NonNull
     @ColumnInfo(name = "password")
     private String password;
 
+    @NonNull
     @ColumnInfo(name = "user_profile_url")
     private String user_profile_url;
 
-    @ColumnInfo(name = "status")
-    private boolean status;
+    @NonNull
+    @ColumnInfo(name = "user_status")
+    private boolean user_status;
     //if true = new user
     //else = old user
 
 
-    public User(@NonNull String username, String password, String user_profile_url, boolean status) {
+    public User(@NonNull String username, @NonNull String password, @NonNull String user_profile_url, boolean user_status) {
         this.username = username;
         this.password = password;
         this.user_profile_url = user_profile_url;
-        this.status = status;
+        this.user_status = user_status;
     }
 
     @NonNull
@@ -40,27 +43,29 @@ public class User {
         this.username = username;
     }
 
+    @NonNull
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(@NonNull String password) {
         this.password = password;
     }
 
+    @NonNull
     public String getUser_profile_url() {
         return user_profile_url;
     }
 
-    public void setUser_profile_url(String user_profile_url) {
+    public void setUser_profile_url(@NonNull String user_profile_url) {
         this.user_profile_url = user_profile_url;
     }
 
-    public boolean isStatus() {
-        return status;
+    public boolean isUser_status() {
+        return user_status;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setUser_status(boolean user_status) {
+        this.user_status = user_status;
     }
 }
