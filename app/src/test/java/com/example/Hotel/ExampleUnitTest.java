@@ -1,4 +1,4 @@
-package com.example.daoforutsproject;
+package com.example.Hotel;
 
 import org.junit.Test;
 

@@ -1,4 +1,4 @@
-package com.example.daoforutsproject.Model;
+package com.example.Hotel.Model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;

@@ -6,5 +6,5 @@ dependencyResolutionManagement {
         jcenter() // Warning: this repository is going to shut down soon
     }
 }
-rootProject.name = "DAO forUTS Project"
+rootProject.name = "IUVENIS FORTIS"
 include ':app'

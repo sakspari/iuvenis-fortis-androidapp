@@ -1,20 +1,17 @@
-package com.example.daoforutsproject;
+package com.example.Hotel;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Delete;
-import androidx.room.Update;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.daoforutsproject.Database.MyDatabaseClient;
-import com.example.daoforutsproject.Model.BookDetail;
-import com.example.daoforutsproject.Model.HotelRoom;
-import com.example.daoforutsproject.Model.RoomReview;
-import com.example.daoforutsproject.Model.User;
+import com.example.Hotel.Database.MyDatabaseClient;
+import com.example.Hotel.Model.BookDetail;
+import com.example.Hotel.Model.HotelRoom;
+import com.example.Hotel.Model.RoomReview;
+import com.example.Hotel.Model.User;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -49,13 +46,13 @@ public class MainActivity extends AppCompatActivity {
 //        insertUser(user3);
 //        insertHotelRoom(hotelRoom1);
 //        insertHotelRoom(hotelRoom2);
-
-        hotelRoom2.setRoom_status(false);
-
+//
+//        hotelRoom2.setRoom_status(false);
+//
 //        updateHotelRoom(hotelRoom2);
-//        deleteHotelRoom(hotelRoom1);
-
-        insertReview(roomReview1);
+////        deleteHotelRoom(hotelRoom1);
+//
+//        insertReview(roomReview1);
 Date date = new Date();
         System.out.println(date.toString());
         getAllUser();

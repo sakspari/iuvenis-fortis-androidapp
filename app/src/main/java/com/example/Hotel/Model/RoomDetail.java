@@ -1,11 +1,9 @@
-package com.example.daoforutsproject.Model;
+package com.example.Hotel.Model;
 
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import java.util.List;
 
 @Entity(tableName = "room_detail")
 public class RoomDetail {

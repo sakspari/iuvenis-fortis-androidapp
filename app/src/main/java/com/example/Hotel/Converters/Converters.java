@@ -1,4 +1,4 @@
-package com.example.daoforutsproject.Converters;
+package com.example.Hotel.Converters;
 
 import androidx.room.TypeConverter;
 

@@ -1,4 +1,4 @@
-package com.example.daoforutsproject.Database;
+package com.example.Hotel.Database;
 
 import android.content.Context;
 

@@ -1,4 +1,4 @@
-package com.example.daoforutsproject.Dao;
+package com.example.Hotel.Dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -7,7 +7,7 @@ import androidx.room.Query;
 import androidx.room.Transaction;
 import androidx.room.Update;
 
-import com.example.daoforutsproject.Model.User;
+import com.example.Hotel.Model.User;
 
 import java.util.List;
 
