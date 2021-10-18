@@ -9,4 +9,7 @@
     <string name="clear">clear</string>
     <string name="no_account">Don\'t have an account?</string>
     <string name="sign_up">Sign Up</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="email">Email</string>
+    <string name="cancel">Cancel</string>
 </resources>

@@ -1,18 +1,22 @@
 package com.example.hotel.view.auth;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.hotel.Database.MyDatabaseClient;
 import com.example.hotel.R;
 import com.example.hotel.databinding.FragmentRegisterBinding;
+import com.example.hotel.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -67,7 +71,7 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false);
 
-        // action untuk btnCancel (pindah ke fragment Register)
+        // action untuk btnCancel (pindah ke fragment Login)
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,6 +79,39 @@ public class RegisterFragment extends Fragment {
             }
         });
 
+        // action untuk btnSignUp (insert user dan kembali ke fragment login)
+        binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigateUp();
+            }
+        });
+
+
+
         return binding.getRoot();
     }
+
+    public void insertUser(User user) {
+        class InsertUser extends AsyncTask<Void, Void, Void> {
+
+            @Override
+            protected Void doInBackground(Void... voids) {
+                MyDatabaseClient.getInstance(getContext())
+                        .getDatabase()
+                        .userDao()
+                        .insertUser(user);
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void unused) {
+                super.onPostExecute(unused);
+                Toast.makeText(getContext(), "Register Success!", Toast.LENGTH_SHORT).show();
+            }
+        }
+        InsertUser insertUser = new InsertUser();
+        insertUser.execute();
+    }
+
 }
