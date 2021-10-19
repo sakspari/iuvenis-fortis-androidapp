@@ -64,7 +64,6 @@ public class LoginFragment extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-//        binding = DataBindingUtil.setContentView(getActivity(),R.layout.fragment_login);
     }
 
     @Override
@@ -72,6 +71,8 @@ public class LoginFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_login, container, false);
+
+        getActivity().setTitle("Login");
 
         // action untuk btnRegister (pindah ke fragment Register)
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {

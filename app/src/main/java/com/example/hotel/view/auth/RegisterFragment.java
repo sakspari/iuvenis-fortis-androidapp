@@ -70,6 +70,8 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false);
 
+        getActivity().setTitle("Register");
+
         // action untuk btnCancel (pindah ke fragment Login)
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
