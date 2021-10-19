@@ -1,14 +1,14 @@
-package com.example.hotel.Database;
+package com.example.hotel.database;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.example.hotel.Converters.Converters;
-import com.example.hotel.Dao.BookingDao;
-import com.example.hotel.Dao.HotelDao;
-import com.example.hotel.Dao.ReviewDao;
-import com.example.hotel.Dao.UserDao;
+import com.example.hotel.converters.Converters;
+import com.example.hotel.dao.BookingDao;
+import com.example.hotel.dao.HotelDao;
+import com.example.hotel.dao.ReviewDao;
+import com.example.hotel.dao.UserDao;
 import com.example.hotel.model.BookDetail;
 import com.example.hotel.model.HotelRoom;
 import com.example.hotel.model.RoomReview;

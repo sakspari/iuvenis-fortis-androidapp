@@ -1,4 +1,4 @@
-package com.example.hotel.Dao;
+package com.example.hotel.dao;
 
 import androidx.room.Dao;
 import androidx.room.Delete;

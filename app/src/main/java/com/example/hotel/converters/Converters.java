@@ -1,4 +1,4 @@
-package com.example.hotel.Converters;
+package com.example.hotel.converters;
 
 import androidx.room.TypeConverter;
 

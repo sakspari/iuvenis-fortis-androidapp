@@ -7,13 +7,12 @@ import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.hotel.Database.MyDatabaseClient;
+import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.R;
 import com.example.hotel.databinding.FragmentRegisterBinding;
 import com.example.hotel.model.User;

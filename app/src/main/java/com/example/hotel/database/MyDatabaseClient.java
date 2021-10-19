@@ -1,4 +1,4 @@
-package com.example.hotel.Database;
+package com.example.hotel.database;
 
 import android.content.Context;
 

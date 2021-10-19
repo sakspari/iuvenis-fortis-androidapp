@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import com.example.hotel.Database.MyDatabaseClient;
+import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.model.BookDetail;
 import com.example.hotel.model.HotelRoom;
 import com.example.hotel.model.RoomReview;
