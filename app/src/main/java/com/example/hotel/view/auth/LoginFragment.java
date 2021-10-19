@@ -82,6 +82,14 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        //avtion untuk buton Login
+        binding.btnLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
+            }
+        });
+
         return binding.getRoot();
     }
 

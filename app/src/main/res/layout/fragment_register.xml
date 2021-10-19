@@ -9,6 +9,9 @@
             name="user"
             type="com.example.hotel.model.User" />
         <variable
+            name="passwordConfirm"
+            type="String" />
+        <variable
             name="fragment"
             type="com.example.hotel.view.auth.RegisterFragment" />
     </data>
@@ -66,6 +69,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@={user.username}"
                     android:maxLength="15" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -84,6 +88,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@={user.email}"
                     android:inputType="textEmailAddress" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -101,6 +106,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@={user.password}"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -118,6 +124,7 @@
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:text="@={passwordConfirm}"
                     android:inputType="textPassword" />
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>

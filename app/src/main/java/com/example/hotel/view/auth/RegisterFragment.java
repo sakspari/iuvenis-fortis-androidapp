@@ -17,6 +17,8 @@ import com.example.hotel.R;
 import com.example.hotel.databinding.FragmentRegisterBinding;
 import com.example.hotel.model.User;
 
+import java.util.List;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link RegisterFragment#newInstance} factory method to
@@ -25,6 +27,9 @@ import com.example.hotel.model.User;
 public class RegisterFragment extends Fragment {
 
     FragmentRegisterBinding binding;
+    User user;
+    String passwordConfirm;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -72,6 +77,15 @@ public class RegisterFragment extends Fragment {
 
         getActivity().setTitle("Register");
 
+        user = new User();
+        user.setUser_status(true);
+        user.setUser_profile_url("#");
+
+        passwordConfirm = "";
+
+        binding.setUser(user);
+        binding.setPasswordConfirm(passwordConfirm);
+
         // action untuk btnCancel (pindah ke fragment Login)
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -84,6 +98,8 @@ public class RegisterFragment extends Fragment {
         binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                insertUser(user);
+                getAllUser();
                 Navigation.findNavController(view).navigateUp();
             }
         });
@@ -98,7 +114,7 @@ public class RegisterFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... voids) {
-                MyDatabaseClient.getInstance(getContext())
+                MyDatabaseClient.getInstance(binding.getRoot().getContext())
                         .getDatabase()
                         .userDao()
                         .insertUser(user);
@@ -108,11 +124,39 @@ public class RegisterFragment extends Fragment {
             @Override
             protected void onPostExecute(Void unused) {
                 super.onPostExecute(unused);
-                Toast.makeText(getContext(), "Register Success!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(binding.getRoot().getContext(), "Register Success!", Toast.LENGTH_SHORT).show();
             }
         }
         InsertUser insertUser = new InsertUser();
         insertUser.execute();
+    }
+
+    public void getAllUser() {
+        class GetUser extends AsyncTask<Void, Void, List<User>> {
+
+            @Override
+            protected List<User> doInBackground(Void... voids) {
+                List<User> userList = MyDatabaseClient.getInstance(binding.getRoot().getContext())
+                        .getDatabase()
+                        .userDao()
+                        .getAllUser();
+                return userList;
+            }
+
+            @Override
+            protected void onPostExecute(List<User> users) {
+                super.onPostExecute(users);
+                //ganti bagian ini sesuai kebutuhan
+                //jangan bandingkan dengan null object bagian if-nya
+                if (users.size()!=0) {
+                    for (int i = 0; i < users.size(); i++) {
+                        System.out.println(users.get(i).getUsername());
+                    }
+                }
+            }
+        }
+        GetUser getUser = new GetUser();
+        getUser.execute();
     }
 
 }

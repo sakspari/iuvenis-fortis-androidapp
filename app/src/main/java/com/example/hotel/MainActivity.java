@@ -22,24 +22,24 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        User user1 = new User("stella", "password", "#", true);
-        User user2 = new User("oskadon", "password", "#", true);
-        User user3 = new User("paramex", "password", "#", false);
-        HotelRoom hotelRoom1 = new HotelRoom("IF-1", "Deluxe", "#", "1", true, 300_000.00);
-        HotelRoom hotelRoom2 = new HotelRoom("IF-2", "Deluxe", "#", "1", true, 300_000.00);
-
-        RoomReview roomReview1 = new RoomReview();
-        roomReview1.setFk_room_id(hotelRoom2.getRoom_id());
-        roomReview1.setFk_username(user2.getUsername());
-        roomReview1.setReview_date(new Date());
-        roomReview1.setReview_description("Kamar paling nyaman! Recomended gan!");
+//        User user1 = new User("stella", "password", "#","1" true);
+//        User user2 = new User("oskadon", "password", "#", true);
+//        User user3 = new User("paramex", "password", "#", false);
+//        HotelRoom hotelRoom1 = new HotelRoom("IF-1", "Deluxe", "#", "1", true, 300_000.00);
+//        HotelRoom hotelRoom2 = new HotelRoom("IF-2", "Deluxe", "#", "1", true, 300_000.00);
+//
+//        RoomReview roomReview1 = new RoomReview();
+//        roomReview1.setFk_room_id(hotelRoom2.getRoom_id());
+//        roomReview1.setFk_username(user2.getUsername());
+//        roomReview1.setReview_date(new Date());
+//        roomReview1.setReview_description("Kamar paling nyaman! Recomended gan!");
 //        roomReview1.set
 
-        BookDetail bookDetail = new BookDetail();
-        bookDetail.setFk_room_id(hotelRoom1.getRoom_id());
-        bookDetail.setFk_username(user2.getUsername());
-        bookDetail.setCheck_in_date(new Date());
-        bookDetail.setCheck_out_date(new Date());
+//        BookDetail bookDetail = new BookDetail();
+//        bookDetail.setFk_room_id(hotelRoom1.getRoom_id());
+//        bookDetail.setFk_username(user2.getUsername());
+//        bookDetail.setCheck_in_date(new Date());
+//        bookDetail.setCheck_out_date(new Date());
 
 //        insertUser(user1);
 //        insertUser(user2);
