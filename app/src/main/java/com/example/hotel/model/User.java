@@ -1,5 +1,8 @@
 package com.example.hotel.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -8,7 +11,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "user")
-public class User extends BaseObservable {
+public class User extends BaseObservable{
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "username")
@@ -83,4 +86,5 @@ public class User extends BaseObservable {
     public void setEmail(String email) {
         this.email = email;
     }
+
 }

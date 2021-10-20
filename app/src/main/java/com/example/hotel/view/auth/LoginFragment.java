@@ -21,6 +21,7 @@ import com.example.hotel.R;
 import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentLoginBinding;
 import com.example.hotel.model.User;
+import com.example.hotel.preferences.UserLoginPreferences;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,7 +29,9 @@ import com.example.hotel.model.User;
  * create an instance of this fragment.
  */
 public class LoginFragment extends Fragment {
-    FragmentLoginBinding binding;
+    private FragmentLoginBinding binding;
+    private UserLoginPreferences userLoginPreferences;
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -78,6 +81,10 @@ public class LoginFragment extends Fragment {
 
         getActivity().setTitle("Login");
 
+        userLoginPreferences = new UserLoginPreferences(binding.getRoot().getContext());
+
+        checkLogin();
+
         // action untuk btnRegister (pindah ke fragment Register)
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,10 +102,15 @@ public class LoginFragment extends Fragment {
 
                 if(getUserLogin(username,password)!= null){
 
-                    Intent intent = new Intent(getActivity(), MainActivity.class);
-//                    intent.pu
-                    startActivity(intent);
-                    getActivity().finish();
+                    userLoginPreferences.setLogin(username,password);
+
+                    if(!getUserLogin(username,password).isUser_status()){
+                        Intent intent = new Intent(getActivity(), MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+                    }else{
+                        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_splashScreenNewMember);
+                    }
 
                     Toast.makeText(binding.getRoot().getContext(), "Login success!", Toast.LENGTH_SHORT).show();
                 }else{
@@ -118,6 +130,13 @@ public class LoginFragment extends Fragment {
                     .userDao()
                     .getUserLogin(username, password);
             return user;
+    }
+
+    private void checkLogin() {
+        if(userLoginPreferences.checkLogin()){
+            startActivity(new Intent(binding.getRoot().getContext(), MainActivity.class));
+            getActivity().finish();
+        }
     }
 
 }

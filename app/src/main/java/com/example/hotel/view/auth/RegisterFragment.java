@@ -79,7 +79,7 @@ public class RegisterFragment extends Fragment {
 
         user = new User();
         user.setUser_status(true);
-        user.setUser_profile_url("#");
+        user.setUser_profile_url("https://images.pexels.com/photos/1250426/pexels-photo-1250426.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400");
 
         binding.setUser(user);
 
@@ -98,21 +98,23 @@ public class RegisterFragment extends Fragment {
                 passwordConfirm = binding.getPasswordConfirm();
                 System.out.println("Pssword confirm is: "+passwordConfirm);
                 System.out.println("UserPass confirm is: "+user.getPassword());
-                if(!isUsernameAvailable()){
+                if(isEmptyField()){
+                    Toast.makeText(binding.getRoot().getContext(), "Opps, there are some empty field!", Toast.LENGTH_SHORT).show();
+                }
+                else if(!isUsernameAvailable()){
                     Toast.makeText(binding.getRoot().getContext(), "Username sudah digunakan", Toast.LENGTH_SHORT).show();
                 }else if(!isEmailAvailable()){
                     Toast.makeText(binding.getRoot().getContext(), "Email tersebut telah didaftarkan!", Toast.LENGTH_SHORT).show();
                 }else if(!isPasswordMatch()){
                     Toast.makeText(binding.getRoot().getContext(), "Password Confirm tidak sesuai", Toast.LENGTH_SHORT).show();
+                }else if(isEmptyField()){
+                    Toast.makeText(binding.getRoot().getContext(), "Opps, there are some empty field!", Toast.LENGTH_SHORT).show();
                 }
                 else
                 {
                     insertUser(user);
                     Navigation.findNavController(view).navigateUp();
                 }
-//                    insertUser(user);
-                getAllUser();
-//                Navigation.findNavController(view).navigateUp();
             }
         });
 
@@ -143,32 +145,9 @@ public class RegisterFragment extends Fragment {
         insertUser.execute();
     }
 
-    public void getAllUser() {
-        class GetUser extends AsyncTask<Void, Void, List<User>> {
-
-            @Override
-            protected List<User> doInBackground(Void... voids) {
-                List<User> userList = MyDatabaseClient.getInstance(binding.getRoot().getContext())
-                        .getDatabase()
-                        .userDao()
-                        .getAllUser();
-                return userList;
-            }
-
-            @Override
-            protected void onPostExecute(List<User> users) {
-                super.onPostExecute(users);
-                //ganti bagian ini sesuai kebutuhan
-                //jangan bandingkan dengan null object bagian if-nya
-                if (users.size()!=0) {
-                    for (int i = 0; i < users.size(); i++) {
-                        System.out.println(users.get(i).getUsername());
-                    }
-                }
-            }
-        }
-        GetUser getUser = new GetUser();
-        getUser.execute();
+    //inputan tidak boleh kosong
+    private boolean isEmptyField(){
+        return user.getUsername()==null||user.getEmail()==null||user.getPassword()==null||passwordConfirm==null;
     }
 
     // cek apakah username tersedia
@@ -189,8 +168,4 @@ public class RegisterFragment extends Fragment {
     private boolean isPasswordMatch(){
         return user.getPassword().equals(passwordConfirm);
     }
-
-    //TODO: email harus unique
-    //TODO: inputan tidak boleh kosong
-
 }

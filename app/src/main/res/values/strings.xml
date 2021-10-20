@@ -15,4 +15,7 @@
     <string name="profile">Profile</string>
     <string name="home">Home</string>
     <string name="navigation">Navigation</string>
+    <string name="logout">Logout</string>
+    <string name="welcome_new_member">Selamat Bergabung bersama IUVENIS FORTIS Club</string>
+    <string name="lanjutkan">continue</string>
 </resources>
