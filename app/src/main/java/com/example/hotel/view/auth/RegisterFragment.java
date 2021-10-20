@@ -177,7 +177,10 @@ public class RegisterFragment extends Fragment {
     }
     // cek apakah password confirmation sesuai
     private boolean isPasswordMatch(){
-        return user.getPassword().equals(passwordConfirm);
+        return user.getPassword().equalsIgnoreCase(passwordConfirm);
     }
+
+    //TODO: email harus unique
+    //TODO: inputan tidak boleh kosong
 
 }
