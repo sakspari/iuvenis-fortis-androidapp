@@ -1,5 +1,6 @@
 package com.example.hotel.view.auth;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.databinding.BindingAdapter;
@@ -15,8 +16,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.hotel.MainActivity;
 import com.example.hotel.R;
+import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentLoginBinding;
+import com.example.hotel.model.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -82,16 +86,36 @@ public class LoginFragment extends Fragment {
             }
         });
 
-        //avtion untuk buton Login
+        //action untuk buton Login
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_registerFragment);
+                String username = binding.getUsername();
+                String password = binding.getPassword();
+                if(getUserLogin(username,password)!= null){
+
+                    Intent intent = new Intent(getActivity(), MainActivity.class);
+                    startActivity(intent);
+                    getActivity().finish();
+
+                    Toast.makeText(binding.getRoot().getContext(), "Login success!", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(binding.getRoot().getContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         return binding.getRoot();
+
     }
 
+    private User getUserLogin(String username, String password){
+        User user;
+        user = MyDatabaseClient.getInstance(binding.getRoot().getContext())
+                    .getDatabase()
+                    .userDao()
+                    .getUserLogin(username, password);
+            return user;
+    }
 
 }
