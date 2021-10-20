@@ -98,7 +98,12 @@ public class RegisterFragment extends Fragment {
         binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                insertUser(user);
+                if(!isUsernameAvailable()){
+                    Toast.makeText(binding.getRoot().getContext(), "Useranme sudah digunakan", Toast.LENGTH_SHORT).show();
+                }else if(isPasswordMatch()){
+                    Toast.makeText(binding.getRoot().getContext(), "Password Confirm tidak sesuai", Toast.LENGTH_SHORT).show();
+                }else
+                    insertUser(user);
                 getAllUser();
                 Navigation.findNavController(view).navigateUp();
             }
@@ -157,6 +162,18 @@ public class RegisterFragment extends Fragment {
         }
         GetUser getUser = new GetUser();
         getUser.execute();
+    }
+
+    // cek apakah username tersedia
+    private boolean isUsernameAvailable(){
+       return MyDatabaseClient.getInstance(binding.getRoot().getContext())
+                .getDatabase()
+                .userDao()
+                .getUser(user.getUsername()) == null;
+    }
+    // cek apakah password confirmation sesuai
+    private boolean isPasswordMatch(){
+        return user.getPassword().equals(passwordConfirm);
     }
 
 }
