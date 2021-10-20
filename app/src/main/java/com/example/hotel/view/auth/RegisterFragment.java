@@ -103,9 +103,13 @@ public class RegisterFragment extends Fragment {
                 }else if(!isPasswordMatch()){
                     Toast.makeText(binding.getRoot().getContext(), "Password Confirm tidak sesuai", Toast.LENGTH_SHORT).show();
                 }else
+                {
                     insertUser(user);
+                    Navigation.findNavController(view).navigateUp();
+                }
+//                    insertUser(user);
                 getAllUser();
-                Navigation.findNavController(view).navigateUp();
+//                Navigation.findNavController(view).navigateUp();
             }
         });
 
