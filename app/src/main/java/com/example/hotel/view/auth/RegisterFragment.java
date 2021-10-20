@@ -81,10 +81,7 @@ public class RegisterFragment extends Fragment {
         user.setUser_status(true);
         user.setUser_profile_url("#");
 
-        passwordConfirm = "";
-
         binding.setUser(user);
-        binding.setPasswordConfirm(passwordConfirm);
 
         // action untuk btnCancel (pindah ke fragment Login)
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -98,11 +95,17 @@ public class RegisterFragment extends Fragment {
         binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                passwordConfirm = binding.getPasswordConfirm();
+                System.out.println("Pssword confirm is: "+passwordConfirm);
+                System.out.println("UserPass confirm is: "+user.getPassword());
                 if(!isUsernameAvailable()){
-                    Toast.makeText(binding.getRoot().getContext(), "Useranme sudah digunakan", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(binding.getRoot().getContext(), "Username sudah digunakan", Toast.LENGTH_SHORT).show();
+                }else if(!isEmailAvailable()){
+                    Toast.makeText(binding.getRoot().getContext(), "Email tersebut telah didaftarkan!", Toast.LENGTH_SHORT).show();
                 }else if(!isPasswordMatch()){
                     Toast.makeText(binding.getRoot().getContext(), "Password Confirm tidak sesuai", Toast.LENGTH_SHORT).show();
-                }else
+                }
+                else
                 {
                     insertUser(user);
                     Navigation.findNavController(view).navigateUp();
@@ -175,9 +178,16 @@ public class RegisterFragment extends Fragment {
                 .userDao()
                 .getUser(user.getUsername()) == null;
     }
+    // cek apakah email tersedia
+    private boolean isEmailAvailable(){
+        return MyDatabaseClient.getInstance(binding.getRoot().getContext())
+                .getDatabase()
+                .userDao()
+                .getUserByEmail(user.getEmail()) == null;
+    }
     // cek apakah password confirmation sesuai
     private boolean isPasswordMatch(){
-        return user.getPassword().equalsIgnoreCase(passwordConfirm);
+        return user.getPassword().equals(passwordConfirm);
     }
 
     //TODO: email harus unique
