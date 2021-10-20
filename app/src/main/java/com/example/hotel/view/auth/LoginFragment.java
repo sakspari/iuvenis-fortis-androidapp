@@ -95,6 +95,7 @@ public class LoginFragment extends Fragment {
                 if(getUserLogin(username,password)!= null){
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
+//                    intent.pu
                     startActivity(intent);
                     getActivity().finish();
 
