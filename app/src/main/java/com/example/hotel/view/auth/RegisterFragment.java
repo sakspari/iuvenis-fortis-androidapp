@@ -100,7 +100,7 @@ public class RegisterFragment extends Fragment {
             public void onClick(View view) {
                 if(!isUsernameAvailable()){
                     Toast.makeText(binding.getRoot().getContext(), "Useranme sudah digunakan", Toast.LENGTH_SHORT).show();
-                }else if(isPasswordMatch()){
+                }else if(!isPasswordMatch()){
                     Toast.makeText(binding.getRoot().getContext(), "Password Confirm tidak sesuai", Toast.LENGTH_SHORT).show();
                 }else
                     insertUser(user);
