@@ -1,6 +1,10 @@
 package com.example.hotel;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -11,6 +15,7 @@ import com.example.hotel.model.BookDetail;
 import com.example.hotel.model.HotelRoom;
 import com.example.hotel.model.RoomReview;
 import com.example.hotel.model.User;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Date;
 import java.util.List;
@@ -21,6 +26,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //        ----------------Navigation Components---------------------------
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        NavController navController = Navigation.findNavController(this,  R.id.fragmentContainerView);
+//        set up title of app bar
+        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(R.id.profilFragment, R.id.homeFragment, R.id.mapFragment).build();
+        NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, appBarConfiguration);
+//        navigation
+        NavigationUI.setupWithNavController(bottomNavigationView,navController);
+//        ----------------end of Navigation Components---------------------------
 
 //        User user1 = new User("stella", "password", "#","1" true);
 //        User user2 = new User("oskadon", "password", "#", true);

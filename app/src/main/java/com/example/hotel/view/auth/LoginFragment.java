@@ -92,6 +92,7 @@ public class LoginFragment extends Fragment {
             public void onClick(View view) {
                 String username = binding.getUsername();
                 String password = binding.getPassword();
+
                 if(getUserLogin(username,password)!= null){
 
                     Intent intent = new Intent(getActivity(), MainActivity.class);
