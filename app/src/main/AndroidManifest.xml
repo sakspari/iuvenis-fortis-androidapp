@@ -13,9 +13,11 @@
         android:theme="@style/Theme.DAOForUTSProject">
         <activity
             android:name="com.example.hotel.view.admin.AdminActivity"
+            android:theme="@style/Theme.MaterialComponents.Light"
             android:exported="false" />
         <activity
             android:name="com.example.hotel.view.auth.AuthActivity"
+            android:theme="@style/Theme.MaterialComponents.Light"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,6 +27,7 @@
         </activity>
         <activity
             android:name="com.example.hotel.MainActivity"
+            android:theme="@style/Theme.MaterialComponents.Light"
             android:exported="true">
 
         </activity>

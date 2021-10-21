@@ -119,6 +119,14 @@ public class LoginFragment extends Fragment {
             }
         });
 
+        binding.btnClear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.etUsername.getEditText().setText("");
+                binding.etPassword.getEditText().setText("");
+            }
+        });
+
         return binding.getRoot();
 
     }
