@@ -15,6 +15,10 @@ import com.example.hotel.databinding.FragmentMapBinding;
 import com.example.hotel.databinding.FragmentProfilBinding;
 import com.mapbox.android.core.permissions.PermissionsManager;
 import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.annotations.MarkerOptions;
+import com.mapbox.mapboxsdk.camera.CameraPosition;
+import com.mapbox.mapboxsdk.camera.CameraUpdateFactory;
+import com.mapbox.mapboxsdk.geometry.LatLng;
 import com.mapbox.mapboxsdk.maps.MapboxMap;
 import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
 import com.mapbox.mapboxsdk.maps.Style;
@@ -27,6 +31,7 @@ import com.mapbox.mapboxsdk.maps.Style;
 public class MapFragment extends Fragment {
 
     private FragmentMapBinding binding;
+
     private PermissionsManager permissionsManager;
     private MapboxMap mapboxMap;
 
@@ -80,13 +85,24 @@ public class MapFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
 
         binding.mapView.onCreate(savedInstanceState);
+
         binding.mapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(@NonNull MapboxMap mapboxMap) {
                 mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
                     @Override
                     public void onStyleLoaded(@NonNull Style style) {
+                        CameraPosition position = new CameraPosition.Builder()
+                                .target(new LatLng(-8.614358899163843, 120.45721993881138))  //value lokasi
+                                .zoom(11)
+                                .tilt(20)
+                                .build();
 
+                        mapboxMap.animateCamera(CameraUpdateFactory.newCameraPosition(position), 1000);
+
+                        mapboxMap.addMarker(new MarkerOptions()
+                        .position(new LatLng(-8.614358899163843, 120.45721993881138)) //value lokasi hotel
+                        .title("IUVENIS FORTIS"));
                     }
                 });
             }

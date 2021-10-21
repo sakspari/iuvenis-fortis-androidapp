@@ -13,7 +13,7 @@
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.hotel.view.home.HomeFragment"
-        android:label="Home"
+        android:label="IUVENIS FORTIS"
         tools:layout="@layout/fragment_home" />
     <fragment
         android:id="@+id/mapFragment"
