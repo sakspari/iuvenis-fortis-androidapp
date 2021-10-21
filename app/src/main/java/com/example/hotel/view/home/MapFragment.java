@@ -2,6 +2,8 @@ package com.example.hotel.view.home;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -9,6 +11,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.hotel.R;
+import com.example.hotel.databinding.FragmentMapBinding;
+import com.example.hotel.databinding.FragmentProfilBinding;
+import com.mapbox.android.core.permissions.PermissionsManager;
+import com.mapbox.mapboxsdk.Mapbox;
+import com.mapbox.mapboxsdk.maps.MapboxMap;
+import com.mapbox.mapboxsdk.maps.OnMapReadyCallback;
+import com.mapbox.mapboxsdk.maps.Style;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +25,10 @@ import com.example.hotel.R;
  * create an instance of this fragment.
  */
 public class MapFragment extends Fragment {
+
+    private FragmentMapBinding binding;
+    private PermissionsManager permissionsManager;
+    private MapboxMap mapboxMap;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -60,7 +73,68 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        Mapbox.getInstance(getContext(), getString(R.string.mapbox_access_token));
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_map, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_map, container, false);
+
+        binding.mapView.onCreate(savedInstanceState);
+        binding.mapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(@NonNull MapboxMap mapboxMap) {
+                mapboxMap.setStyle(Style.MAPBOX_STREETS, new Style.OnStyleLoaded() {
+                    @Override
+                    public void onStyleLoaded(@NonNull Style style) {
+
+                    }
+                });
+            }
+        });
+
+        return binding.getRoot();
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        binding.mapView.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.mapView.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        binding.mapView.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        binding.mapView.onStop();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        binding.mapView.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        binding.mapView.onLowMemory();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        binding.mapView.onDestroy();
+    }
+
 }
