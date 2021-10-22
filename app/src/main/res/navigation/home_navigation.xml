@@ -14,10 +14,19 @@
         android:id="@+id/homeFragment"
         android:name="com.example.hotel.view.home.HomeFragment"
         android:label="IUVENIS FORTIS"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_allRoomFragment"
+            app:destination="@id/allRoomFragment" />
+    </fragment>
     <fragment
         android:id="@+id/mapFragment"
         android:name="com.example.hotel.view.home.MapFragment"
         android:label="Navigation"
         tools:layout="@layout/fragment_map" />
+    <fragment
+        android:id="@+id/allRoomFragment"
+        android:name="com.example.hotel.view.home.AllRoomFragment"
+        android:label="fragment_all_room"
+        tools:layout="@layout/fragment_all_room" />
 </navigation>
