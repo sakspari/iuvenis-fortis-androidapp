@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.hotel.R;
+import com.example.hotel.databinding.FragmentAllRoomBinding;
 import com.example.hotel.databinding.RvHotelRoomBinding;
 import com.example.hotel.model.HotelRoom;
 
@@ -64,7 +65,7 @@ public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
                     bundle.putString("id_room",rvHotelRoomBinding.getKamarHotel().getRoom_id());
-                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_allRoomFragment_to_detailRoom,bundle);
+                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_allRoomFragment_to_detailRoom,bundle);
                 }
             });
         }

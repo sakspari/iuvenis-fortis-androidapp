@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="dateIn"
+            type="String" />
+        <variable
+            name="dateOut"
+            type="String" />
+    </data>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -8,15 +17,18 @@
         
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/etDateFrom"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginHorizontal="8dp"
             android:hint="from...">
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
+                android:id="@+id/tglMasuk"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="date"
+                android:text="@{dateIn}"
+                android:inputType="none"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -24,14 +36,17 @@
             android:id="@+id/etDateTo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
             android:layout_below="@+id/etDateFrom"
             android:hint="to...">
-            <com.google.android.material.textfield.TextInputEditText
+            <AutoCompleteTextView
+                android:id="@+id/tglKeluar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="date"
+                android:text="@{dateOut}"
+                android:inputType="none"
                 />
         </com.google.android.material.textfield.TextInputLayout>
 

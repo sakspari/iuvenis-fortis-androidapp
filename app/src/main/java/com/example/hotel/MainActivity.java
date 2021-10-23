@@ -16,12 +16,13 @@ import com.example.hotel.model.BookDetail;
 import com.example.hotel.model.HotelRoom;
 import com.example.hotel.model.RoomReview;
 import com.example.hotel.model.User;
+import com.example.hotel.view.home.dialog.BookingDialog;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.Date;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements BookingDialog.BookingDialogListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -411,4 +412,10 @@ public void insertBooking(BookDetail bookDetail) {
         deleteBooking.execute();
     }
 
+    @Override
+    public void passDate(String dateIn, String dateOut) {
+        System.out.println(dateIn);
+        System.out.println(dateOut);
+        getAllBookings();
+    }
 }

@@ -1,14 +1,28 @@
 package com.example.hotel.view.home;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.hotel.R;
+import com.example.hotel.database.MyDatabaseClient;
+import com.example.hotel.databinding.FragmentUrBookedRoomBinding;
+import com.example.hotel.model.BookDetail;
+import com.example.hotel.model.HotelRoom;
+import com.example.hotel.model.User;
+import com.example.hotel.preferences.UserLoginPreferences;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +30,11 @@ import com.example.hotel.R;
  * create an instance of this fragment.
  */
 public class UrBookedRoom extends Fragment {
+
+    FragmentUrBookedRoomBinding binding;
+    List<BookDetail> bookDetailList;
+    List<HotelRoom> hotelRoomList;
+    RecyclerView recyclerView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -61,6 +80,44 @@ public class UrBookedRoom extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ur_booked_room, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ur_booked_room, container, false);
+
+        hotelRoomList = new ArrayList<HotelRoom>();
+//        bookDetailList = new ArrayList<BookDetail>();
+
+        bookDetailList = MyDatabaseClient.getInstance(getContext())
+                .getDatabase()
+                .bookingDao()
+                .getAllBookings();
+
+        User user = new UserLoginPreferences(binding.getRoot().getContext()).getUserLogin();
+
+        if (bookDetailList != null) {
+            for (int i = 0; i < bookDetailList.size(); i++) {
+                if (bookDetailList.get(i).getFk_username().equalsIgnoreCase(user.getUsername())) {
+                    HotelRoom hotelRoom = MyDatabaseClient.getInstance(getContext())
+                            .getDatabase()
+                            .hotelDao()
+                            .roomFromId(bookDetailList.get(i).getFk_room_id());
+                    System.out.println(bookDetailList.get(i).getFk_username());
+                    if (hotelRoom != null && !hotelRoomList.contains(hotelRoom)) {
+                        hotelRoomList.add(hotelRoom);
+                    }
+                }
+            }
+        }
+
+
+        if (hotelRoomList != null) {
+            recyclerView = binding.getRoot().findViewById(R.id.rv_layout);
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.setAdapter(new RVHotelRoom(hotelRoomList));
+        } else {
+            System.out.println("EmptyList");
+        }
+
+        return binding.getRoot();
     }
+
 }
