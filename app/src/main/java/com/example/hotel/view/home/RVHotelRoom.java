@@ -1,5 +1,6 @@
 package com.example.hotel.view.home;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -36,6 +38,11 @@ public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
     public void onBindViewHolder(@NonNull RVHotelRoom.viewHolder holder, int position) {
         HotelRoom hotelRoom = hotelRoomList.get(position);
         holder.rvHotelRoomBinding.setKamarHotel(hotelRoom);
+        if(hotelRoom.isRoom_status()){
+            holder.rvHotelRoomBinding.setStatus("Available");
+        }else{
+            holder.rvHotelRoomBinding.setStatus("Currently Unavailable");
+        }
         holder.rvHotelRoomBinding.executePendingBindings();
 
     }
@@ -51,6 +58,15 @@ public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
         public viewHolder(RvHotelRoomBinding rvHotelRoomBinding) {
             super(rvHotelRoomBinding.getRoot());
             this.rvHotelRoomBinding = rvHotelRoomBinding;
+
+            rvHotelRoomBinding.getRoot().setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Bundle bundle = new Bundle();
+                    bundle.putString("id_room",rvHotelRoomBinding.getKamarHotel().getRoom_id());
+                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_allRoomFragment_to_detailRoom,bundle);
+                }
+            });
         }
     }
 

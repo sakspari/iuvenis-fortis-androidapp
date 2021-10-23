@@ -99,16 +99,16 @@ public class RegisterFragment extends Fragment {
                 System.out.println("Pssword confirm is: "+passwordConfirm);
                 System.out.println("UserPass confirm is: "+user.getPassword());
                 if(isEmptyField()){
-                    Toast.makeText(binding.getRoot().getContext(), "Opps, there are some empty field!", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(binding.getRoot().getContext(), "Opps, there are some empty field!", Toast.LENGTH_SHORT).show();
                 }
                 else if(!isUsernameAvailable()){
-                    Toast.makeText(binding.getRoot().getContext(), "Username sudah digunakan", Toast.LENGTH_SHORT).show();
+                    binding.etUsername.setError("Username Already Taken");
                 }else if(!isEmailAvailable()){
-                    Toast.makeText(binding.getRoot().getContext(), "Email tersebut telah didaftarkan!", Toast.LENGTH_SHORT).show();
-                }else if(!isPasswordMatch()){
-                    Toast.makeText(binding.getRoot().getContext(), "Password Confirm tidak sesuai", Toast.LENGTH_SHORT).show();
+                    binding.etEmail.setError("Email Already Taken");
                 }else if(isEmptyField()){
                     Toast.makeText(binding.getRoot().getContext(), "Opps, there are some empty field!", Toast.LENGTH_SHORT).show();
+                }else if(!isPasswordMatch()){
+                    binding.etConfirmPassword.setError("Password didnt match");
                 }
                 else
                 {
@@ -147,6 +147,18 @@ public class RegisterFragment extends Fragment {
 
     //inputan tidak boleh kosong
     private boolean isEmptyField(){
+        if(user.getUsername()==null){
+            binding.etUsername.setError("Must be Filled");
+        }
+        if(user.getEmail()==null){
+            binding.etEmail.setError("Must be Filled");
+        }
+        if(user.getPassword()==null){
+            binding.etPassword.setError("Must be Filled");
+        }
+        if(passwordConfirm ==null){
+            binding.etConfirmPassword.setError("Must be Filled");
+        }
         return user.getUsername()==null||user.getEmail()==null||user.getPassword()==null||passwordConfirm==null;
     }
 

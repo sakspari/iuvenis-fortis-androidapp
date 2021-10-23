@@ -21,4 +21,8 @@
     <string name="mapbox_access_token">pk.eyJ1Ijoic2Frc3BhcmkiLCJhIjoiY2t1a3FpNzJ5MXQ1eDJ2dDRvMGNoZ2IwYSJ9.-1dSPyQvfQ1RKan5yzfO5Q</string>
     <string name="welcome_traveler">Welcome Traveler</string>
     <string name="what_doin">What\'ca doin?</string>
+    <string name="booking">Book Now!</string>
+    <string name="room_name">Nama Kamar</string>
+    <string name="hotel_name">IUVENIS FORTIS HOTEL</string>
+    <string name="review">Review:</string>
 </resources>

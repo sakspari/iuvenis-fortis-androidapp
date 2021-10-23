@@ -30,4 +30,7 @@ public interface HotelDao {
     // ambil review yang dibuat untuk kamar yang iodnya sama dengan room_id
     @Query("SELECT * FROM room_review where fk_room_id = :room_id")
     List<RoomReview> getRoomReview(String room_id);
+
+    @Query("SELECT * FROM hotel_room where room_id = :room_id")
+    HotelRoom roomFromId(String room_id);
 }

@@ -27,6 +27,14 @@
     <fragment
         android:id="@+id/allRoomFragment"
         android:name="com.example.hotel.view.home.AllRoomFragment"
-        android:label="fragment_all_room"
-        tools:layout="@layout/fragment_all_room" />
+        android:label="All Room"
+        tools:layout="@layout/fragment_all_room" >
+        <action
+            android:id="@+id/action_allRoomFragment_to_detailRoom"
+            app:destination="@id/detailRoom" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailRoom"
+        android:name="com.example.hotel.view.home.DetailRoom"
+        android:label="Detail Room" />
 </navigation>

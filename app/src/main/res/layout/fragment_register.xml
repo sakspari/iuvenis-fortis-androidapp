@@ -59,6 +59,7 @@
                 app:counterEnabled="true"
                 app:counterMaxLength="15"
                 app:endIconMode="clear_text"
+                app:errorEnabled="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -99,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
+                app:errorEnabled="true"
                 android:hint="@string/password"
                 app:endIconMode="password_toggle"
                 app:startIconDrawable="@drawable/ic_baseline_lock_24">
@@ -115,6 +117,7 @@
                 style="@style/Theme.Design.Light"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:errorEnabled="true"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
                 android:hint="@string/confirm_password"

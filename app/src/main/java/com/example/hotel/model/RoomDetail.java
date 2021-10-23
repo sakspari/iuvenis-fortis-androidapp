@@ -15,11 +15,18 @@ public class RoomDetail {
     @ColumnInfo(name = "fk_room_id")
     private String fk_room_id;
 
-    @ColumnInfo(name = "size")
-    private String size;
+    @ColumnInfo(name = "price")
+    private Integer price;
 
-//    @ColumnInfo(name = "facilities")
-//    private List<String> facilities;
+    @ColumnInfo(name = "room_description")
+    private String room_description;
+
+    public RoomDetail(int room_detail_id, @NonNull String fk_room_id, Integer price, String room_description) {
+        this.room_detail_id = room_detail_id;
+        this.fk_room_id = fk_room_id;
+        this.price = price;
+        this.room_description = room_description;
+    }
 
     public int getRoom_detail_id() {
         return room_detail_id;
@@ -29,31 +36,28 @@ public class RoomDetail {
         this.room_detail_id = room_detail_id;
     }
 
+    @NonNull
     public String getFk_room_id() {
         return fk_room_id;
     }
 
-    public void setFk_room_id(String fk_room_id) {
+    public void setFk_room_id(@NonNull String fk_room_id) {
         this.fk_room_id = fk_room_id;
     }
 
-    public String getSize() {
-        return size;
+    public Integer getPrice() {
+        return price;
     }
 
-    public void setSize(String size) {
-        this.size = size;
+    public void setPrice(Integer price) {
+        this.price = price;
     }
 
-//    public List<String> getFacilities() {
-//        return facilities;
-//    }
-//
-//    public void setFacilities(List<String> facilities) {
-//        this.facilities = facilities;
-//    }
-//
-//    public void addFacilities (String facility){
-//        this.facilities.add(facility);
-//    }
+    public String getRoom_description() {
+        return room_description;
+    }
+
+    public void setRoom_description(String room_description) {
+        this.room_description = room_description;
+    }
 }
