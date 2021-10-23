@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.hotel.database.MyDatabaseClient;
+import com.example.hotel.dummyData.DummyRoom;
 import com.example.hotel.model.BookDetail;
 import com.example.hotel.model.HotelRoom;
 import com.example.hotel.model.RoomReview;
@@ -37,37 +38,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigationView,navController);
 //        ----------------end of Navigation Components---------------------------
 
-//        User user1 = new User("stella", "password", "#","1" true);
-//        User user2 = new User("oskadon", "password", "#", true);
-//        User user3 = new User("paramex", "password", "#", false);
-//        HotelRoom hotelRoom1 = new HotelRoom("IF-1", "Deluxe", "#", "1", true, 300_000.00);
-//        HotelRoom hotelRoom2 = new HotelRoom("IF-2", "Deluxe", "#", "1", true, 300_000.00);
-//
-//        RoomReview roomReview1 = new RoomReview();
-//        roomReview1.setFk_room_id(hotelRoom2.getRoom_id());
-//        roomReview1.setFk_username(user2.getUsername());
-//        roomReview1.setReview_date(new Date());
-//        roomReview1.setReview_description("Kamar paling nyaman! Recomended gan!");
-//        roomReview1.set
+        List<HotelRoom> hotelRoomList = MyDatabaseClient.getInstance(getApplicationContext())
+                .getDatabase()
+                .hotelDao()
+                .getAllRoom();
 
-//        BookDetail bookDetail = new BookDetail();
-//        bookDetail.setFk_room_id(hotelRoom1.getRoom_id());
-//        bookDetail.setFk_username(user2.getUsername());
-//        bookDetail.setCheck_in_date(new Date());
-//        bookDetail.setCheck_out_date(new Date());
+        if(hotelRoomList.isEmpty()){
+            new DummyRoom(getApplicationContext()).insertDummy();
+        }
 
-//        insertUser(user1);
-//        insertUser(user2);
-//        insertUser(user3);
-//        insertHotelRoom(hotelRoom1);
-//        insertHotelRoom(hotelRoom2);
-//
-//        hotelRoom2.setRoom_status(false);
-//
-//        updateHotelRoom(hotelRoom2);
-////        deleteHotelRoom(hotelRoom1);
-//
-//        insertReview(roomReview1);
 Date date = new Date();
         System.out.println(date.toString());
         getAllUser();

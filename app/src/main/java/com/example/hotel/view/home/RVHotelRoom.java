@@ -3,11 +3,14 @@ package com.example.hotel.view.home;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.hotel.R;
 import com.example.hotel.databinding.RvHotelRoomBinding;
 import com.example.hotel.model.HotelRoom;
@@ -49,6 +52,15 @@ public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
             super(rvHotelRoomBinding.getRoot());
             this.rvHotelRoomBinding = rvHotelRoomBinding;
         }
+    }
+
+    @BindingAdapter("hotelImage")
+    public static void loadImage(ImageView view, String imageUrl) {
+        Glide.with(view.getContext())
+                .load(imageUrl)
+                .placeholder(R.drawable.ic_baseline_home_24)
+                .into(view);
+
     }
 
 }
