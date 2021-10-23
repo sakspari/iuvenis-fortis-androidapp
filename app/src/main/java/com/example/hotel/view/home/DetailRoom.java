@@ -17,13 +17,16 @@ import com.example.hotel.model.HotelRoom;
 import com.example.hotel.model.RoomDetail;
 import com.example.hotel.model.User;
 import com.example.hotel.preferences.UserLoginPreferences;
+import com.example.hotel.view.home.dialog.BookingDialog;
+
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DetailRoom#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DetailRoom extends Fragment {
+public class DetailRoom extends Fragment implements BookingDialog.BookingDialogListener {
 
     FragmentDetailRoomBinding binding;
 
@@ -99,6 +102,28 @@ public class DetailRoom extends Fragment {
         binding.setRoomDetail(roomDetail);
 
 
+        //action for booking button
+        binding.btnBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(binding.getRoot().getContext(), "Add some action here", Toast.LENGTH_SHORT).show();
+                openDialog();
+            }
+        });
+
         return binding.getRoot();
+    }
+
+
+    //method open custom dialog
+    public void openDialog(){
+        BookingDialog bookingDialog = new BookingDialog();
+        bookingDialog.show(getActivity().getSupportFragmentManager(),"booking dialog");
+    }
+
+    @Override
+    public void passDate(Date dateIn, Date dateOut) {
+        System.out.println(dateIn.toString());
+        System.out.println(dateOut.toString());
     }
 }
