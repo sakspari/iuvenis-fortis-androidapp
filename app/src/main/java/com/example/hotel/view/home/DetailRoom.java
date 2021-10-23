@@ -8,11 +8,13 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.hotel.R;
 import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentDetailRoomBinding;
 import com.example.hotel.model.HotelRoom;
+import com.example.hotel.model.RoomDetail;
 import com.example.hotel.model.User;
 import com.example.hotel.preferences.UserLoginPreferences;
 
@@ -84,8 +86,18 @@ public class DetailRoom extends Fragment {
                 .getDatabase()
                 .hotelDao()
                 .roomFromId(id_kamar);
-
+        // set Hotel Room
         binding.setHotelRoom(hotelRoom);
+
+        //get Detail Room
+        RoomDetail roomDetail = MyDatabaseClient.getInstance(binding.getRoot().getContext())
+                .getDatabase()
+                .hotelDao()
+                .getDetailRoom(hotelRoom.getRoom_id());
+
+        //set Detail
+        binding.setRoomDetail(roomDetail);
+
 
         return binding.getRoot();
     }

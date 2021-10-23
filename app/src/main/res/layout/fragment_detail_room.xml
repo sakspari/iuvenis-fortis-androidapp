@@ -4,10 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+
     <data>
         <variable
             name="hotelRoom"
             type="com.example.hotel.model.HotelRoom" />
+        <variable
+            name="roomDetail"
+            type="com.example.hotel.model.RoomDetail" />
         <variable
             name="user"
             type="com.example.hotel.model.User" />
@@ -129,7 +133,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="Price"
+            android:text="IDR "
             android:textColor="@color/teal_700"
             android:textSize="24sp"
             android:textStyle="bold"
@@ -137,14 +141,26 @@
             app:layout_constraintTop_toBottomOf="@+id/materialTextView3" />
 
         <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextViewPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:text="@{String.valueOf(roomDetail.price)}"
+            android:textColor="@color/teal_700"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/materialTextView6"
+            app:layout_constraintTop_toBottomOf="@+id/materialTextView3" />
+
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/materialTextView7"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:text="descGoesHere"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+            android:text="@{roomDetail.room_description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialTextView6" />

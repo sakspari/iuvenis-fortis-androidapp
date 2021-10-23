@@ -21,8 +21,7 @@ public class RoomDetail {
     @ColumnInfo(name = "room_description")
     private String room_description;
 
-    public RoomDetail(int room_detail_id, @NonNull String fk_room_id, Integer price, String room_description) {
-        this.room_detail_id = room_detail_id;
+    public RoomDetail(@NonNull String fk_room_id, Integer price, String room_description) {
         this.fk_room_id = fk_room_id;
         this.price = price;
         this.room_description = room_description;
