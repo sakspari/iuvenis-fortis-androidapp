@@ -101,7 +101,6 @@ public class DetailRoom extends Fragment implements BookingDialog.BookingDialogL
         //set Detail
         binding.setRoomDetail(roomDetail);
 
-
         //action for booking button
         binding.btnBooking.setOnClickListener(new View.OnClickListener() {
             @Override

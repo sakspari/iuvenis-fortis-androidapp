@@ -27,7 +27,7 @@ public interface BookingDao {
     @Delete
     void deleteBooking(BookDetail bookDetail);
 
-    //    mengambil user yang membuat Bokingan
+    //    mengambil user yang membuat Bookingan
     @Query("SELECT * FROM user where username = :username")
     User getUser(String username);
 
