@@ -26,11 +26,11 @@ public class DummyRoom {
         insertDetailRoom(new RoomDetail("IF-001",300_000,"kamar ini sedang dalam konstruksi" +
                 "sedang tidak tersedia untuk sementara waktu" +
                 "silahkan memesan kamar yang lain"),context);
-        insertDetailRoom(new RoomDetail("IF-002",350_000,"Lorem Ipsum Dolor sit"),context);
-        insertDetailRoom(new RoomDetail("IF-003",500_000,"Lorem Ipsum Dolor sit"),context);
-        insertDetailRoom(new RoomDetail("IF-004",250_000,"Lorem Ipsum Dolor sit"),context);
-        insertDetailRoom(new RoomDetail("IF-005",250_000,"Lorem Ipsum Dolor sit"),context);
-        insertDetailRoom(new RoomDetail("IF-006",250_000,"Lorem Ipsum Dolor sit"),context);
+        insertDetailRoom(new RoomDetail("IF-002",350_000,"Deluxe Room merupakan kamar yang dapat dipesan dengan harga Rp. 350.000 per hari. Kamar ini terlihat lebih berkualitas dalam bermacam hal diawali dari performa, ukuran dan posisinya jika dibandingkan dengan kamar Regular. Fasilitas yang disediakan tentunya lebih lengkap dibanding kamar tipe Regular.\n"),context);
+        insertDetailRoom(new RoomDetail("IF-003",500_000,"Super Deluxe Room adalah sebuah kamar besar yang di mana kamar tidur dan ruangan tamu (seating tempat) terpisah. Kamar ini berbentuk kamar single, dengan pembatas kecil di antara ruangan duduk dan kamar tidur. Fasilitas yang dimiliki kamar ini melampui fasilitas dari kamar bertipe Regular dan Deluxe.\n"),context);
+        insertDetailRoom(new RoomDetail("IF-004",250_000,"Regular Room merupakan sebuah kamar sarana yang paling dasar, umumnya sebuah tv, tea & coffe making fasilities, telephone, meja, dan kamar mandi. Dengan mengeluarkan Rp. 250.000. Anda dapat memesan kamar ini secara langsung pada IUVENIS FORTIS."),context);
+        insertDetailRoom(new RoomDetail("IF-005",250_000,"Regular Room merupakan sebuah kamar sarana yang paling dasar, umumnya sebuah tv, tea & coffe making fasilities, telephone, meja, dan kamar mandi. Dengan mengeluarkan Rp. 250.000. Anda dapat memesan kamar ini secara langsung pada IUVENIS FORTIS."),context);
+        insertDetailRoom(new RoomDetail("IF-006",250_000,"Regular Room merupakan sebuah kamar sarana yang paling dasar, umumnya sebuah tv, tea & coffe making fasilities, telephone, meja, dan kamar mandi. Dengan mengeluarkan Rp. 250.000. Anda dapat memesan kamar ini secara langsung pada IUVENIS FORTIS."),context);
 
 
     }
