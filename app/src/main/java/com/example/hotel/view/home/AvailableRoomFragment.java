@@ -17,6 +17,7 @@ import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentAvailableRoomBinding;
 import com.example.hotel.model.HotelRoom;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -75,17 +76,25 @@ public class AvailableRoomFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_all_room, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_available_room, container, false);
         hotelRoomList = MyDatabaseClient.getInstance(getContext())
                 .getDatabase()
                 .hotelDao()
                 .getAllRoom();
 
-        if(hotelRoomList!=null){
+        List<HotelRoom> availableList = new ArrayList<HotelRoom>();
+
+        for(int i=0;i<hotelRoomList.size();i++){
+            if(hotelRoomList.get(i).isRoom_status()){
+                availableList.add(hotelRoomList.get(i));
+            }
+        }
+
+        if(availableList.size()!=0){
             recyclerView = binding.getRoot().findViewById(R.id.rv_layout);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(new RVHotelRoom(hotelRoomList));
+            recyclerView.setAdapter(new RVHotelRoom(availableList));
         }
 
         return binding.getRoot();
