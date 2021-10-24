@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
+import androidx.navigation.NavDestination;
+import androidx.navigation.NavInflater;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,7 +67,12 @@ public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
                 public void onClick(View view) {
                     Bundle bundle = new Bundle();
                     bundle.putString("id_room",rvHotelRoomBinding.getKamarHotel().getRoom_id());
+
+                    //seleksi jalur fragment
+//                    if(Navigation.findNavController(binding.getRoot()).getCurrentDestination() == Navigation.findNavController(binding.getRoot()).getGraph().findNode(R.id.allRoomFragment))
                         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_allRoomFragment_to_detailRoom,bundle);
+//                    else
+//                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_urBookedRoom_to_detailBooking,bundle);
                 }
             });
         }

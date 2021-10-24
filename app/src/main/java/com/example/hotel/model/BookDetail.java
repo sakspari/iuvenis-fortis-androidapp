@@ -20,6 +20,9 @@ public class BookDetail {
     @ColumnInfo(name = "fk_username")
     private String fk_username;
 
+    @ColumnInfo(name = "booking_date")
+    private Date booking_date;
+
     @ColumnInfo(name = "check_in_date")
     private Date check_in_date;
 
@@ -67,5 +70,13 @@ public class BookDetail {
 
     public void setCheck_out_date(Date check_out_date) {
         this.check_out_date = check_out_date;
+    }
+
+    public Date getBooking_date() {
+        return booking_date;
+    }
+
+    public void setBooking_date(Date booking_date) {
+        this.booking_date = booking_date;
     }
 }

@@ -109,7 +109,11 @@ public class DetailRoom extends Fragment {
         binding.btnBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(hotelRoom.isRoom_status())
                 openDialog();
+                else{
+                    Toast.makeText(getContext(), "Ooopss, Room curently unavailable", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

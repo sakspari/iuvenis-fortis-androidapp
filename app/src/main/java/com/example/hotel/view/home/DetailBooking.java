@@ -31,8 +31,6 @@ import java.util.List;
  */
 public class DetailBooking extends Fragment {
     private FragmentDetailBookingBinding binding;
-    private List<HotelRoom> hotelRoomList;
-    private RecyclerView recyclerView;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -80,43 +78,7 @@ public class DetailBooking extends Fragment {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail_booking, container, false);
 
-        //Select semua booking
-        List<BookDetail> listBookDetail = MyDatabaseClient.getInstance(getContext())
-                .getDatabase()
-                .bookingDao()
-                .getAllBookings();
 
-        hotelRoomList = new ArrayList<HotelRoom>();
-
-        User user = new UserLoginPreferences(binding.getRoot().getContext()).getUserLogin();
-
-        if(listBookDetail!=null){
-            for (int i=0; i< listBookDetail.size(); i++){
-                if(listBookDetail.get(i).getFk_username() == user.getUsername()){
-                    HotelRoom hotelRoom = MyDatabaseClient.getInstance(getContext())
-                            .getDatabase()
-                            .hotelDao()
-                            .roomFromId(listBookDetail.get(i).getFk_room_id());
-
-                    hotelRoomList.add(hotelRoom);
-                }
-            }
-        }
-            System.out.println("bookingan kosong");
-
-//        hotelRoomList = MyDatabaseClient.getInstance(getContext())
-//                .getDatabase()
-//                .hotelDao()
-//                .getAllRoom();
-
-        if(hotelRoomList.size()!=0){
-            recyclerView = binding.getRoot().findViewById(R.id.rv_layout);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(new RVHotelRoom(hotelRoomList));
-        }else{
-            System.out.println("anjay");
-        }
         return binding.getRoot();
     }
 }

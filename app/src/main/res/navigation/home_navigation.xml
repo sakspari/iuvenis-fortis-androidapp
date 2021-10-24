@@ -21,6 +21,9 @@
         <action
             android:id="@+id/action_homeFragment_to_urBookedRoom"
             app:destination="@id/urBookedRoom" />
+        <action
+            android:id="@+id/action_homeFragment_to_availableRoomFragment"
+            app:destination="@id/availableRoomFragment" />
     </fragment>
     <fragment
         android:id="@+id/mapFragment"
@@ -43,8 +46,8 @@
     <fragment
         android:id="@+id/urBookedRoom"
         android:name="com.example.hotel.view.home.UrBookedRoom"
-        android:label="fragment_ur_booked_room"
-        tools:layout="@layout/fragment_ur_booked_room" >
+        android:label="Booking History"
+        tools:layout="@layout/fragment_ur_booked_room">
         <action
             android:id="@+id/action_urBookedRoom_to_detailBooking"
             app:destination="@id/detailBooking" />
@@ -52,6 +55,11 @@
     <fragment
         android:id="@+id/detailBooking"
         android:name="com.example.hotel.view.home.DetailBooking"
-        android:label="fragment_detail_booking"
+        android:label="Booking Detail"
         tools:layout="@layout/fragment_detail_booking" />
+    <fragment
+        android:id="@+id/availableRoomFragment"
+        android:name="com.example.hotel.view.home.AvailableRoomFragment"
+        android:label="fragment_available_room"
+        tools:layout="@layout/fragment_available_room" />
 </navigation>

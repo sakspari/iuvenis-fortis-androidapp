@@ -72,6 +72,7 @@ public class BookingDialog extends AppCompatDialogFragment {
                         bookDetail.setFk_room_id(room_id);
                         bookDetail.setFk_username(user.getUsername());
                         try {
+                            bookDetail.setBooking_date(new Date());
                             bookDetail.setCheck_in_date(dateFormatter.parse(binding.tglMasuk.getText().toString()));
                             bookDetail.setCheck_out_date(dateFormatter.parse(binding.tglKeluar.getText().toString()));
                         } catch (ParseException e) {
