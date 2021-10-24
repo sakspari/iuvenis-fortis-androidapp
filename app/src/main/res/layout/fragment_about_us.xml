@@ -1,221 +1,247 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".AboutUs">
-
-    <!-- TODO: Update blank fragment layout -->
-    <androidx.cardview.widget.CardView
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="urlImgRico"
+            type="String" />
+        <variable
+            name="urlImgMarcel"
+            type="String" />
+        <variable
+            name="urlImgTerang"
+            type="String" />
+    </data>
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/desc"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        android:layout_margin="15dp"
-        android:elevation="3dp"
-        app:cardCornerRadius="10dp">
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/nama_aplikasi"
-                android:text="Nama Aplikasi       : IUVENIS FORTIS"
-                android:textStyle="bold"
-                android:textSize="15dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/desc_aplikasi"
-                android:layout_marginTop="10dp"
-                android:layout_below="@id/nama_aplikasi"
-                android:text="Deskripsi Aplikasi :"
-                android:textStyle="bold"
-                android:textSize="15dp"/>
-            <com.google.android.material.textview.MaterialTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/desc_aplikasi"
-                android:text="@string/desc_app"/>
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
+        android:layout_height="match_parent"
+        tools:context=".AboutUs">
 
-    <androidx.cardview.widget.CardView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_margin="15dp"
-        android:elevation="3dp"
-        app:cardCornerRadius="10dp">
+        <!-- TODO: Update blank fragment layout -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/desc"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            android:layout_margin="15dp"
+            android:elevation="3dp"
+            app:cardCornerRadius="10dp">
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/nama_aplikasi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Nama Aplikasi       : IUVENIS FORTIS"
+                    android:textSize="15dp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/desc_aplikasi"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/nama_aplikasi"
+                    android:text="Deskripsi Aplikasi :"
+                    android:textStyle="bold"
+                    android:textSize="15dp"/>
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/desc_aplikasi"
+                    android:text="@string/desc_app" />
+
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_margin="15dp"
+            android:elevation="3dp"
+            app:cardCornerRadius="10dp">
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/desc"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:elevation="3dp"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            app:cardCornerRadius="10dp">
+
+            <ImageView
+                android:id="@+id/potoTim1"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:profileImage="@{urlImgRico}"
+                android:layout_marginLeft="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="125dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/nama_tim1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Frederik Baptista Sakspari"
+                    android:textColor="@color/black"
+                    android:textSize="19dp" />
+
+                <TextView
+                    android:id="@+id/npm_tim1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="190710406"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/desc_tim1"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Program Studi Informatika"
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card1"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:elevation="3dp"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            app:cardCornerRadius="10dp">
+
+            <ImageView
+                android:id="@+id/potoTim2"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:profileImage="@{urlImgMarcel}"
+                android:layout_marginLeft="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="125dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/nama_tim2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Marcelinus Yudistira Yoga P."
+                    android:textColor="@color/black"
+                    android:textSize="19dp" />
+
+                <TextView
+                    android:id="@+id/npm_tim2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="190710378"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/desc_tim2"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Program Studi Informatika"
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/card2"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="1dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:elevation="3dp"
+            android:orientation="horizontal"
+            android:padding="5dp"
+            app:cardCornerRadius="10dp">
+
+            <ImageView
+                android:id="@+id/potoTim3"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                app:profileImage="@{urlImgTerang}"
+                android:layout_marginLeft="10dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="125dp"
+                android:orientation="vertical"
+                android:padding="5dp">
+
+                <TextView
+                    android:id="@+id/nama_tim3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="sans-serif-medium"
+                    android:text="Stefanus William Terang W."
+                    android:textColor="@color/black"
+                    android:textSize="19dp" />
+
+                <TextView
+                    android:id="@+id/npm_tim3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="190710423"
+                    android:textSize="14dp" />
+
+                <TextView
+                    android:id="@+id/desc_tim3"
+                    android:layout_width="190dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:text="Program Studi Informatika"
+                    android:textColor="@color/black"
+                    android:textSize="15dp" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
         <com.google.android.material.textview.MaterialTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/our_team"
-            android:text="OUR TEAM"/>
-    </androidx.cardview.widget.CardView>
+            android:layout_below="@+id/desc"
+            android:textSize="16sp"
+            android:layout_marginLeft="16dp"
+            android:text="Meet Our Team :"
+            android:textStyle="bold" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/desc"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:elevation="3dp"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        app:cardCornerRadius="10dp">
 
-        <ImageView
-            android:id="@+id/potoTim1"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="10dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="125dp"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/nama_tim1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:text="Frederik Baptista Sakspari"
-                android:textColor="@color/black"
-                android:textSize="19dp" />
-
-            <TextView
-                android:id="@+id/npm_tim1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="190710406"
-                android:textSize="14dp" />
-
-            <TextView
-                android:id="@+id/desc_tim1"
-                android:layout_width="190dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Program Studi Informatika"
-                android:textColor="@color/black"
-                android:textSize="15dp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/card1"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:elevation="3dp"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        app:cardCornerRadius="10dp">
-
-        <ImageView
-            android:id="@+id/potoTim2"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="10dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="125dp"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/nama_tim2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:text="Marcelinus Yudistira Yoga P."
-                android:textColor="@color/black"
-                android:textSize="19dp" />
-
-            <TextView
-                android:id="@+id/npm_tim2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="190710378"
-                android:textSize="14dp" />
-
-            <TextView
-                android:id="@+id/desc_tim2"
-                android:layout_width="190dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Program Studi Informatika"
-                android:textColor="@color/black"
-                android:textSize="15dp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/card2"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="1dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="15dp"
-        android:elevation="3dp"
-        android:orientation="horizontal"
-        android:padding="5dp"
-        app:cardCornerRadius="10dp">
-
-        <ImageView
-            android:id="@+id/potoTim3"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_marginLeft="10dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="125dp"
-            android:orientation="vertical"
-            android:padding="5dp">
-
-            <TextView
-                android:id="@+id/nama_tim3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif-medium"
-                android:text="Stefanus William Terang W."
-                android:textColor="@color/black"
-                android:textSize="19dp" />
-
-            <TextView
-                android:id="@+id/npm_tim3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="190710423"
-                android:textSize="14dp" />
-
-            <TextView
-                android:id="@+id/desc_tim3"
-                android:layout_width="190dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
-                android:text="Program Studi Informatika"
-                android:textColor="@color/black"
-                android:textSize="15dp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-</RelativeLayout>
+    </RelativeLayout>
+</layout>

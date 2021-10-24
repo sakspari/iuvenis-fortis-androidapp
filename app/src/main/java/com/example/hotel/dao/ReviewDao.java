@@ -19,6 +19,9 @@ public interface ReviewDao {
     @Query("SELECT * FROM room_review")
     List<RoomReview> getAllReviews();
 
+    @Query("SELECT * FROM room_review WHERE fk_username = :username AND fk_room_id = :hotel_room_id")
+    RoomReview getRoomReview(String username, String hotel_room_id);
+
     @Insert
     void insertReview(RoomReview roomReview);
 

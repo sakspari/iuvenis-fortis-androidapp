@@ -20,6 +20,10 @@
         <variable
             name="roomDetail"
             type="com.example.hotel.model.RoomDetail" />
+
+        <variable
+            name="roomReview"
+            type="com.example.hotel.model.RoomReview" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -41,10 +45,9 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="16dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="8dp"
                 app:cardCornerRadius="50dp">
 
                 <ImageView
@@ -58,9 +61,10 @@
             <com.google.android.material.textview.MaterialTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textStyle="bold"
                 android:text="@{user.username}"
                 android:textAlignment="center"
-                android:textSize="32sp" />
+                android:textSize="16sp" />
         </LinearLayout>
 
         <ImageView
@@ -78,6 +82,7 @@
             android:id="@+id/materialTextView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
             android:text="@{hotelRoom.room_id}"
             android:textSize="24dp"
             android:textStyle="bold"
@@ -98,60 +103,46 @@
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/materialTextView7"
             android:layout_width="match_parent"
-            android:layout_height="80dp"
+            android:layout_height="wrap_content"
+            android:minHeight="80dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
+            android:padding="8dp"
             android:layout_marginEnd="8dp"
-            android:text="@{roomDetail.room_description}"
+            android:background="@color/md_grey_200"
+            android:textStyle="italic"
+            android:text="@{roomReview.review_description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
         <LinearLayout
             android:id="@+id/linearLayout5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
             android:orientation="vertical"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/materialTextView7">
+            app:layout_constraintTop_toBottomOf="@+id/imageView2">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="8dp"
                 android:layout_marginTop="8dp"
+                android:minHeight="60dp"
                 android:orientation="horizontal">
 
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="username: " />
+<!--                <com.google.android.material.textview.MaterialTextView-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:text="Room Number: " />-->
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{user.username}" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="8dp"
-                android:layout_marginTop="8dp"
-                android:orientation="horizontal">
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Room Number: " />
-
-                <com.google.android.material.textview.MaterialTextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{roomDetail.fk_room_id}" />
+                    android:text="@{roomDetail.room_description}" />
             </LinearLayout>
 
             <LinearLayout
@@ -171,10 +162,19 @@
                     android:layout_height="wrap_content"
                     android:text="@{String.valueOf(bookDetail.check_in_date)}" />
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal">
+
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Check oUT Date: " />
+                    android:text="Check Out : " />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
@@ -189,10 +189,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:text="@string/review_now"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
+            app:layout_constraintTop_toBottomOf="@+id/materialTextView7" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

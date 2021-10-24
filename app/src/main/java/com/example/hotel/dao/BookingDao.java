@@ -18,6 +18,12 @@ public interface BookingDao {
     @Query("SELECT * FROM book_detail")
     List<BookDetail> getAllBookings();
 
+    @Query("SELECT * FROM book_detail WHERE fk_username = :username")
+    List<BookDetail> getUserBookings(String username);
+
+    @Query("SELECT * FROM book_detail WHERE book_detail_id = :id")
+    BookDetail bookingById (int id);
+
     @Insert
     void insertBooking(BookDetail bookDetail);
 

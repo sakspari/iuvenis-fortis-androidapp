@@ -5,13 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
-            name="kamarHotel"
-            type="com.example.hotel.model.HotelRoom" />
+            name="bookingDetail"
+            type="com.example.hotel.model.BookDetail"/>
         <variable
-            name="status"
-            type="String" />
+            name="hotelRoom"
+            type="com.example.hotel.model.HotelRoom"/>
     </data>
-
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -22,7 +21,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:elevation="3dp"
-        tools:context=".view.home.RVHotelRoom"
+        tools:context=".view.home.RVBookingAdapter"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="10dp">
 
@@ -40,7 +39,7 @@
                 android:scaleType="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="2dp"
-                app:hotelImage="@{kamarHotel.room_photos_url}" />
+                app:hotelImage="@{hotelRoom.room_photos_url}" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="9dp"
                         android:layout_marginBottom="3dp"
-                        android:text="@{kamarHotel.room_id}"
+                        android:text="@{hotelRoom.room_id}"
                         android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -98,7 +97,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginBottom="3dp"
-                        android:text="@{kamarHotel.room_type}"
+                        android:text="@{hotelRoom.room_type}"
                         android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -115,7 +114,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3dp"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Status :"
+                        android:text="Username :"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
 
@@ -125,17 +124,39 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginBottom="3dp"
-                        android:text="@{status}"
+                        android:text="@{bookingDetail.fk_username}"
+                        android:textColor="@color/black"
+                        android:textSize="11sp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/tanggalBooking"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="3dp"
+                        android:fontFamily="sans-serif-medium"
+                        android:text="Booking Date :"
+                        android:textColor="@color/black"
+                        android:textSize="13sp" />
+
+                    <TextView
+                        android:id="@+id/tvDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginBottom="3dp"
+                        android:text="@{String.valueOf(bookingDetail.booking_date)}"
                         android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
             </LinearLayout>
 
-<!--            <com.google.android.material.navigation.NavigationView-->
-<!--                android:layout_width="wrap_content"-->
-<!--                android:layout_height="wrap_content">-->
-<!--                -->
-<!--            </com.google.android.material.navigation.NavigationView>-->
         </RelativeLayout>
+
     </androidx.cardview.widget.CardView>
 </layout>

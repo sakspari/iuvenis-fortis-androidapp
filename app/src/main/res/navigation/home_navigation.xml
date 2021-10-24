@@ -65,7 +65,11 @@
         android:id="@+id/availableRoomFragment"
         android:name="com.example.hotel.view.home.AvailableRoomFragment"
         android:label="Available Room"
-        tools:layout="@layout/fragment_available_room" />
+        tools:layout="@layout/fragment_available_room" >
+        <action
+            android:id="@+id/action_availableRoomFragment_to_detailRoom"
+            app:destination="@id/detailRoom" />
+    </fragment>
     <fragment
         android:id="@+id/AboutUs"
         android:name="com.example.hotel.AboutUs"

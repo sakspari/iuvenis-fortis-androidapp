@@ -2,11 +2,14 @@ package com.example.hotel;
 
 import android.os.Bundle;
 
+import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.hotel.databinding.FragmentAboutUsBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +17,7 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class AboutUs extends Fragment {
+    FragmentAboutUsBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -59,6 +63,12 @@ public class AboutUs extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_about_us, container, false);
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_about_us, container, false);
+
+        binding.setUrlImgRico("https://posterspy.com/wp-content/uploads/2020/04/woody-1200x1200.jpg");
+        binding.setUrlImgMarcel("https://posterspy.com/wp-content/uploads/2020/04/woody-1200x1200.jpg");
+        binding.setUrlImgTerang("https://posterspy.com/wp-content/uploads/2020/04/woody-1200x1200.jpg");
+
+        return binding.getRoot();
     }
 }

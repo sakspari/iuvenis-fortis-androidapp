@@ -9,4 +9,5 @@ import com.example.hotel.model.RoomDetail;
 public interface RoomDetailDao {
     @Insert
     void insertDetailRoom(RoomDetail roomDetail);
+
 }

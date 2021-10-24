@@ -83,38 +83,19 @@ public class UrBookedRoom extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_ur_booked_room, container, false);
 
         hotelRoomList = new ArrayList<HotelRoom>();
-//        bookDetailList = new ArrayList<BookDetail>();
+
+        User user = new UserLoginPreferences(binding.getRoot().getContext()).getUserLogin();
 
         bookDetailList = MyDatabaseClient.getInstance(getContext())
                 .getDatabase()
                 .bookingDao()
-                .getAllBookings();
-
-        User user = new UserLoginPreferences(binding.getRoot().getContext()).getUserLogin();
+                .getUserBookings(user.getUsername());
 
         if (bookDetailList != null) {
-            for (int i = 0; i < bookDetailList.size(); i++) {
-                if (bookDetailList.get(i).getFk_username().equalsIgnoreCase(user.getUsername())) {
-                    HotelRoom hotelRoom = MyDatabaseClient.getInstance(getContext())
-                            .getDatabase()
-                            .hotelDao()
-                            .roomFromId(bookDetailList.get(i).getFk_room_id());
-                    System.out.println(bookDetailList.get(i).getFk_username());
-                    if (hotelRoom != null && !hotelRoomList.contains(hotelRoom)) {
-                        hotelRoomList.add(hotelRoom);
-                    }
-                }
-            }
-        }
-
-
-        if (hotelRoomList != null) {
             recyclerView = binding.getRoot().findViewById(R.id.rv_layout);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
             recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(new RVHotelRoom(hotelRoomList));
-        } else {
-            System.out.println("EmptyList");
+            recyclerView.setAdapter(new RVBookingAdapter(bookDetailList));
         }
 
         return binding.getRoot();

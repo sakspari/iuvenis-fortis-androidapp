@@ -9,14 +9,13 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
-import androidx.navigation.NavDestination;
-import androidx.navigation.NavInflater;
+import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.hotel.R;
-import com.example.hotel.databinding.FragmentAllRoomBinding;
 import com.example.hotel.databinding.RvHotelRoomBinding;
 import com.example.hotel.model.HotelRoom;
 
@@ -47,7 +46,6 @@ public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
             holder.rvHotelRoomBinding.setStatus("Currently Unavailable");
         }
         holder.rvHotelRoomBinding.executePendingBindings();
-
     }
 
     @Override
@@ -68,11 +66,13 @@ public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
                     Bundle bundle = new Bundle();
                     bundle.putString("id_room",rvHotelRoomBinding.getKamarHotel().getRoom_id());
 
+
                     //seleksi jalur fragment
-//                    if(Navigation.findNavController(binding.getRoot()).getCurrentDestination() == Navigation.findNavController(binding.getRoot()).getGraph().findNode(R.id.allRoomFragment))
-                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_allRoomFragment_to_detailRoom,bundle);
-//                    else
-//                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_urBookedRoom_to_detailBooking,bundle);
+                    if(Navigation.findNavController(binding.getRoot()).getCurrentDestination() == Navigation.findNavController(binding.getRoot()).getGraph().findNode(R.id.allRoomFragment)) {
+                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_allRoomFragment_to_detailRoom, bundle);
+                    }
+                    else
+                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_availableRoomFragment_to_detailRoom,bundle);
                 }
             });
         }

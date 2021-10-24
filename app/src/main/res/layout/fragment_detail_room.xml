@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
 
     <data>
+
         <variable
             name="hotelRoom"
             type="com.example.hotel.model.HotelRoom" />
+
         <variable
             name="roomDetail"
             type="com.example.hotel.model.RoomDetail" />
+
         <variable
             name="user"
             type="com.example.hotel.model.User" />
@@ -38,16 +40,16 @@
 
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/materialCardView"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="16dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_margin="8dp"
                 app:cardCornerRadius="50dp">
 
                 <ImageView
                     android:id="@+id/profileImg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="center"
                     app:profileImage="@{user.user_profile_url}" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -64,9 +66,10 @@
             android:id="@+id/imageView2"
             android:layout_width="match_parent"
             android:layout_height="200dp"
+            android:scaleType="center"
+            app:hotelImage="@{hotelRoom.room_photos_url}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:hotelImage="@{hotelRoom.room_photos_url}"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
         <com.google.android.material.button.MaterialButton
@@ -181,12 +184,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/review"
-                android:textStyle="bold"/>
+                android:textStyle="bold" />
             <!--code rv item disini-->
+            <LinearLayout
+                android:id="@+id/reviewLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    tools:listitem="@layout/rv_review"/>
+
+            </LinearLayout>
         </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 
 
 </layout>
