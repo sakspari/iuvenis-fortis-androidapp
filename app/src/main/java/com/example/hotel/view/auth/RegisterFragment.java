@@ -2,22 +2,19 @@ package com.example.hotel.view.auth;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.example.hotel.database.MyDatabaseClient;
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import com.example.hotel.R;
+import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentRegisterBinding;
 import com.example.hotel.model.User;
-
-import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.

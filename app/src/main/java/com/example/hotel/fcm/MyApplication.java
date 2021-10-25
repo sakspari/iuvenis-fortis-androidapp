@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.os.Build;
 
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.FirebaseMessagingService;
 
 public class MyApplication extends Application {
     public static final String CHANNEL_1_ID = "channel1";

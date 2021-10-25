@@ -1,13 +1,12 @@
 package com.example.hotel;
 
 import android.os.Bundle;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
 
 import com.example.hotel.databinding.FragmentAboutUsBinding;
 
@@ -16,7 +15,7 @@ import com.example.hotel.databinding.FragmentAboutUsBinding;
  * Use the {@link AboutUs#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AboutUs extends Fragment {
+public class AboutUs extends Fragment{
     FragmentAboutUsBinding binding;
 
     // TODO: Rename parameter arguments, choose names that match
@@ -71,4 +70,5 @@ public class AboutUs extends Fragment {
 
         return binding.getRoot();
     }
+
 }

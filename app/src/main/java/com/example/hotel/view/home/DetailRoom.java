@@ -1,17 +1,16 @@
 package com.example.hotel.view.home;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.hotel.R;
 import com.example.hotel.database.MyDatabaseClient;
@@ -23,10 +22,7 @@ import com.example.hotel.model.User;
 import com.example.hotel.preferences.UserLoginPreferences;
 import com.example.hotel.view.home.dialog.BookingDialog;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * A simple {@link Fragment} subclass.

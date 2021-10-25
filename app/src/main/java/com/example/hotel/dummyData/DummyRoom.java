@@ -5,7 +5,6 @@ import android.content.Context;
 import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.model.HotelRoom;
 import com.example.hotel.model.RoomDetail;
-import com.example.hotel.view.home.DetailRoom;
 
 public class DummyRoom {
     private Context context;
