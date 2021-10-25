@@ -41,7 +41,6 @@ public class BookingDialog extends AppCompatDialogFragment {
     private TextInputLayout etDateFrom;
     private TextInputLayout etDateTo;
     private String room_id;
-    private BookingDialogListener listener;
 
     public BookingDialog(String room_id) {
         this.room_id = room_id;
@@ -81,18 +80,9 @@ public class BookingDialog extends AppCompatDialogFragment {
 
                         insertBooking(bookDetail);
 
-//                        MyDatabaseClient.getInstance(getContext())
-//                                .getDatabase()
-//                                .bookingDao()
-//                                .insertBooking(bookDetail);
-
-                        listener.passDate(binding.tglMasuk.getText().toString(), binding.tglKeluar.getText().toString());
                     }
                 });
-//        etDateFrom = view.findViewById(R.id.etDateFrom);
-//        etDateTo = view.findViewById(R.id.etDateTo);
 
-//        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yy", Locale.US);
 
         binding.tglMasuk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,17 +123,6 @@ public class BookingDialog extends AppCompatDialogFragment {
         return builder.create();
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-
-        try {
-            listener = (BookingDialogListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()+"must implements interfaces");
-        }
-    }
-
     public void insertBooking(BookDetail bookDetail) {
         class InsertBooking extends AsyncTask<Void, Void, Void> {
 
@@ -159,14 +138,11 @@ public class BookingDialog extends AppCompatDialogFragment {
             @Override
             protected void onPostExecute(Void unused) {
                 super.onPostExecute(unused);
-                Toast.makeText(getContext(), "Bookings insert Succecssfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Booking Success", Toast.LENGTH_SHORT).show();
             }
         }
         InsertBooking insertBooking = new InsertBooking();
         insertBooking.execute();
     }
 
-    public interface BookingDialogListener{
-        void passDate(String dateIn, String dateOut);
-    }
 }

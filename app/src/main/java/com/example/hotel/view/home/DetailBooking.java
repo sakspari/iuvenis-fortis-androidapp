@@ -1,9 +1,13 @@
 package com.example.hotel.view.home;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
@@ -18,7 +22,9 @@ import com.example.hotel.model.RoomDetail;
 import com.example.hotel.model.RoomReview;
 import com.example.hotel.model.User;
 import com.example.hotel.preferences.UserLoginPreferences;
-import com.example.hotel.view.home.dialog.ReviewDialog;
+import com.google.android.material.button.MaterialButton;
+
+import java.util.Date;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -122,6 +128,8 @@ public class DetailBooking extends Fragment {
             @Override
             public void onClick(View view) {
                 openDialog();
+                onStop();
+//
             }
         });
 
@@ -130,18 +138,73 @@ public class DetailBooking extends Fragment {
     }
 
     public void openDialog() {
-        ReviewDialog reviewDialog = new ReviewDialog(binding.getBookDetail().getBook_detail_id());
-        reviewDialog.show(getActivity().getSupportFragmentManager(), "review dialog");
+
+        Dialog dialog = new Dialog(getContext());
+        dialog.setContentView(R.layout.review_dialog);
+        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        dialog.show();
+
+        EditText reviewDesc = dialog.findViewById(R.id.reviewDesc);
+        MaterialButton submitButton = dialog.findViewById(R.id.btnSubmitReview);
+
+        RoomReview roomReview = new RoomReview();
+        roomReview.setFk_room_id(bookDetail.getFk_room_id());
+        roomReview.setFk_username(bookDetail.getFk_username());
+        roomReview.setReview_date(new Date());
+
+        submitButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!reviewDesc.getText().toString().isEmpty()) {
+                    roomReview.setReview_description(reviewDesc.getText().toString());
+                    RoomReview old = MyDatabaseClient.getInstance(getContext())
+                            .getDatabase()
+                            .reviewDao()
+                            .getRoomReview(bookDetail.getFk_username(), bookDetail.getFk_room_id());
+
+                    if (old == null) {
+                        MyDatabaseClient.getInstance(getContext())
+                                .getDatabase()
+                                .reviewDao()
+                                .insertReview(roomReview);
+                        Toast.makeText(getContext(), "Review berhasil!", Toast.LENGTH_SHORT).show();
+                    } else {
+                        roomReview.setReview_id(old.getReview_id());
+                        MyDatabaseClient.getInstance(getContext())
+                                .getDatabase()
+                                .reviewDao()
+                                .updateReview(roomReview);
+                        Toast.makeText(getContext(), "Review diupdate!", Toast.LENGTH_SHORT).show();
+                    }
+
+                    RoomReview review = MyDatabaseClient.getInstance(getContext())
+                            .getDatabase()
+                            .reviewDao()
+                            .getRoomReview(bookDetail.getFk_username(), bookDetail.getFk_room_id());
+                    if (review != null)
+                        binding.setRoomReview(review);
+
+                    dialog.dismiss();
+                }else{
+                    Toast.makeText(getContext(), "Ooops, silahkan isi review dulu", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
+
     }
 
-//    private void reloadurrentFragment(){
-//        int id = Navigation.findNavController((binding.getRoot()).getC,R.id.home_navigation)
-//    }
-//
+    private void reloadCurrentFragment() {
+        int id = Navigation.findNavController(binding.getRoot()).getCurrentDestination().getId();
+        Navigation.findNavController(binding.getRoot()).popBackStack(id, true);
+        Navigation.findNavController(binding.getRoot()).navigate(id);
+    }
+
 
     @Override
     public void onResume() {
         super.onResume();
+        System.out.println("onResume");
         RoomReview review = MyDatabaseClient.getInstance(getContext())
                 .getDatabase()
                 .reviewDao()

@@ -54,6 +54,7 @@
                     android:id="@+id/profileImg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:scaleType="center"
                     app:profileImage="@{user.user_profile_url}" />
 
             </com.google.android.material.card.MaterialCardView>
@@ -72,6 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:layout_marginTop="8dp"
+            android:scaleType="center"
             app:hotelImage="@{hotelRoom.room_photos_url}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"

@@ -75,6 +75,8 @@ public class SplashScreenNewMember extends Fragment {
         User user = userLoginPreferences.getUserLogin();
         user.setUser_status(false);
 
+        binding.setUrlImage("https://cdn.pixabay.com/photo/2015/09/28/21/32/the-palm-962785_640.jpg");
+
         binding.btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

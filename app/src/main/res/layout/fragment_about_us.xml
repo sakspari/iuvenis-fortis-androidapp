@@ -29,6 +29,7 @@
             android:elevation="3dp"
             app:cardCornerRadius="10dp">
             <RelativeLayout
+                android:padding="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
@@ -36,7 +37,7 @@
                     android:id="@+id/nama_aplikasi"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Nama Aplikasi       : IUVENIS FORTIS"
+                    android:text="Nama Aplikasi        : IUVENIS FORTIS"
                     android:textSize="15dp"
                     android:textStyle="bold" />
                 <TextView
@@ -53,7 +54,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/desc_aplikasi"
-                    android:text="@string/desc_app" />
+                    android:text="@string/about_us_desc" />
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

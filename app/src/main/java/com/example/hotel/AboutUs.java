@@ -65,9 +65,9 @@ public class AboutUs extends Fragment {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_about_us, container, false);
 
-        binding.setUrlImgRico("https://posterspy.com/wp-content/uploads/2020/04/woody-1200x1200.jpg");
-        binding.setUrlImgMarcel("https://posterspy.com/wp-content/uploads/2020/04/woody-1200x1200.jpg");
-        binding.setUrlImgTerang("https://posterspy.com/wp-content/uploads/2020/04/woody-1200x1200.jpg");
+        binding.setUrlImgRico("https://trackercdn.com/cdn/tracker.gg/valorant/db/agents/yoru_portrait.png");
+        binding.setUrlImgMarcel("https://costumerocket.com/wp-content/uploads/2019/04/sid-t-shirt.jpg");
+        binding.setUrlImgTerang("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7bEg006T7EuPHqjs9KLO2LwF9Gk0NC3rMl3P_cxc0nbmFBMgtWX-LkIyGSdqT5oIrlCg&usqp=CAU");
 
         return binding.getRoot();
     }
