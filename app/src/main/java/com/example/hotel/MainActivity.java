@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
 //        set up title of app bar
         appBarConfiguration = new AppBarConfiguration.Builder(R.id.profilFragment, R.id.homeFragment, R.id.mapFragment)
                 .build();
+
         NavigationUI.setupActionBarWithNavController(MainActivity.this, navController, appBarConfiguration);
 //        navigation
         NavigationUI.setupWithNavController(bottomNavigationView,navController);

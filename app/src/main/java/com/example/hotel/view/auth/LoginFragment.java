@@ -2,11 +2,13 @@ package com.example.hotel.view.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -17,6 +19,11 @@ import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentLoginBinding;
 import com.example.hotel.model.User;
 import com.example.hotel.preferences.UserLoginPreferences;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +33,8 @@ import com.example.hotel.preferences.UserLoginPreferences;
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
     private UserLoginPreferences userLoginPreferences;
+
+    private FirebaseAuth mAuth;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,6 +87,8 @@ public class LoginFragment extends Fragment {
 
         userLoginPreferences = new UserLoginPreferences(binding.getRoot().getContext());
 
+        mAuth = FirebaseAuth.getInstance();
+
         checkLogin();
 
         // action untuk btnRegister (pindah ke fragment Register)
@@ -95,22 +106,24 @@ public class LoginFragment extends Fragment {
                 String username = binding.getUsername();
                 String password = binding.getPassword();
 
-                if(getUserLogin(username,password)!= null){
+//                if(getUserLogin(username,password)!= null){
+//
+//                    userLoginPreferences.setLogin(username,password);
+//
+//                    if(!getUserLogin(username,password).isUser_status()){
+//                        Intent intent = new Intent(getActivity(), MainActivity.class);
+//                        startActivity(intent);
+//                        getActivity().finish();
+//                    }else{
+//                        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_splashScreenNewMember);
+//                    }
+//
+//                    Toast.makeText(binding.getRoot().getContext(), "Login success!", Toast.LENGTH_SHORT).show();
+//                }else{
+//                    Toast.makeText(binding.getRoot().getContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
+//                }
 
-                    userLoginPreferences.setLogin(username,password);
-
-                    if(!getUserLogin(username,password).isUser_status()){
-                        Intent intent = new Intent(getActivity(), MainActivity.class);
-                        startActivity(intent);
-                        getActivity().finish();
-                    }else{
-                        Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_splashScreenNewMember);
-                    }
-
-                    Toast.makeText(binding.getRoot().getContext(), "Login success!", Toast.LENGTH_SHORT).show();
-                }else{
-                    Toast.makeText(binding.getRoot().getContext(), "Login Failed!", Toast.LENGTH_SHORT).show();
-                }
+                firebaseLogin();
             }
         });
 
@@ -124,6 +137,33 @@ public class LoginFragment extends Fragment {
 
         return binding.getRoot();
 
+    }
+
+    public void firebaseLogin(){
+        String email = binding.getUsername().toString();
+        String password = binding.getPassword().toString();
+
+        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(getContext(), "Sign in Successfully", Toast.LENGTH_SHORT).show();
+                }else{
+                    Toast.makeText(getContext(), "Sign in Failed: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        FirebaseUser firebaseUser = mAuth.getCurrentUser();
+        if(firebaseUser!=null){
+            Intent intent = new Intent(getActivity(), MainActivity.class);
+            startActivity(intent);
+            getActivity().finish();
+        }
     }
 
     private User getUserLogin(String username, String password){

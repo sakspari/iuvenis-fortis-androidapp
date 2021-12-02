@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "1073728048053",
-    "project_id": "iuvenis-fortis",
-    "storage_bucket": "iuvenis-fortis.appspot.com"
+    "project_number": "120024708882",
+    "project_id": "authentication-f59b0",
+    "storage_bucket": "authentication-f59b0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1073728048053:android:1627b09dc862b33066e7fc",
+        "mobilesdk_app_id": "1:120024708882:android:139e4f07c3b7acce5865cb",
         "android_client_info": {
           "package_name": "com.example.hotel"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1073728048053-evqbnqtk2qpti7jk34353ev2hrmp550a.apps.googleusercontent.com",
+          "client_id": "120024708882-8a6odd7648309vhlf0p0srncmjkbsths.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBZNVPVjOQ6rc2pKOvV4DALoY_djLEPg6w"
+          "current_key": "AIzaSyDDJxEwoFR51I9zKxJb-uwSvJJLv2fp4H0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1073728048053-evqbnqtk2qpti7jk34353ev2hrmp550a.apps.googleusercontent.com",
+              "client_id": "120024708882-8a6odd7648309vhlf0p0srncmjkbsths.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

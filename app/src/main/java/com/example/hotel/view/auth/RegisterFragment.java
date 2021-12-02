@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -15,6 +16,10 @@ import com.example.hotel.R;
 import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentRegisterBinding;
 import com.example.hotel.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,6 +31,7 @@ public class RegisterFragment extends Fragment {
     FragmentRegisterBinding binding;
     User user;
     String passwordConfirm;
+    private FirebaseAuth mAuth;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,6 +71,7 @@ public class RegisterFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
@@ -73,6 +80,8 @@ public class RegisterFragment extends Fragment {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false);
 
         getActivity().setTitle("Register");
+
+        mAuth = FirebaseAuth.getInstance();
 
         user = new User();
         user.setUser_status(true);
@@ -98,27 +107,45 @@ public class RegisterFragment extends Fragment {
                 if(isEmptyField()){
 //                    Toast.makeText(binding.getRoot().getContext(), "Opps, there are some empty field!", Toast.LENGTH_SHORT).show();
                 }
-                else if(!isUsernameAvailable()){
-                    binding.etUsername.setError("Username Already Taken");
-                }else if(!isEmailAvailable()){
-                    binding.etEmail.setError("Email Already Taken");
-                }else if(isEmptyField()){
-                    Toast.makeText(binding.getRoot().getContext(), "Opps, there are some empty field!", Toast.LENGTH_SHORT).show();
-                }else if(!isPasswordMatch()){
-                    binding.etConfirmPassword.setError("Password didnt match");
-                }
+//                else if(!isUsernameAvailable()){
+//                    binding.etUsername.setError("Username Already Taken");
+//                }else if(!isEmailAvailable()){
+//                    binding.etEmail.setError("Email Already Taken");
+//                }else if(isEmptyField()){
+//                    Toast.makeText(binding.getRoot().getContext(), "Opps, there are some empty field!", Toast.LENGTH_SHORT).show();
+//                }else if(!isPasswordMatch()){
+//                    binding.etConfirmPassword.setError("Password didnt match");
+//                }
                 else
                 {
-                    insertUser(user);
-                    Navigation.findNavController(view).navigateUp();
+//                    insertUser(user);
+                    createUser();
+//                    Navigation.findNavController(view).navigateUp();
                 }
             }
         });
 
-
-
         return binding.getRoot();
     }
+
+    private void createUser(){
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if(task.isSuccessful()){
+                            Toast.makeText(getContext(), "User is Created Successfully!", Toast.LENGTH_SHORT).show();
+                            Navigation.findNavController(binding.getRoot()).navigateUp();
+                        }
+                        else{
+                            Toast.makeText(getContext(), "Register error with: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+    }
+
 
     public void insertUser(User user) {
         class InsertUser extends AsyncTask<Void, Void, Void> {
