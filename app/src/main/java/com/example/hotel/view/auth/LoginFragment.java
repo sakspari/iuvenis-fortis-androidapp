@@ -147,7 +147,12 @@ public class LoginFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    Toast.makeText(getContext(), "Sign in Successfully", Toast.LENGTH_SHORT).show();
+                    FirebaseUser fUser = mAuth.getCurrentUser();
+                    if(fUser.isEmailVerified()){
+                        Toast.makeText(getContext(), "Sign in Successfully", Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(getContext(), "Email not verified yet!", Toast.LENGTH_SHORT).show();
+                    }
                 }else{
                     Toast.makeText(getContext(), "Sign in Failed: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                 }
