@@ -137,7 +137,6 @@ public class RegisterFragment extends Fragment {
 
         user = new User();
         user.setUser_status(true);
-        user.setProfile_picture("https://images.pexels.com/photos/1250426/pexels-photo-1250426.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400");
 
         binding.setUser(user);
 
@@ -194,29 +193,13 @@ public class RegisterFragment extends Fragment {
             }
         });
 
-        // action untuk btnSignUp (insert user dan kembali ke fragment login)
+        // action untuk btnSignUp (insert user)
         binding.btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 passwordConfirm = binding.getPasswordConfirm();
-                System.out.println("Pssword confirm is: " + passwordConfirm);
-                System.out.println("UserPass confirm is: " + user.getPassword());
-                if (isEmptyField()) {
-//                    Toast.makeText(binding.getRoot().getContext(), "Opps, there are some empty field!", Toast.LENGTH_SHORT).show();
-                }
-//                else if(!isUsernameAvailable()){
-//                    binding.etUsername.setError("Username Already Taken");
-//                }else if(!isEmailAvailable()){
-//                    binding.etEmail.setError("Email Already Taken");
-//                }else if(isEmptyField()){
-//                    Toast.makeText(binding.getRoot().getContext(), "Opps, there are some empty field!", Toast.LENGTH_SHORT).show();
-//                }else if(!isPasswordMatch()){
-//                    binding.etConfirmPassword.setError("Password didnt match");
-//                }
-                else {
-//                    insertUser(user);
+                if (!isEmptyField()) {
                     createUser();
-//                    Navigation.findNavController(view).navigateUp();
                 }
             }
         });
@@ -235,16 +218,15 @@ public class RegisterFragment extends Fragment {
                             fUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
                                 public void onSuccess(Void unused) {
-                                    Toast.makeText(getContext(), "Email Verification has been sent!", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(binding.getRoot().getContext(), "Email Verification has been sent!", Toast.LENGTH_SHORT).show();
                                 }
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getContext(), "Failed to send mail: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(binding.getRoot().getContext(), "Failed to send mail: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
-//                            storeUser();// data user di simpan ke api
-                            Toast.makeText(binding.getRoot().getContext(), "User is Created Successfully!", Toast.LENGTH_SHORT).show();
+                            storeUser();// data user di simpan ke api
                             Navigation.findNavController(binding.getRoot()).navigateUp();
                         } else {
                             Toast.makeText(binding.getRoot().getContext(), "Register failed with: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -273,11 +255,10 @@ public class RegisterFragment extends Fragment {
                     String responseBody = new String(error.networkResponse.data,
                             StandardCharsets.UTF_8);
                     JSONObject errors = new JSONObject(responseBody);
-                    Toast.makeText(getContext(),
+                    Toast.makeText(binding.getRoot().getContext(),
                             errors.getString("message"), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Toast.makeText(getContext(), e.getMessage(),
-                            Toast.LENGTH_SHORT).show();
+                    Toast.makeText(binding.getRoot().getContext(), e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }
         }) {
@@ -292,7 +273,9 @@ public class RegisterFragment extends Fragment {
             public byte[] getBody() throws AuthFailureError {
                 Gson gson = new Gson();
 
-                String requestBody = gson.toJson(user);
+                User storeUser = user; //kalau tidak pakai ini bisa error:hati-hati bang!
+
+                String requestBody = gson.toJson(storeUser);
                 return requestBody.getBytes(StandardCharsets.UTF_8);
             }
 

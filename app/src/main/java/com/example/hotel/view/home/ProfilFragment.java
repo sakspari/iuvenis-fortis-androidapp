@@ -108,17 +108,18 @@ public class ProfilFragment extends Fragment {
         userLoginPreferences = new UserLoginPreferences(binding.getRoot().getContext());
 
 //        user = userLoginPreferences.getUserLogin();
-//        binding.setUser(user);
 
         getUser();
+//        binding.setUser(user);
 
-//        System.out.println(user.getProfile_picture());
 
         //Set Logout Action
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                userLoginPreferences.logout();
+//                userLoginPreferences.logout();
+                FirebaseAuth mAuth = FirebaseAuth.getInstance();
+                mAuth.signOut();
                 startActivity(new Intent(binding.getRoot().getContext(), AuthActivity.class));
                 Toast.makeText(binding.getRoot().getContext(), "Sayonara!", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
@@ -128,8 +129,8 @@ public class ProfilFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private User getUser() {
-        User currentUser = new User();
+    private void getUser() {
+
 
 //        setLoading(true);
 
@@ -143,18 +144,19 @@ public class ProfilFragment extends Fragment {
 
                 UserResponse userResponse =
                         gson.fromJson(response, UserResponse.class);
-                User user = userResponse.getUserList().get(0);
+                user = userResponse.getUserList().get(0);
                 foto = user.getProfile_picture();
                 byte[] imageByteArray = Base64.decode(foto, Base64.DEFAULT);
 //                etNama.setText(user.getNama());
 //                etStok.setText(Integer.toString(user.getStok()));
 //                etDeskripsi.setText(user.getDeskripsi());
 
-                Glide.with(getApplicationContext())
+                Glide.with(binding.getRoot().getContext())
                         .load(user.getProfile_picture())
                         .placeholder(R.drawable.ic_baseline_person_24)
                         .into(binding.profileImg);
 
+                binding.setUser(user);
 //                etHarga.setText(Integer.toString(user.getHarga()));
 //                Toast.makeText(AddEditActivity.this,
 //                        produkResponse.getMessage(), Toast.LENGTH_SHORT).show();
@@ -168,10 +170,10 @@ public class ProfilFragment extends Fragment {
                     String responseBody = new String(error.networkResponse.data,
                             StandardCharsets.UTF_8);
                     JSONObject errors = new JSONObject(responseBody);
-                    Toast.makeText(getContext(), errors.getString("message"),
+                    Toast.makeText(binding.getRoot().getContext(), errors.getString("message"),
                             Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Toast.makeText(getContext(), e.getMessage(),
+                    Toast.makeText(binding.getRoot().getContext(), e.getMessage(),
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -187,7 +189,6 @@ public class ProfilFragment extends Fragment {
         // Menambahkan request ke request queue
         queue.add(stringRequest);
 
-        return currentUser;
     }
 
 //    private void setLoading(boolean isLoading) {

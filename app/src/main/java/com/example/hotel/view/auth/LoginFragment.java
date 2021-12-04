@@ -85,11 +85,11 @@ public class LoginFragment extends Fragment {
 
         getActivity().setTitle("Login");
 
-        userLoginPreferences = new UserLoginPreferences(binding.getRoot().getContext());
+//        userLoginPreferences = new UserLoginPreferences(binding.getRoot().getContext());
 
         mAuth = FirebaseAuth.getInstance();
 
-        checkLogin();
+//        checkLogin();
 
         // action untuk btnRegister (pindah ke fragment Register)
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -150,6 +150,11 @@ public class LoginFragment extends Fragment {
                     FirebaseUser fUser = mAuth.getCurrentUser();
                     if(fUser.isEmailVerified()){
                         Toast.makeText(getContext(), "Sign in Successfully", Toast.LENGTH_SHORT).show();
+
+                        Intent intent = new Intent(binding.getRoot().getContext(), MainActivity.class);
+                        startActivity(intent);
+                        getActivity().finish();
+
                     }else{
                         Toast.makeText(getContext(), "Email not verified yet!", Toast.LENGTH_SHORT).show();
                     }
@@ -160,26 +165,20 @@ public class LoginFragment extends Fragment {
         });
     }
 
+
     @Override
     public void onStart() {
         super.onStart();
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        if(firebaseUser!=null){
+        if(firebaseUser!=null && !firebaseUser.isAnonymous()){
+            //ini untuk ganti bagian shared preferences preferences
+
             Intent intent = new Intent(getActivity(), MainActivity.class);
             startActivity(intent);
             getActivity().finish();
         }
     }
 
-
-    private User getUserLogin(String username, String password){
-        User user;
-        user = MyDatabaseClient.getInstance(binding.getRoot().getContext())
-                    .getDatabase()
-                    .userDao()
-                    .getUserLogin(username, password);
-            return user;
-    }
 
     private void checkLogin() {
         if(userLoginPreferences.checkLogin()){
