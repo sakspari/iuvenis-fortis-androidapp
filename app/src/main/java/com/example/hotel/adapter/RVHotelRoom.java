@@ -1,5 +1,6 @@
-package com.example.hotel.view.home;
+package com.example.hotel.adapter;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,14 +18,21 @@ import com.example.hotel.R;
 import com.example.hotel.databinding.RvHotelRoomBinding;
 import com.example.hotel.model.HotelRoom;
 
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
     private List<HotelRoom> hotelRoomList;
+    private Context context;
     RvHotelRoomBinding binding;
 
     public RVHotelRoom(List<HotelRoom> hotelRoomList) {
         this.hotelRoomList = hotelRoomList;
+    }
+
+    public RVHotelRoom(List<HotelRoom> hotelRoomList, Context context) {
+        this.hotelRoomList = hotelRoomList;
+        this.context = context;
     }
 
     @NonNull
@@ -32,6 +40,10 @@ public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
     public RVHotelRoom.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.rv_hotel_room, parent, false);
         return new viewHolder(binding);
+    }
+
+    public void setHotelRoomList(List<HotelRoom> hotelRoomList) {
+        this.hotelRoomList = hotelRoomList;
     }
 
     @Override

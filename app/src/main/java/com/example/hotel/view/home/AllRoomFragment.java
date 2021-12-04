@@ -1,22 +1,48 @@
 package com.example.hotel.view.home;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.hotel.R;
+import com.example.hotel.adapter.RVHotelRoom;
+import com.example.hotel.api.RoomApi;
 import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentAllRoomBinding;
 import com.example.hotel.model.HotelRoom;
+import com.example.hotel.model.HotelRoomResponse;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static com.android.volley.Request.Method.GET;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +54,10 @@ public class AllRoomFragment extends Fragment {
     private FragmentAllRoomBinding binding;
     private List<HotelRoom> hotelRoomList;
     private RecyclerView recyclerView;
+    private RVHotelRoom adapter;
+    private RequestQueue queue;
+    private SwipeRefreshLayout srHotelRoom;
+    private LinearLayout layoutLoading;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -75,18 +105,78 @@ public class AllRoomFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_all_room, container, false);
-        hotelRoomList = MyDatabaseClient.getInstance(getContext())
-                .getDatabase()
-                .hotelDao()
-                .getAllRoom();
 
-        if(hotelRoomList!=null){
-            recyclerView = binding.getRoot().findViewById(R.id.rv_layout);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(new RVHotelRoom(hotelRoomList));
+        queue = Volley.newRequestQueue(getContext());
+        layoutLoading = binding.getRoot().findViewById(R.id.layout_loading);
+        srHotelRoom = binding.getRoot().findViewById(R.id.sr_all_room);
+
+         srHotelRoom.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getAllRoom();
+            }
+        });
+
+        recyclerView = binding.getRoot().findViewById(R.id.rv_layout);
+        adapter = new RVHotelRoom(new ArrayList<>(),getContext());
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
+//        recyclerView.setItemAnimator(new DefaultItemAnimator());
+
+        //set Orientasi
+        int orientation = getResources().getConfiguration().orientation;
+        if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
+            recyclerView.setLayoutManager(layoutManager);
         }
+        else if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+            recyclerView.setLayoutManager(layoutManager);
+        }
+//        if(hotelRoomList!=null){
+//            recyclerView.setAdapter(new RVHotelRoom(hotelRoomList));
+//        }
 
+        getAllRoom();
         return binding.getRoot();
     }
+
+    private void getAllRoom() {
+        srHotelRoom.setRefreshing(true);
+        StringRequest stringRequest = new StringRequest(GET, RoomApi.GET_ALL_URL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Gson gson = new Gson();
+                HotelRoomResponse hotelRoomResponse =
+                        gson.fromJson(response, HotelRoomResponse.class);
+                adapter.setHotelRoomList(hotelRoomResponse.getHotelRoomList());
+                recyclerView.setAdapter(adapter);
+                Toast.makeText(getContext(), hotelRoomResponse.getMessage()+"-->size: "+hotelRoomResponse.getHotelRoomList().size(), Toast.LENGTH_SHORT).show();
+                srHotelRoom.setRefreshing(false);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                srHotelRoom.setRefreshing(false);
+                try {
+                    String responseBody = new String(error.networkResponse.data,
+                            StandardCharsets.UTF_8);
+                    JSONObject errors = new JSONObject(responseBody);
+                    Toast.makeText(getContext(), errors.getString("message"), Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                return headers;
+            }
+        };
+        //add to queue req
+        queue.add(stringRequest);
+    }
+
 }

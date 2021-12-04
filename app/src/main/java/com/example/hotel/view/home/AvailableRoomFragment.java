@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.hotel.R;
+import com.example.hotel.adapter.RVHotelRoom;
 import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentAvailableRoomBinding;
 import com.example.hotel.model.HotelRoom;

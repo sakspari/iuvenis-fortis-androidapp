@@ -22,7 +22,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:elevation="3dp"
-        tools:context=".view.home.RVHotelRoom"
+        tools:context=".adapter.RVHotelRoom"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="10dp">
 
