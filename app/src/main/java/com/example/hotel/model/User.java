@@ -1,8 +1,5 @@
 package com.example.hotel.model;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import androidx.annotation.NonNull;
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -10,11 +7,14 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "user")
 public class User extends BaseObservable{
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "username")
+    @SerializedName("name")
     private String username;
 
     @NonNull
@@ -25,11 +25,13 @@ public class User extends BaseObservable{
     private String email;
 
     @NonNull
-    @ColumnInfo(name = "user_profile_url")
-    private String user_profile_url;
+    @ColumnInfo(name = "profile_picture")
+    @SerializedName("photo")
+    private String profile_picture;
 
     @NonNull
     @ColumnInfo(name = "user_status")
+    @SerializedName("status")
     private boolean user_status;
     //if true = new user
     //else = old user
@@ -61,12 +63,12 @@ public class User extends BaseObservable{
 
     @NonNull
     @Bindable
-    public String getUser_profile_url() {
-        return user_profile_url;
+    public String getProfile_picture() {
+        return profile_picture;
     }
 
-    public void setUser_profile_url(@NonNull String user_profile_url) {
-        this.user_profile_url = user_profile_url;
+    public void setProfile_picture(@NonNull String profile_picture) {
+        this.profile_picture = profile_picture;
     }
 
     @Bindable

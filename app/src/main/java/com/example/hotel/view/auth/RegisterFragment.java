@@ -1,21 +1,47 @@
 package com.example.hotel.view.auth;
 
-import android.os.AsyncTask;
+import static android.app.Activity.RESULT_OK;
+import static androidx.core.content.ContextCompat.checkSelfPermission;
+
+import static com.android.volley.Request.Method.POST;
+
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.hotel.R;
+import com.example.hotel.api.UserApi;
 import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentRegisterBinding;
 import com.example.hotel.model.User;
+import com.example.hotel.model.UserResponse;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -23,6 +49,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.gson.Gson;
+
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -35,6 +70,15 @@ public class RegisterFragment extends Fragment {
     User user;
     String passwordConfirm;
     private FirebaseAuth mAuth;
+
+    private static final int PERMISSION_REQUEST_CAMERA = 100;
+    private static final int CAMERA_REQUEST = 0;
+    private static final int GALLERY_PICTURE = 1;
+    private ImageView ivGambar;
+    private LinearLayout layoutLoading;
+    private Bitmap bitmap = null;
+    private RequestQueue queue;
+    private String foto, baString;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,21 +126,71 @@ public class RegisterFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_register, container, false);
 
+        queue = Volley.newRequestQueue(getContext());
+        ivGambar = binding.ivGambar;
+        layoutLoading = binding.getRoot().findViewById(R.id.layout_loading);
+
+
         getActivity().setTitle("Register");
 
         mAuth = FirebaseAuth.getInstance();
 
         user = new User();
         user.setUser_status(true);
-        user.setUser_profile_url("https://images.pexels.com/photos/1250426/pexels-photo-1250426.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400");
+        user.setProfile_picture("https://images.pexels.com/photos/1250426/pexels-photo-1250426.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=400");
 
         binding.setUser(user);
+
+        ivGambar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater layoutInflater = LayoutInflater.from(binding.getRoot().getContext());
+                View selectMediaView = layoutInflater
+                        .inflate(R.layout.layout_select_media, null);
+
+                final AlertDialog alertDialog = new AlertDialog
+                        .Builder(selectMediaView.getContext()).create();
+
+                Button btnKamera = selectMediaView.findViewById(R.id.btn_kamera);
+                Button btnGaleri = selectMediaView.findViewById(R.id.btn_galeri);
+
+                btnKamera.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        if (checkSelfPermission(getContext(), Manifest.permission.CAMERA) ==
+                                PackageManager.PERMISSION_DENIED) {
+                            String[] permission = {Manifest.permission.CAMERA};
+                            requestPermissions(permission, PERMISSION_REQUEST_CAMERA);
+                        } else {
+                            // Membuka kamera
+                            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            startActivityForResult(intent, CAMERA_REQUEST);
+                        }
+
+                        alertDialog.dismiss();
+                    }
+                });
+
+                btnGaleri.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        // Membuka galeri
+                        Intent intent = new Intent(Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                        startActivityForResult(intent, GALLERY_PICTURE);
+
+                        alertDialog.dismiss();
+                    }
+                });
+
+                alertDialog.setView(selectMediaView);
+                alertDialog.show();
+            }
+        });
 
         // action untuk btnCancel (pindah ke fragment Login)
         binding.btnCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Navigation.findNavController(view).navigateUp();
+                Navigation.findNavController(binding.getRoot()).navigateUp();
             }
         });
 
@@ -105,9 +199,9 @@ public class RegisterFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 passwordConfirm = binding.getPasswordConfirm();
-                System.out.println("Pssword confirm is: "+passwordConfirm);
-                System.out.println("UserPass confirm is: "+user.getPassword());
-                if(isEmptyField()){
+                System.out.println("Pssword confirm is: " + passwordConfirm);
+                System.out.println("UserPass confirm is: " + user.getPassword());
+                if (isEmptyField()) {
 //                    Toast.makeText(binding.getRoot().getContext(), "Opps, there are some empty field!", Toast.LENGTH_SHORT).show();
                 }
 //                else if(!isUsernameAvailable()){
@@ -119,8 +213,7 @@ public class RegisterFragment extends Fragment {
 //                }else if(!isPasswordMatch()){
 //                    binding.etConfirmPassword.setError("Password didnt match");
 //                }
-                else
-                {
+                else {
 //                    insertUser(user);
                     createUser();
 //                    Navigation.findNavController(view).navigateUp();
@@ -131,12 +224,12 @@ public class RegisterFragment extends Fragment {
         return binding.getRoot();
     }
 
-    private void createUser(){
+    private void createUser() {
         mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword())
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if(task.isSuccessful()){
+                        if (task.isSuccessful()) {
 
                             FirebaseUser fUser = mAuth.getCurrentUser();
                             fUser.sendEmailVerification().addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -147,78 +240,174 @@ public class RegisterFragment extends Fragment {
                             }).addOnFailureListener(new OnFailureListener() {
                                 @Override
                                 public void onFailure(@NonNull Exception e) {
-                                    Toast.makeText(getContext(), "Failed to send mail: "+e.getMessage(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "Failed to send mail: " + e.getMessage(), Toast.LENGTH_SHORT).show();
                                 }
                             });
-
-                            Toast.makeText(getContext(), "User is Created Successfully!", Toast.LENGTH_SHORT).show();
+//                            storeUser();// data user di simpan ke api
+                            Toast.makeText(binding.getRoot().getContext(), "User is Created Successfully!", Toast.LENGTH_SHORT).show();
                             Navigation.findNavController(binding.getRoot()).navigateUp();
-                        }
-                        else{
-                            Toast.makeText(getContext(), "Register error with: "+task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(binding.getRoot().getContext(), "Register failed with: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-
-
     }
 
+    public void storeUser() {
+        user.setProfile_picture(baString);
+        user.setUser_status(true);
+        StringRequest stringRequest = new StringRequest(POST, UserApi.ADD_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
 
-    public void insertUser(User user) {
-        class InsertUser extends AsyncTask<Void, Void, Void> {
-
+                        UserResponse userResponse =
+                                gson.fromJson(response, UserResponse.class);
+                        Toast.makeText(binding.getRoot().getContext(), userResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
             @Override
-            protected Void doInBackground(Void... voids) {
-                MyDatabaseClient.getInstance(binding.getRoot().getContext())
-                        .getDatabase()
-                        .userDao()
-                        .insertUser(user);
-                return null;
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data,
+                            StandardCharsets.UTF_8);
+                    JSONObject errors = new JSONObject(responseBody);
+                    Toast.makeText(getContext(),
+                            errors.getString("message"), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(getContext(), e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                return headers;
             }
 
             @Override
-            protected void onPostExecute(Void unused) {
-                super.onPostExecute(unused);
-                Toast.makeText(binding.getRoot().getContext(), "Register Success!", Toast.LENGTH_SHORT).show();
+            public byte[] getBody() throws AuthFailureError {
+                Gson gson = new Gson();
+
+                String requestBody = gson.toJson(user);
+                return requestBody.getBytes(StandardCharsets.UTF_8);
             }
-        }
-        InsertUser insertUser = new InsertUser();
-        insertUser.execute();
+
+            // Mendeklarasikan content type dari request body yang ditambahkan
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        // Menambahkan request ke request queue
+        queue.add(stringRequest);
     }
+
 
     //inputan tidak boleh kosong
-    private boolean isEmptyField(){
-        if(user.getUsername()==null){
+    private boolean isEmptyField() {
+        if (user.getUsername() == null) {
             binding.etUsername.setError("Must be Filled");
         }
-        if(user.getEmail()==null){
+        if (user.getEmail() == null) {
             binding.etEmail.setError("Must be Filled");
         }
-        if(user.getPassword()==null){
+        if (user.getPassword() == null) {
             binding.etPassword.setError("Must be Filled");
         }
-        if(passwordConfirm ==null){
+        if (passwordConfirm == null) {
             binding.etConfirmPassword.setError("Must be Filled");
         }
-        return user.getUsername()==null||user.getEmail()==null||user.getPassword()==null||passwordConfirm==null;
+        return user.getUsername() == null || user.getEmail() == null || user.getPassword() == null || passwordConfirm == null;
     }
 
-    // cek apakah username tersedia
-    private boolean isUsernameAvailable(){
-       return MyDatabaseClient.getInstance(binding.getRoot().getContext())
-                .getDatabase()
-                .userDao()
-                .getUser(user.getUsername()) == null;
-    }
-    // cek apakah email tersedia
-    private boolean isEmailAvailable(){
-        return MyDatabaseClient.getInstance(binding.getRoot().getContext())
-                .getDatabase()
-                .userDao()
-                .getUserByEmail(user.getEmail()) == null;
-    }
     // cek apakah password confirmation sesuai
-    private boolean isPasswordMatch(){
+    private boolean isPasswordMatch() {
         return user.getPassword().equals(passwordConfirm);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == PERMISSION_REQUEST_CAMERA) {
+            if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Membuka kamera
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(intent, CAMERA_REQUEST);
+            } else {
+                Toast.makeText(getContext(), "Permission denied.",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (data == null)
+            return;
+
+        if (resultCode == RESULT_OK && requestCode == GALLERY_PICTURE) {
+            Uri selectedImage = data.getData();
+
+            try {
+                InputStream inputStream = getContext().getContentResolver().openInputStream(selectedImage);
+                bitmap = BitmapFactory.decodeStream(inputStream);
+            } catch (Exception e) {
+                Toast.makeText(getContext(), e.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        } else if (resultCode == RESULT_OK && requestCode == CAMERA_REQUEST) {
+            bitmap = (Bitmap) data.getExtras().get("data");
+        }
+
+        bitmap = getResizedBitmap(bitmap, 512);
+        ivGambar.setImageBitmap(bitmap);
+        baString = bitmapToBase64(bitmap);
+    }
+
+    private Bitmap getResizedBitmap(Bitmap bitmap, int maxSize) {
+        int width = bitmap.getWidth();
+        int height = bitmap.getHeight();
+
+        float bitmapRatio = (float) width / (float) height;
+
+        if (bitmapRatio > 1) {
+            width = maxSize;
+            height = (int) (width / bitmapRatio);
+        } else {
+            height = maxSize;
+            width = (int) (height * bitmapRatio);
+        }
+
+        return Bitmap.createScaledBitmap(bitmap, width, height, true);
+    }
+
+    private String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream bao = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, bao);
+        byte[] ba = bao.toByteArray();
+        baString = Base64.encodeToString(ba, Base64.DEFAULT);
+        return baString;
+    }
+
+
+    // Fungsi ini digunakan menampilkan layout loading
+    private void setLoading(boolean isLoading) {
+        if (isLoading) {
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            layoutLoading.setVisibility(View.VISIBLE);
+        } else {
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            layoutLoading.setVisibility(View.INVISIBLE);
+        }
+    }
+
 }

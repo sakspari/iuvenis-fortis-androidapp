@@ -171,6 +171,7 @@ public class LoginFragment extends Fragment {
         }
     }
 
+
     private User getUserLogin(String username, String password){
         User user;
         user = MyDatabaseClient.getInstance(binding.getRoot().getContext())
