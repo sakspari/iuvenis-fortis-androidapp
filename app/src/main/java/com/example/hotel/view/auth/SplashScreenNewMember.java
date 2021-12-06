@@ -2,17 +2,15 @@ package com.example.hotel.view.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.databinding.DataBindingUtil;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.databinding.DataBindingUtil;
+import androidx.fragment.app.Fragment;
+
 import com.example.hotel.MainActivity;
 import com.example.hotel.R;
-import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentSplashScreenNewMemberBinding;
 import com.example.hotel.model.User;
 import com.example.hotel.preferences.UserLoginPreferences;
@@ -72,8 +70,7 @@ public class SplashScreenNewMember extends Fragment {
         binding = DataBindingUtil.inflate(inflater,R.layout.fragment_splash_screen_new_member, container, false);
 
         userLoginPreferences = new UserLoginPreferences(binding.getRoot().getContext());
-        User user = userLoginPreferences.getUserLogin();
-        user.setUser_status(false);
+//        user.setUser_status(false);
 
         binding.setUrlImage("https://cdn.pixabay.com/photo/2015/09/28/21/32/the-palm-962785_640.jpg");
 
@@ -81,10 +78,10 @@ public class SplashScreenNewMember extends Fragment {
             @Override
             public void onClick(View view) {
                 //update user status di database
-                MyDatabaseClient.getInstance(binding.getRoot().getContext())
-                        .getDatabase()
-                        .userDao()
-                        .updateUser(user);
+//                MyDatabaseClient.getInstance(binding.getRoot().getContext())
+//                        .getDatabase()
+//                        .userDao()
+//                        .updateUser(user);
                 // pindah ke activity Main
                 Intent intent = new Intent(getActivity(), MainActivity.class);
                 startActivity(intent);

@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-    android:layout_margin="8dp">
-    <EditText
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<data>
+    <variable
+        name="reviewDesc"
+        type="String" />
+</data>
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/reviewDesc"
-        android:hint="Enter Text"
-        android:padding="12dp"
-        android:lines="6"
-        android:gravity="top"
-        android:backgroundTint="#A3A3A3"
-        android:background="@android:drawable/editbox_background"/>
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_margin="8dp">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/reviewDesc"
+            android:hint="Enter Text"
+            android:text="@={reviewDesc}"
+            android:padding="12dp"
+            android:lines="6"
+            android:gravity="top"
+            android:backgroundTint="#A3A3A3"
+            android:background="@android:drawable/editbox_background"/>
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnSubmitReview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSubmitReview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Submit"/>
 
-</LinearLayout>
+    </LinearLayout>
+</layout>

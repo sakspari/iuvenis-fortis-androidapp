@@ -2,7 +2,6 @@ package com.example.hotel.view.auth;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextPaint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,9 +14,7 @@ import androidx.navigation.Navigation;
 
 import com.example.hotel.MainActivity;
 import com.example.hotel.R;
-import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentLoginBinding;
-import com.example.hotel.model.User;
 import com.example.hotel.preferences.UserLoginPreferences;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -170,7 +167,7 @@ public class LoginFragment extends Fragment {
     public void onStart() {
         super.onStart();
         FirebaseUser firebaseUser = mAuth.getCurrentUser();
-        if(firebaseUser!=null && !firebaseUser.isAnonymous()){
+        if(firebaseUser!=null && firebaseUser.isEmailVerified()){
             //ini untuk ganti bagian shared preferences preferences
 
             Intent intent = new Intent(getActivity(), MainActivity.class);
@@ -179,12 +176,12 @@ public class LoginFragment extends Fragment {
         }
     }
 
-
-    private void checkLogin() {
-        if(userLoginPreferences.checkLogin()){
-            startActivity(new Intent(binding.getRoot().getContext(), MainActivity.class));
-            getActivity().finish();
-        }
-    }
+//
+//    private void checkLogin() {
+//        if(userLoginPreferences.checkLogin()){
+//            startActivity(new Intent(binding.getRoot().getContext(), MainActivity.class));
+//            getActivity().finish();
+//        }
+//    }
 
 }

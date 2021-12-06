@@ -71,7 +71,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="9dp"
                         android:layout_marginBottom="3dp"
-                        android:text="@{kamarHotel.room_id}"
+                        android:text="@{String.valueOf(kamarHotel.room_id)}"
                         android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>

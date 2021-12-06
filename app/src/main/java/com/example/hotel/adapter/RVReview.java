@@ -1,4 +1,4 @@
-package com.example.hotel.view.home;
+package com.example.hotel.adapter;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;

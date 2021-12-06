@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.example.hotel.R;
 import com.example.hotel.databinding.RvHotelRoomBinding;
 import com.example.hotel.model.HotelRoom;
+import com.google.gson.Gson;
 
 import java.util.ConcurrentModificationException;
 import java.util.List;
@@ -25,14 +26,15 @@ public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
     private List<HotelRoom> hotelRoomList;
     private Context context;
     RvHotelRoomBinding binding;
+    OnCardClickListener listener;
 
     public RVHotelRoom(List<HotelRoom> hotelRoomList) {
         this.hotelRoomList = hotelRoomList;
     }
 
-    public RVHotelRoom(List<HotelRoom> hotelRoomList, Context context) {
+    public RVHotelRoom(List<HotelRoom> hotelRoomList, OnCardClickListener listener) {
         this.hotelRoomList = hotelRoomList;
-        this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -73,16 +75,7 @@ public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
             rvHotelRoomBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("id_room",rvHotelRoomBinding.getKamarHotel().getRoom_id());
-
-
-                    //seleksi jalur fragment
-                    if(Navigation.findNavController(binding.getRoot()).getCurrentDestination() == Navigation.findNavController(binding.getRoot()).getGraph().findNode(R.id.allRoomFragment)) {
-                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_allRoomFragment_to_detailRoom, bundle);
-                    }
-                    else
-                        Navigation.findNavController(binding.getRoot()).navigate(R.id.action_availableRoomFragment_to_detailRoom,bundle);
+                    listener.onItemClick(rvHotelRoomBinding.getKamarHotel());
                 }
             });
         }

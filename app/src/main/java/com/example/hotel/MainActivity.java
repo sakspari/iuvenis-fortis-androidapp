@@ -8,12 +8,7 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
-import com.example.hotel.database.MyDatabaseClient;
-import com.example.hotel.dummyData.DummyRoom;
-import com.example.hotel.model.HotelRoom;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     AppBarConfiguration appBarConfiguration;
@@ -35,15 +30,15 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(bottomNavigationView,navController);
 //        ----------------end of Navigation Components---------------------------
 
-        List<HotelRoom> hotelRoomList = MyDatabaseClient.getInstance(getApplicationContext())
-                .getDatabase()
-                .hotelDao()
-                .getAllRoom();
+//        List<HotelRoom> hotelRoomList = MyDatabaseClient.getInstance(getApplicationContext())
+//                .getDatabase()
+//                .hotelDao()
+//                .getAllRoom();
 
-        //insert Dummy data ke dalam databse (jika database masih kosong)
-        if(hotelRoomList.isEmpty()){
-            new DummyRoom(getApplicationContext()).insertDummy();
-        }
+//        //insert Dummy data ke dalam databse (jika database masih kosong)
+//        if(hotelRoomList.isEmpty()){
+//            new DummyRoom(getApplicationContext()).insertDummy();
+//        }
     }
 
     @Override

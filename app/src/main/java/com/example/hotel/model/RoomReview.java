@@ -18,11 +18,11 @@ public class RoomReview {
 
 //    @NonNull
     @ColumnInfo(name = "fk_room_id")
-    private String fk_room_id;
+    private int fk_room_id;
 
 //    @NonNull
-    @ColumnInfo(name = "fk_username")
-    private String fk_username;
+    @ColumnInfo(name = "fk_user_id")
+    private int fk_username;
 
     @ColumnInfo(name = "review_date")
     private Date review_date;
@@ -42,20 +42,20 @@ public class RoomReview {
     }
 
 //    @NonNull
-    public String getFk_room_id() {
+    public int getFk_room_id() {
         return fk_room_id;
     }
 
-    public void setFk_room_id(String fk_room_id) {
+    public void setFk_room_id(int fk_room_id) {
         this.fk_room_id = fk_room_id;
     }
 
 //    @NonNull
-    public String getFk_username() {
+    public int getFk_username() {
         return fk_username;
     }
 
-    public void setFk_username(String fk_username) {
+    public void setFk_username(int fk_username) {
         this.fk_username = fk_username;
     }
 

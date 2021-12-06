@@ -5,20 +5,25 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "room_detail")
 public class RoomDetail {
     @NonNull
     @PrimaryKey(autoGenerate = true)
+    @SerializedName("id")
     private int room_detail_id;
 
     @NonNull
     @ColumnInfo(name = "fk_room_id")
+    @SerializedName("room_id")
     private String fk_room_id;
 
     @ColumnInfo(name = "price")
     private Integer price;
 
     @ColumnInfo(name = "room_description")
+    @SerializedName("description")
     private String room_description;
 
     public RoomDetail(@NonNull String fk_room_id, Integer price, String room_description) {

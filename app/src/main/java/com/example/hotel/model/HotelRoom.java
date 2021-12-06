@@ -5,12 +5,15 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 @Entity(tableName = "hotel_room")
 public class HotelRoom {
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "room_id")
-    private String room_id;
+    @SerializedName("id")
+    private int room_id;
 
     @ColumnInfo(name = "room_type")
     private String room_type;
@@ -31,7 +34,7 @@ public class HotelRoom {
     //booked=false
 
 
-    public HotelRoom(@NonNull String room_id, String room_type, String room_photos_url, String facility_type, boolean room_status, double price) {
+    public HotelRoom(@NonNull int room_id, String room_type, String room_photos_url, String facility_type, boolean room_status, double price) {
         this.room_id = room_id;
         this.room_type = room_type;
         this.room_photos_url = room_photos_url;
@@ -41,11 +44,11 @@ public class HotelRoom {
     }
 
     @NonNull
-    public String getRoom_id() {
+    public int getRoom_id() {
         return room_id;
     }
 
-    public void setRoom_id(@NonNull String room_id) {
+    public void setRoom_id(@NonNull int room_id) {
         this.room_id = room_id;
     }
 

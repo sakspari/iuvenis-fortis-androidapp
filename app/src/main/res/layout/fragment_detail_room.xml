@@ -106,7 +106,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@{hotelRoom.room_id}"
+            android:text="@{String.valueOf(hotelRoom.room_id)}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialTextView2" />
 
@@ -149,7 +149,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginTop="8dp"
-            android:text="@{String.valueOf(roomDetail.price)}"
+            android:text="@{String.valueOf(hotelRoom.price)}"
             android:textColor="@color/teal_700"
             android:textSize="24sp"
             android:textStyle="bold"

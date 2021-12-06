@@ -10,6 +10,9 @@
         <variable
             name="hotelRoom"
             type="com.example.hotel.model.HotelRoom"/>
+        <variable
+            name="user"
+            type="com.example.hotel.model.User"/>
     </data>
 
     <androidx.cardview.widget.CardView
@@ -21,11 +24,12 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:elevation="3dp"
-        tools:context=".view.home.RVBookingAdapter"
+        tools:context=".adapter.RVBookingAdapter"
         app:cardBackgroundColor="@color/white"
         app:cardCornerRadius="10dp">
 
         <RelativeLayout
+            android:id="@+id/mainContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal"
@@ -70,7 +74,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="9dp"
                         android:layout_marginBottom="3dp"
-                        android:text="@{hotelRoom.room_id}"
+                        android:text="@{String.valueOf(bookingDetail.fk_room_id)}"
                         android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
@@ -124,10 +128,11 @@
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginBottom="3dp"
-                        android:text="@{bookingDetail.fk_username}"
+                        android:text="@{user.username}"
                         android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
+
                 <LinearLayout
                     android:id="@+id/tanggalBooking"
                     android:layout_width="wrap_content"
@@ -154,7 +159,18 @@
                         android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>
+
             </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/deleteBooking"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="6dp"
+                android:background="?selectableItemBackground"
+                android:src="@drawable/ic_baseline_delete_forever_24"
+                app:tint="#FF0000" />
 
         </RelativeLayout>
 

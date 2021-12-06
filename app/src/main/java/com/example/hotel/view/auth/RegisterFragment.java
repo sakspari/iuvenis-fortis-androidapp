@@ -2,7 +2,6 @@ package com.example.hotel.view.auth;
 
 import static android.app.Activity.RESULT_OK;
 import static androidx.core.content.ContextCompat.checkSelfPermission;
-
 import static com.android.volley.Request.Method.POST;
 
 import android.Manifest;
@@ -38,7 +37,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hotel.R;
 import com.example.hotel.api.UserApi;
-import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentRegisterBinding;
 import com.example.hotel.model.User;
 import com.example.hotel.model.UserResponse;
@@ -227,6 +225,7 @@ public class RegisterFragment extends Fragment {
                                 }
                             });
                             storeUser();// data user di simpan ke api
+
                             Navigation.findNavController(binding.getRoot()).navigateUp();
                         } else {
                             Toast.makeText(binding.getRoot().getContext(), "Register failed with: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
@@ -245,7 +244,8 @@ public class RegisterFragment extends Fragment {
                         Gson gson = new Gson();
 
                         UserResponse userResponse =
-                                gson.fromJson(response, UserResponse.class);
+                                gson
+                                        .fromJson(response, UserResponse.class);
                         Toast.makeText(binding.getRoot().getContext(), userResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
@@ -258,7 +258,7 @@ public class RegisterFragment extends Fragment {
                     Toast.makeText(binding.getRoot().getContext(),
                             errors.getString("message"), Toast.LENGTH_SHORT).show();
                 } catch (Exception e) {
-                    Toast.makeText(binding.getRoot().getContext(), e.getMessage(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(binding.getRoot().getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             }
         }) {

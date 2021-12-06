@@ -22,17 +22,24 @@
         <entry key="app/src/main/res/layout/activity_admin.xml" value="0.1734375" />
         <entry key="app/src/main/res/layout/activity_auth.xml" value="0.3098958333333333" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.21875" />
+        <entry key="app/src/main/res/layout/booking_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_about_us.xml" value="0.19947916666666668" />
         <entry key="app/src/main/res/layout/fragment_all_room.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/fragment_detail_booking.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/fragment_detail_booking.xml" value="0.75" />
+        <entry key="app/src/main/res/layout/fragment_detail_room.xml" value="0.35833333333333334" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/fragment_login.xml" value="0.3255208333333333" />
         <entry key="app/src/main/res/layout/fragment_map.xml" value="0.14" />
         <entry key="app/src/main/res/layout/fragment_profil.xml" value="0.19375" />
         <entry key="app/src/main/res/layout/fragment_register.xml" value="0.33" />
         <entry key="app/src/main/res/layout/fragment_splash_screen_new_member.xml" value="0.3229166666666667" />
+        <entry key="app/src/main/res/layout/fragment_ur_booked_room.xml" value="0.18333333333333332" />
         <entry key="app/src/main/res/layout/layout_loading.xml" value="0.1" />
         <entry key="app/src/main/res/layout/layout_select_media.xml" value="0.17147922998986828" />
+        <entry key="app/src/main/res/layout/review_dialog.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/rv_book_detail.xml" value="0.22" />
         <entry key="app/src/main/res/layout/rv_hotel_room.xml" value="0.1015625" />
+        <entry key="app/src/main/res/layout/rv_review.xml" value="0.19947916666666668" />
         <entry key="app/src/main/res/menu/home_menu.xml" value="0.21875" />
       </map>
     </option>
@@ -42,5 +49,12 @@
   </component>
   <component name="ProjectType">
     <option name="id" value="Android" />
+  </component>
+  <component name="VisualizationToolProject">
+    <option name="state">
+      <ProjectState>
+        <option name="scale" value="0.33" />
+      </ProjectState>
+    </option>
   </component>
 </project>

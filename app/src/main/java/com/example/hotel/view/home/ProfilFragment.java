@@ -1,7 +1,6 @@
 package com.example.hotel.view.home;
 
 import static com.android.volley.Request.Method.GET;
-import static com.mapbox.mapboxsdk.Mapbox.getApplicationContext;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -104,24 +103,19 @@ public class ProfilFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
         queue = Volley.newRequestQueue(getContext());
-//        layoutLoading = binding.getRoot().findViewById(R.id.layout_loading);
-        userLoginPreferences = new UserLoginPreferences(binding.getRoot().getContext());
-
-//        user = userLoginPreferences.getUserLogin();
+//        layoutLoading = getActivity().findViewById(R.id.layout_loading);
 
         getUser();
-//        binding.setUser(user);
-
 
         //Set Logout Action
         binding.btnLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-//                userLoginPreferences.logout();
+
                 FirebaseAuth mAuth = FirebaseAuth.getInstance();
                 mAuth.signOut();
                 startActivity(new Intent(binding.getRoot().getContext(), AuthActivity.class));
-                Toast.makeText(binding.getRoot().getContext(), "Sayonara!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(binding.getRoot().getContext(), "Logout!", Toast.LENGTH_SHORT).show();
                 getActivity().finish();
             }
         });
@@ -130,12 +124,8 @@ public class ProfilFragment extends Fragment {
     }
 
     private void getUser() {
-
-
-//        setLoading(true);
-
+        setLoading(true);
         FirebaseUser fUser = mAuth.getCurrentUser();
-
         StringRequest stringRequest = new StringRequest(GET,
                 UserApi.GET_BY_EMAIL_URL + fUser.getEmail(), new Response.Listener<String>() {
             @Override
@@ -147,25 +137,20 @@ public class ProfilFragment extends Fragment {
                 user = userResponse.getUserList().get(0);
                 foto = user.getProfile_picture();
                 byte[] imageByteArray = Base64.decode(foto, Base64.DEFAULT);
-//                etNama.setText(user.getNama());
-//                etStok.setText(Integer.toString(user.getStok()));
-//                etDeskripsi.setText(user.getDeskripsi());
 
                 Glide.with(binding.getRoot().getContext())
-                        .load(user.getProfile_picture())
+                        .load(foto)
                         .placeholder(R.drawable.ic_baseline_person_24)
                         .into(binding.profileImg);
 
                 binding.setUser(user);
-//                etHarga.setText(Integer.toString(user.getHarga()));
-//                Toast.makeText(AddEditActivity.this,
-//                        produkResponse.getMessage(), Toast.LENGTH_SHORT).show();
-//                setLoading(false);
+
+                setLoading(false);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                setLoading(false);
+                setLoading(false);
                 try {
                     String responseBody = new String(error.networkResponse.data,
                             StandardCharsets.UTF_8);
@@ -188,19 +173,7 @@ public class ProfilFragment extends Fragment {
         };
         // Menambahkan request ke request queue
         queue.add(stringRequest);
-
     }
-
-//    private void setLoading(boolean isLoading) {
-//        if (isLoading) {
-//            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-//                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-//            layoutLoading.setVisibility(View.VISIBLE);
-//        } else {
-//            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-//            layoutLoading.setVisibility(View.GONE);
-//        }
-//    }
 
     @BindingAdapter("profileImage")
     public static void loadImage(ImageView view, String imageUrl) {
@@ -208,7 +181,19 @@ public class ProfilFragment extends Fragment {
                 .load(imageUrl)
                 .placeholder(R.drawable.ic_baseline_person_24)
                 .into(view);
+    }
 
+
+    // Fungsi ini digunakan menampilkan layout loading
+    private void setLoading(boolean isLoading) {
+        if (isLoading) {
+            getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+//            layoutLoading.setVisibility(View.VISIBLE);
+        } else {
+            getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+//            layoutLoading.setVisibility(View.GONE);
+        }
     }
 
 }

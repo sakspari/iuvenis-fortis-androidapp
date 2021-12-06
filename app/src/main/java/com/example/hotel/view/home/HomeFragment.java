@@ -80,12 +80,12 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        binding.availableRoom.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_availableRoomFragment);
-            }
-        });
+//        binding.availableRoom.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Navigation.findNavController(binding.getRoot()).navigate(R.id.action_homeFragment_to_availableRoomFragment);
+//            }
+//        });
 
         binding.aboutUs.setOnClickListener(new View.OnClickListener() {
             @Override

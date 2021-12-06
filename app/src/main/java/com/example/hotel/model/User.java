@@ -11,6 +11,10 @@ import com.google.gson.annotations.SerializedName;
 
 @Entity(tableName = "user")
 public class User extends BaseObservable{
+
+    @SerializedName("id")
+    private int user_id;
+
     @PrimaryKey
     @NonNull
     @ColumnInfo(name = "username")
@@ -40,6 +44,13 @@ public class User extends BaseObservable{
     public User() {
     }
 
+    public int getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(int user_id) {
+        this.user_id = user_id;
+    }
 
     @NonNull
     @Bindable

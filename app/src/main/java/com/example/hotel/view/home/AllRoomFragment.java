@@ -1,5 +1,7 @@
 package com.example.hotel.view.home;
 
+import static com.android.volley.Request.Method.GET;
+
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,7 +13,7 @@ import android.widget.Toast;
 
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -24,14 +26,16 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.hotel.R;
+import com.example.hotel.adapter.OnCardClickListener;
 import com.example.hotel.adapter.RVHotelRoom;
 import com.example.hotel.api.RoomApi;
-import com.example.hotel.database.MyDatabaseClient;
 import com.example.hotel.databinding.FragmentAllRoomBinding;
 import com.example.hotel.model.HotelRoom;
 import com.example.hotel.model.HotelRoomResponse;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -39,18 +43,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.android.volley.Request.Method.GET;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link AllRoomFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AllRoomFragment extends Fragment {
+public class AllRoomFragment extends Fragment implements OnCardClickListener {
 
     private FragmentAllRoomBinding binding;
     private List<HotelRoom> hotelRoomList;
@@ -59,6 +58,7 @@ public class AllRoomFragment extends Fragment {
     private RequestQueue queue;
     private SwipeRefreshLayout srHotelRoom;
     private LinearLayout layoutLoading;
+    OnCardClickListener listener;
 
 
     // TODO: Rename parameter arguments, choose names that match
@@ -111,6 +111,8 @@ public class AllRoomFragment extends Fragment {
         layoutLoading = binding.getRoot().findViewById(R.id.layout_loading);
         srHotelRoom = binding.getRoot().findViewById(R.id.sr_all_room);
 
+        this.listener = (OnCardClickListener) this;
+
          srHotelRoom.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -119,7 +121,7 @@ public class AllRoomFragment extends Fragment {
         });
 
         recyclerView = binding.getRoot().findViewById(R.id.rv_layout);
-        adapter = new RVHotelRoom(new ArrayList<>(),getContext());
+        adapter = new RVHotelRoom(new ArrayList<>(),listener);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext(),LinearLayoutManager.VERTICAL,false));
 //        recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -180,6 +182,8 @@ public class AllRoomFragment extends Fragment {
         queue.add(stringRequest);
     }
 
+
+
     // Fungsi ini digunakan menampilkan layout loading
     private void setLoading(boolean isLoading) {
         if (isLoading) {
@@ -190,5 +194,19 @@ public class AllRoomFragment extends Fragment {
             getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             layoutLoading.setVisibility(View.GONE);
         }
+    }
+
+    @Override
+    public void onItemClick(HotelRoom hotelRoom) {
+        Bundle bundle = new Bundle();
+        Gson gson = new Gson();
+        String dataKamar = gson.toJson(hotelRoom);
+        bundle.putString("data_kamar", dataKamar);
+
+        //seleksi jalur fragment
+        if (Navigation.findNavController(binding.getRoot()).getCurrentDestination() == Navigation.findNavController(binding.getRoot()).getGraph().findNode(R.id.allRoomFragment)) {
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_allRoomFragment_to_detailRoom, bundle);
+        } else
+            Navigation.findNavController(binding.getRoot()).navigate(R.id.action_availableRoomFragment_to_detailRoom, bundle);
     }
 }

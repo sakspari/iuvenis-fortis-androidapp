@@ -12,9 +12,10 @@ import android.widget.Toast;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.room.Room;
 
 import com.example.hotel.R;
-import com.example.hotel.database.MyDatabaseClient;
+import com.example.hotel.adapter.ReviewListener;
 import com.example.hotel.databinding.FragmentDetailBookingBinding;
 import com.example.hotel.model.BookDetail;
 import com.example.hotel.model.HotelRoom;
@@ -22,7 +23,10 @@ import com.example.hotel.model.RoomDetail;
 import com.example.hotel.model.RoomReview;
 import com.example.hotel.model.User;
 import com.example.hotel.preferences.UserLoginPreferences;
+import com.example.hotel.view.home.dialog.BookingDialog;
+import com.example.hotel.view.home.dialog.ReviewDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.gson.Gson;
 
 import java.util.Date;
 
@@ -31,11 +35,12 @@ import java.util.Date;
  * Use the {@link DetailBooking#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DetailBooking extends Fragment {
+public class DetailBooking extends Fragment implements ReviewListener {
     private FragmentDetailBookingBinding binding;
     private int id_booking;
     private RoomReview roomReview;
     BookDetail bookDetail;
+    ReviewListener listener;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -83,53 +88,27 @@ public class DetailBooking extends Fragment {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail_booking, container, false);
         //set User
-        User user = new UserLoginPreferences(binding.getRoot().getContext()).getUserLogin();
-        binding.setUser(user);
+//        User user = new UserLoginPreferences(binding.getRoot().getContext()).getUserLogin();
+//        binding.setUser(user);
 
         //get bundle of id booking
         Bundle bundle = getArguments();
-        id_booking = bundle.getInt("id_booking");
-
-        //get Booking detail
-        bookDetail = MyDatabaseClient.getInstance(binding.getRoot().getContext())
-                .getDatabase()
-                .bookingDao()
-                .bookingById(id_booking);
-
-        //set booking detail
+        Gson gson = new Gson();
+        User user = gson.fromJson(bundle.getString("user"),User.class);
+        BookDetail bookDetail = gson.fromJson(bundle.getString("book_detail"),BookDetail.class);
+        binding.setUser(user);
         binding.setBookDetail(bookDetail);
 
-        //get Hotel Room
-        HotelRoom hotelRoom = MyDatabaseClient.getInstance(binding.getRoot().getContext())
-                .getDatabase()
-                .hotelDao()
-                .roomFromId(bookDetail.getFk_room_id());
-        //set Hotel Room
-        binding.setHotelRoom(hotelRoom);
+        roomReview = new RoomReview();
+        roomReview.setFk_room_id(bookDetail.getFk_room_id());
+        roomReview.setFk_username(user.getUser_id());
 
-        //get Detail Room
-        RoomDetail detailRoom = MyDatabaseClient.getInstance(binding.getRoot().getContext())
-                .getDatabase()
-                .hotelDao()
-                .getDetailRoom(hotelRoom.getRoom_id());
-        //set detail Room
-        binding.setRoomDetail(detailRoom);
+        this.listener = (ReviewListener) this;
 
-        //getReview
-        RoomReview review = MyDatabaseClient.getInstance(getContext())
-                .getDatabase()
-                .reviewDao()
-                .getRoomReview(bookDetail.getFk_username(), bookDetail.getFk_room_id());
-        if (review != null)
-            binding.setRoomReview(review);
-
-        //aksi untuk btnReview
         binding.btnReviewNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDialog();
-                onStop();
-//
+                new ReviewDialog(listener).show(getActivity().getSupportFragmentManager(),"review_dialog");
             }
         });
 
@@ -137,79 +116,16 @@ public class DetailBooking extends Fragment {
         return binding.getRoot();
     }
 
-    public void openDialog() {
-
-        Dialog dialog = new Dialog(getContext());
-        dialog.setContentView(R.layout.review_dialog);
-        dialog.getWindow().setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
-        dialog.show();
-
-        EditText reviewDesc = dialog.findViewById(R.id.reviewDesc);
-        MaterialButton submitButton = dialog.findViewById(R.id.btnSubmitReview);
-
-        RoomReview roomReview = new RoomReview();
-        roomReview.setFk_room_id(bookDetail.getFk_room_id());
-        roomReview.setFk_username(bookDetail.getFk_username());
-        roomReview.setReview_date(new Date());
-
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!reviewDesc.getText().toString().isEmpty()) {
-                    roomReview.setReview_description(reviewDesc.getText().toString());
-                    RoomReview old = MyDatabaseClient.getInstance(getContext())
-                            .getDatabase()
-                            .reviewDao()
-                            .getRoomReview(bookDetail.getFk_username(), bookDetail.getFk_room_id());
-
-                    if (old == null) {
-                        MyDatabaseClient.getInstance(getContext())
-                                .getDatabase()
-                                .reviewDao()
-                                .insertReview(roomReview);
-                        Toast.makeText(getContext(), "Review berhasil!", Toast.LENGTH_SHORT).show();
-                    } else {
-                        roomReview.setReview_id(old.getReview_id());
-                        MyDatabaseClient.getInstance(getContext())
-                                .getDatabase()
-                                .reviewDao()
-                                .updateReview(roomReview);
-                        Toast.makeText(getContext(), "Review diupdate!", Toast.LENGTH_SHORT).show();
-                    }
-
-                    RoomReview review = MyDatabaseClient.getInstance(getContext())
-                            .getDatabase()
-                            .reviewDao()
-                            .getRoomReview(bookDetail.getFk_username(), bookDetail.getFk_room_id());
-                    if (review != null)
-                        binding.setRoomReview(review);
-
-                    dialog.dismiss();
-                }else{
-                    Toast.makeText(getContext(), "Ooops, silahkan isi review dulu", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        });
-
-    }
-
-    private void reloadCurrentFragment() {
-        int id = Navigation.findNavController(binding.getRoot()).getCurrentDestination().getId();
-        Navigation.findNavController(binding.getRoot()).popBackStack(id, true);
-        Navigation.findNavController(binding.getRoot()).navigate(id);
-    }
-
-
     @Override
-    public void onResume() {
-        super.onResume();
-        System.out.println("onResume");
-        RoomReview review = MyDatabaseClient.getInstance(getContext())
-                .getDatabase()
-                .reviewDao()
-                .getRoomReview(bookDetail.getFk_username(), bookDetail.getFk_room_id());
-        if (review != null)
-            binding.setRoomReview(review);
+    public void onReviewSubmit(String review_desc) {
+        Toast.makeText(getContext(), review_desc, Toast.LENGTH_SHORT).show();
+        roomReview.setReview_date(new Date());
+        roomReview.setReview_description(review_desc);
+        binding.setRoomReview(roomReview);
+        storeReview(roomReview);
+    }
+
+    void storeReview(RoomReview roomReview){
+
     }
 }

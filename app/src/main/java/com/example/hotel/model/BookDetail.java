@@ -5,20 +5,25 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 @Entity(tableName = "book_detail")
 public class BookDetail {
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
+    @SerializedName("id")
     private int book_detail_id;
 
     @NonNull
     @ColumnInfo(name = "fk_room_id")
-    private String fk_room_id;
+    @SerializedName("room_id")
+    private int fk_room_id;
 
     @NonNull
-    @ColumnInfo(name = "fk_username")
-    private String fk_username;
+    @ColumnInfo(name = "fk_user_id")
+    @SerializedName("user_id")
+    private int fk_user_id;
 
     @ColumnInfo(name = "booking_date")
     private Date booking_date;
@@ -40,20 +45,20 @@ public class BookDetail {
         this.book_detail_id = book_detail_id;
     }
 
-    public String getFk_room_id() {
+    public int getFk_room_id() {
         return fk_room_id;
     }
 
-    public void setFk_room_id(String fk_room_id) {
+    public void setFk_room_id(int fk_room_id) {
         this.fk_room_id = fk_room_id;
     }
 
-    public String getFk_username() {
-        return fk_username;
+    public int getFk_user_id() {
+        return fk_user_id;
     }
 
-    public void setFk_username(String fk_username) {
-        this.fk_username = fk_username;
+    public void setFk_user_id(int fk_user_id) {
+        this.fk_user_id = fk_user_id;
     }
 
     public Date getCheck_in_date() {
