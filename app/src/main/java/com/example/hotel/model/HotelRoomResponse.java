@@ -4,11 +4,12 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class HotelRoomResponse {
-    private String message;
+
 
     @SerializedName("data")
     private List<HotelRoom> hotelRoomList;
 
+    private String message;
     public String getMessage() {
         return message;
     }

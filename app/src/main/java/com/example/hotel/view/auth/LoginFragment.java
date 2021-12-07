@@ -103,6 +103,8 @@ public class LoginFragment extends Fragment {
                 String username = binding.getUsername();
                 String password = binding.getPassword();
 
+
+
 //                if(getUserLogin(username,password)!= null){
 //
 //                    userLoginPreferences.setLogin(username,password);

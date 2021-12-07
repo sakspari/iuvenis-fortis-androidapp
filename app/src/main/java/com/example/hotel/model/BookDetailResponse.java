@@ -6,11 +6,11 @@ import java.util.List;
 
 public class BookDetailResponse {
 
-    private String message;
-
     @SerializedName("data")
     private List<BookDetail> bookDetailList;
 
+    @SerializedName("message")
+    private String message;
     public String getMessage() {
         return message;
     }
