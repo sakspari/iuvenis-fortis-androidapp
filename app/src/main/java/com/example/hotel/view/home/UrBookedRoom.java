@@ -190,7 +190,7 @@ public class UrBookedRoom extends Fragment implements OnBookingClickListener {
                         gson.fromJson(response, BookDetailResponse.class);
                 adapter.setBookDetailList(bookDetailResponse.getBookDetailList());
                 recyclerView.setAdapter(adapter);
-                Toast.makeText(getContext(), bookDetailResponse.getMessage()+"-->size: "+bookDetailResponse.getBookDetailList().size(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(binding.getRoot().getContext(), bookDetailResponse.getMessage()+"-->size: "+bookDetailResponse.getBookDetailList().size(), Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
 
@@ -221,7 +221,6 @@ public class UrBookedRoom extends Fragment implements OnBookingClickListener {
 
     @Override
     public void onItemClick(BookDetail bookDetail) {
-        Toast.makeText(binding.getRoot().getContext(), "Item: "+bookDetail.getFk_room_id(), Toast.LENGTH_SHORT).show();
         Gson gson = new Gson();
         Bundle bundle = new Bundle();
         bundle.putString("book_detail",gson.toJson(bookDetail));
@@ -239,6 +238,7 @@ public class UrBookedRoom extends Fragment implements OnBookingClickListener {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 deleteBooking(bookDetail);
+                getCurrentUser();
             }
         });
         alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

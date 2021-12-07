@@ -29,6 +29,7 @@ import com.example.hotel.api.RoomDetailApi;
 import com.example.hotel.api.UserApi;
 import com.example.hotel.databinding.FragmentDetailRoomBinding;
 import com.example.hotel.model.BookDetail;
+import com.example.hotel.model.BookDetailResponse;
 import com.example.hotel.model.HotelRoom;
 import com.example.hotel.model.RoomDetail;
 import com.example.hotel.model.RoomDetailResponse;
@@ -282,14 +283,9 @@ public class DetailRoom extends Fragment implements BookingDialogListener {
                     public void onResponse(String response) {
                         Gson gson = new Gson();
 
-
-                        //TODO: Fix this!!
-
-//                        BookDetailResponse bookDetailResponse =
-//                                gson.fromJson(response, BookDetailResponse.class);
-//                        Toast.makeText(binding.getRoot().getContext(), bookDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
-//                        Toast.makeText(binding.getRoot().getContext(), response, Toast.LENGTH_LONG).show();
-
+                        BookDetailResponse bookDetailResponse =
+                                gson.fromJson(response, BookDetailResponse.class);
+                        Toast.makeText(binding.getRoot().getContext(), bookDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 }, new Response.ErrorListener() {
             @Override
