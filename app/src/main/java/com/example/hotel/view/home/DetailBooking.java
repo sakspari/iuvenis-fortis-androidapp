@@ -1,5 +1,7 @@
 package com.example.hotel.view.home;
 
+import static com.android.volley.Request.Method.POST;
+
 import android.app.Dialog;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,21 +16,34 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.room.Room;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.hotel.R;
 import com.example.hotel.adapter.ReviewListener;
+import com.example.hotel.api.UserApi;
 import com.example.hotel.databinding.FragmentDetailBookingBinding;
 import com.example.hotel.model.BookDetail;
 import com.example.hotel.model.HotelRoom;
 import com.example.hotel.model.RoomDetail;
 import com.example.hotel.model.RoomReview;
 import com.example.hotel.model.User;
+import com.example.hotel.model.UserResponse;
 import com.example.hotel.preferences.UserLoginPreferences;
 import com.example.hotel.view.home.dialog.BookingDialog;
 import com.example.hotel.view.home.dialog.ReviewDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -41,6 +56,7 @@ public class DetailBooking extends Fragment implements ReviewListener {
     private RoomReview roomReview;
     BookDetail bookDetail;
     ReviewListener listener;
+    private RequestQueue queue;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -91,6 +107,7 @@ public class DetailBooking extends Fragment implements ReviewListener {
 //        User user = new UserLoginPreferences(binding.getRoot().getContext()).getUserLogin();
 //        binding.setUser(user);
 
+        queue = Volley.newRequestQueue(binding.getRoot().getContext());
         //get bundle of id booking
         Bundle bundle = getArguments();
         Gson gson = new Gson();
@@ -126,6 +143,57 @@ public class DetailBooking extends Fragment implements ReviewListener {
     }
 
     void storeReview(RoomReview roomReview){
+        roomReview.getReview_description();
+        roomReview.getReview_date();
+        StringRequest stringRequest = new StringRequest(POST, UserApi.ADD_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
 
+                        UserResponse userResponse =
+                                gson
+                                        .fromJson(response, UserResponse.class);
+                        Toast.makeText(binding.getRoot().getContext(), userResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data,
+                            StandardCharsets.UTF_8);
+                    JSONObject errors = new JSONObject(responseBody);
+                    Toast.makeText(binding.getRoot().getContext(),
+                            errors.getString("message"), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(binding.getRoot().getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                Gson gson = new Gson();
+
+                RoomReview storeReview = roomReview; //kalau tidak pakai ini bisa error:hati-hati bang!
+
+                String requestBody = gson.toJson(storeReview);
+                return requestBody.getBytes(StandardCharsets.UTF_8);
+            }
+
+            // Mendeklarasikan content type dari request body yang ditambahkan
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        // Menambahkan request ke request queue
+        queue.add(stringRequest);
     }
 }
