@@ -43,7 +43,7 @@
             style="@style/Theme.Design.Light"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/username"
+            android:hint="@string/email"
             android:layout_marginHorizontal="16dp"
             app:counterEnabled="true"
             app:counterMaxLength="50"
