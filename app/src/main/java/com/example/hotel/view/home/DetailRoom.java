@@ -3,7 +3,10 @@ package com.example.hotel.view.home;
 import static com.android.volley.Request.Method.GET;
 import static com.android.volley.Request.Method.POST;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
 import com.example.hotel.R;
 import com.example.hotel.adapter.BookingDialogListener;
 import com.example.hotel.adapter.RVReview;
@@ -141,33 +145,6 @@ public class DetailRoom extends Fragment implements BookingDialogListener {
 
         binding.setHotelRoom(hotelRoom);
         getRoomDetail(String.valueOf(hotelRoom.getRoom_id()));
-//        getCurrentUser(user.getEmail());
-//        binding.setRoomDetail(getRoomDetail(hotelRoom.getRoom_id()));
-
-//        //get Hotel room
-//        HotelRoom hotelRoom = MyDatabaseClient.getInstance(binding.getRoot().getContext())
-//                .getDatabase()
-//                .hotelDao()
-//                .roomFromId(dataKamar);
-
-        // set Hotel Room
-
-
-//        //get Detail Room
-//        RoomDetail roomDetail = MyDatabaseClient.getInstance(binding.getRoot().getContext())
-//                .getDatabase()
-//                .hotelDao()
-//                .getDetailRoom(hotelRoom.getRoom_id());
-//        RoomDetail roomDetail =
-
-        //set Detail
-//        binding.setRoomDetail(roomDetail);
-
-        //ambil data room reviewnya
-//        roomReviewList = MyDatabaseClient.getInstance(getContext())
-//                .getDatabase()
-//                .hotelDao()
-//                .getRoomReview(hotelRoom.getRoom_id());
 
         if (roomReviewList != null) {
             recyclerView = binding.getRoot().findViewById(R.id.rv_layout);
@@ -203,9 +180,15 @@ public class DetailRoom extends Fragment implements BookingDialogListener {
                         gson.fromJson(response, UserResponse.class);
                 user = userResponse.getUserList().get(0);
                 binding.setUser(user);
-//                adapter.setHotelRoomList(hotelRoomResponse.getHotelRoomList());
-//                recyclerView.setAdapter(adapter);
-//                srHotelRoom.setRefreshing(false);
+
+                byte[] imageByteArray = Base64.decode(user.getProfile_picture(), Base64.DEFAULT);
+                Bitmap imageProfile = BitmapFactory.decodeByteArray(imageByteArray,0,imageByteArray.length); //convert kembali ke bitmap
+
+                Glide.with(binding.getRoot().getContext())
+                        .load(imageProfile)
+                        .placeholder(R.drawable.ic_baseline_person_24)
+                        .into(binding.profileImg);
+
             }
         }, new Response.ErrorListener() {
             @Override

@@ -3,6 +3,8 @@ package com.example.hotel.view.home;
 import static com.android.volley.Request.Method.GET;
 
 import android.app.Dialog;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -123,6 +125,14 @@ public class DetailBooking extends Fragment implements ReviewListener {
         User user = gson.fromJson(bundle.getString("user"),User.class);
         BookDetail bookDetail = gson.fromJson(bundle.getString("book_detail"),BookDetail.class);
         binding.setUser(user);
+        byte[] imageByteArray = Base64.decode(user.getProfile_picture(), Base64.DEFAULT);
+        Bitmap imageProfile = BitmapFactory.decodeByteArray(imageByteArray,0,imageByteArray.length); //convert kembali ke bitmap
+
+        Glide.with(binding.getRoot().getContext())
+                .load(imageProfile)
+                .placeholder(R.drawable.ic_baseline_person_24)
+                .into(binding.profileImg);
+
         binding.setBookDetail(bookDetail);
 
         roomReview = new RoomReview();

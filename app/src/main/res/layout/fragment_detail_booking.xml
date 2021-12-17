@@ -54,8 +54,7 @@
                     android:id="@+id/profileImg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:scaleType="center"
-                    app:profileImage="@{user.profile_picture}" />
+                    android:scaleType="center" />
 
             </com.google.android.material.card.MaterialCardView>
 
