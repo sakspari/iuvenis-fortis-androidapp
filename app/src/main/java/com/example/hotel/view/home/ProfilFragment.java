@@ -3,6 +3,8 @@ package com.example.hotel.view.home;
 import static com.android.volley.Request.Method.GET;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.LayoutInflater;
@@ -137,9 +139,10 @@ public class ProfilFragment extends Fragment {
                 user = userResponse.getUserList().get(0);
                 foto = user.getProfile_picture();
                 byte[] imageByteArray = Base64.decode(foto, Base64.DEFAULT);
+                Bitmap imageP = BitmapFactory.decodeByteArray(imageByteArray,0,imageByteArray.length); //convert kembali ke bitmap
 
                 Glide.with(binding.getRoot().getContext())
-                        .load(foto)
+                        .load(imageP)
                         .placeholder(R.drawable.ic_baseline_person_24)
                         .into(binding.profileImg);
 
