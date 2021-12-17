@@ -154,7 +154,7 @@ public class AllRoomFragment extends Fragment implements OnCardClickListener {
                         gson.fromJson(response, HotelRoomResponse.class);
                 adapter.setHotelRoomList(hotelRoomResponse.getHotelRoomList());
                 recyclerView.setAdapter(adapter);
-                Toast.makeText(getContext(), hotelRoomResponse.getMessage()+"-->size: "+hotelRoomResponse.getHotelRoomList().size(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), hotelRoomResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 srHotelRoom.setRefreshing(false);
             }
         }, new Response.ErrorListener() {

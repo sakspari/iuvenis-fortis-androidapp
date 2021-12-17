@@ -190,7 +190,7 @@ public class UrBookedRoom extends Fragment implements OnBookingClickListener {
                         gson.fromJson(response, BookDetailResponse.class);
                 adapter.setBookDetailList(bookDetailResponse.getBookDetailList());
                 recyclerView.setAdapter(adapter);
-                Toast.makeText(binding.getRoot().getContext(), bookDetailResponse.getMessage()+"-->size: "+bookDetailResponse.getBookDetailList().size(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(binding.getRoot().getContext(), bookDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
                 swipeRefreshLayout.setRefreshing(false);
             }
 

@@ -19,6 +19,7 @@ public class HotelRoom {
     private String room_type;
 
     @ColumnInfo(name = "room_photos_url")
+    @SerializedName("photo")
     private String room_photos_url;
 
     @ColumnInfo(name = "facility_type")
