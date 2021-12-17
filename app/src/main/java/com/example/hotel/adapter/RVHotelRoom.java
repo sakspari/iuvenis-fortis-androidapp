@@ -82,7 +82,7 @@ public class RVHotelRoom extends RecyclerView.Adapter<RVHotelRoom.viewHolder> {
     }
 
     @BindingAdapter("hotelImage")
-    public static void loadImage(ImageView view, String imageUrl) {
+    public static void hotelImage(ImageView view, String imageUrl) {
         Glide.with(view.getContext())
                 .load(imageUrl)
                 .placeholder(R.drawable.ic_baseline_home_24)
