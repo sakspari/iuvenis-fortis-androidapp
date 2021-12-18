@@ -314,6 +314,7 @@ public class ProfilFragment extends Fragment {
 
     //update user
     private void updateUser(){
+        if(baString!=null)
         user.setProfile_picture(baString);
         user.setUser_status(true);
         StringRequest stringRequest = new StringRequest(PUT, UserApi.UPDATE_USER_BY_ID+user.getUser_id(),

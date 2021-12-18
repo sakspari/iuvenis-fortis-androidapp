@@ -30,29 +30,4 @@ public class UserLoginPreferences {
 //        kalau tidak di commit maka tidak akan disimpan perubahannya
         editor.commit();
     }
-
-//    public User getUserLogin(){
-////   return object user untuk menampilkan data user jika user sudah login
-//        String username, password, name;
-//
-//        username = sharedPreferences.getString(KEY_USERNAME, null);
-//        password = sharedPreferences.getString(KEY_PASSWORD, null);
-//
-//        User user = MyDatabaseClient.getInstance(context.getApplicationContext())
-//                .getDatabase()
-//                .userDao()
-//                .getUserLogin(username,password);
-//
-//        return user;
-//    }
-//
-//    public boolean checkLogin(){
-//        return sharedPreferences.getBoolean(IS_LOGIN, false);
-//    }
-//
-//    public void logout(){
-////        untuk clear data pada shared preferences
-//        editor.clear();
-//        editor.commit();
-//    }
 }

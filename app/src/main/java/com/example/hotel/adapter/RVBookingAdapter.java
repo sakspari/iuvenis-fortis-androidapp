@@ -79,7 +79,7 @@ public class RVBookingAdapter extends RecyclerView.Adapter<RVBookingAdapter.view
     @Override
     public RVBookingAdapter.viewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         binding = DataBindingUtil.inflate(LayoutInflater.from(parent.getContext()), R.layout.rv_book_detail, parent, false);
-
+        queue = Volley.newRequestQueue(parent.getContext());
         return new viewHolder(binding);
     }
 
@@ -88,18 +88,18 @@ public class RVBookingAdapter extends RecyclerView.Adapter<RVBookingAdapter.view
         BookDetail bookDetail = bookDetailList.get(position);
         holder.rvBookDetailBinding.setBookingDetail(bookDetail);
         holder.rvBookDetailBinding.setUser(user);
-        holder.rvBookDetailBinding.setHotelRoom(hotelRoom);
 
-
-//        holder.rvBookDetailBinding.setHotelRoom(MyDatabaseClient.getInstance(binding.getRoot().getContext()).getDatabase().hotelDao().roomFromId(bookDetail.getFk_room_id()));
+        getRoom(bookDetail.getFk_room_id(), holder.rvBookDetailBinding);
 
         holder.rvBookDetailBinding.executePendingBindings();
     }
 
+
     @Override
     public int getItemCount() {
         return bookDetailList.size();
-    };
+    }
+
 
     public class viewHolder extends RecyclerView.ViewHolder {
         RvBookDetailBinding rvBookDetailBinding;
@@ -111,11 +111,7 @@ public class RVBookingAdapter extends RecyclerView.Adapter<RVBookingAdapter.view
             rvBookDetailBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onItemClick(rvBookDetailBinding.getBookingDetail());
-//                    Bundle bundle = new Bundle();
-//                    bundle.putInt("id_booking",rvBookDetailBinding.getBookingDetail().getBook_detail_id());
-//
-//                    Navigation.findNavController(binding.getRoot()).navigate(R.id.action_urBookedRoom_to_detailBooking,bundle);
+                    listener.onItemClick(rvBookDetailBinding.getBookingDetail(), rvBookDetailBinding.getHotelRoom());
                 }
 
             });
@@ -130,48 +126,45 @@ public class RVBookingAdapter extends RecyclerView.Adapter<RVBookingAdapter.view
 
     }
 
-//    private void getHotelRoom(int fk_room_id) {
-//
-////            srHotelRoom.setRefreshing(true);
-//            StringRequest stringRequest = new StringRequest(GET, RoomApi.GET_BY_ID_URL+fk_room_id, new Response.Listener<String>() {
-//                @Override
-//                public void onResponse(String response) {
-//                    Gson gson = new Gson();
-//                    HotelRoomResponse hotelRoomResponse =
-//                            gson.fromJson(response, HotelRoomResponse.class);
-//
-//                    binding.setHotelRoom(hotelRoomResponse.getHotelRoomList().get(0));
-//
-//                    Log.i("BOOKRV",hotelRoomResponse.getMessage());
-////                    recyclerView.setAdapter(adapter);
-////                    srHotelRoom.setRefreshing(false);
-//                }
-//            }, new Response.ErrorListener() {
-//                @Override
-//                public void onErrorResponse(VolleyError error) {
-////                    srHotelRoom.setRefreshing(false);
-//                    try {
-//                        String responseBody = new String(error.networkResponse.data,
-//                                StandardCharsets.UTF_8);
-//                        JSONObject errors = new JSONObject(responseBody);
-//                        Log.i("BOOKRV",errors.getString("message"));
-//                    } catch (JSONException e) {
-//                        Log.i("BOOKRV",e.getMessage());
-//
-//                    }
-//                }
-//            }){
-//                @Override
-//                public Map<String, String> getHeaders() throws AuthFailureError {
-//                    HashMap<String, String> headers = new HashMap<String, String>();
-//                    headers.put("Accept", "application/json");
-//                    return headers;
-//                }
-//            };
-//            //add to queue req
-//            queue.add(stringRequest);
-//
-//    }
+    private void getRoom(int id_room, RvBookDetailBinding rvBookDetailBinding) {
+        final HotelRoom[] room = {new HotelRoom()};
+        StringRequest stringRequest = new StringRequest(GET, RoomApi.GET_BY_ID_URL + id_room, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Gson gson = new Gson();
+                HotelRoomResponse hotelRoomResponse =
+                        gson.fromJson(response, HotelRoomResponse.class);
 
+                room[0] = hotelRoomResponse.getHotelRoomList().get(0);
+
+                Log.i("BOOKRV", hotelRoomResponse.getMessage());
+
+                rvBookDetailBinding.setHotelRoom(room[0]);
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data,
+                            StandardCharsets.UTF_8);
+                    JSONObject errors = new JSONObject(responseBody);
+                    Log.i("BOOKRV", errors.getString("message"));
+                } catch (JSONException e) {
+                    Log.i("BOOKRV", e.getMessage());
+
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                return headers;
+            }
+        };
+        //add to queue req
+        queue.add(stringRequest);
+    }
 
 }

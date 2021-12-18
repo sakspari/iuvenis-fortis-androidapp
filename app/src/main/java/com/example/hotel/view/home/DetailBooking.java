@@ -65,7 +65,6 @@ public class DetailBooking extends Fragment implements ReviewListener {
     private int id_booking;
     private RoomReview roomReview;
     ReviewListener listener;
-    private HotelRoom hotelRoom;
     private RequestQueue queue;
     private RoomDetail roomDetail;
     // TODO: Rename parameter arguments, choose names that match
@@ -124,7 +123,11 @@ public class DetailBooking extends Fragment implements ReviewListener {
         Gson gson = new Gson();
         User user = gson.fromJson(bundle.getString("user"),User.class);
         BookDetail bookDetail = gson.fromJson(bundle.getString("book_detail"),BookDetail.class);
+        HotelRoom hotelRoom = gson.fromJson(bundle.getString("hotel_room"),HotelRoom.class);
+
+        binding.setHotelRoom(hotelRoom);
         binding.setUser(user);
+
         byte[] imageByteArray = Base64.decode(user.getProfile_picture(), Base64.DEFAULT);
         Bitmap imageProfile = BitmapFactory.decodeByteArray(imageByteArray,0,imageByteArray.length); //convert kembali ke bitmap
 

@@ -35,6 +35,9 @@ public class HotelRoom {
     //booked=false
 
 
+    public HotelRoom() {
+    }
+
     public HotelRoom(@NonNull int room_id, String room_type, String room_photos_url, String facility_type, boolean room_status, double price) {
         this.room_id = room_id;
         this.room_type = room_type;

@@ -220,10 +220,11 @@ public class UrBookedRoom extends Fragment implements OnBookingClickListener {
     }
 
     @Override
-    public void onItemClick(BookDetail bookDetail) {
+    public void onItemClick(BookDetail bookDetail, HotelRoom hotelRoom) {
         Gson gson = new Gson();
         Bundle bundle = new Bundle();
         bundle.putString("book_detail",gson.toJson(bookDetail));
+        bundle.putString("hotel_room",gson.toJson(hotelRoom));
         bundle.putString("user", gson.toJson(user));
         Navigation.findNavController(binding.getRoot()).navigate(R.id.action_urBookedRoom_to_detailBooking,bundle);
     }
