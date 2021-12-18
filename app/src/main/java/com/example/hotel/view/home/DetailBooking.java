@@ -1,6 +1,7 @@
 package com.example.hotel.view.home;
 
 import static com.android.volley.Request.Method.GET;
+import static com.android.volley.Request.Method.POST;
 import static com.android.volley.Request.Method.PUT;
 
 import android.app.Dialog;
@@ -32,6 +33,7 @@ import com.example.hotel.R;
 import com.example.hotel.adapter.BookingDialogListener;
 import com.example.hotel.adapter.ReviewListener;
 import com.example.hotel.api.BookDetailApi;
+import com.example.hotel.api.ReviewApi;
 import com.example.hotel.api.RoomApi;
 import com.example.hotel.api.RoomDetailApi;
 import com.example.hotel.api.UserApi;
@@ -43,6 +45,7 @@ import com.example.hotel.model.HotelRoomResponse;
 import com.example.hotel.model.RoomDetail;
 import com.example.hotel.model.RoomDetailResponse;
 import com.example.hotel.model.RoomReview;
+import com.example.hotel.model.RoomReviewResponse;
 import com.example.hotel.model.User;
 import com.example.hotel.model.UserResponse;
 import com.example.hotel.preferences.UserLoginPreferences;
@@ -175,8 +178,10 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
         Toast.makeText(getContext(), review_desc, Toast.LENGTH_SHORT).show();
         roomReview.setReview_date(new Date());
         roomReview.setReview_description(review_desc);
+        roomReview.setFk_room_id(Integer.parseInt(roomDetail.getFk_room_id()));
+        roomReview.setFk_username(binding.getUser().getUser_id());
         binding.setRoomReview(roomReview);
-        storeReview(roomReview);
+        storeReview();
     }
 
     void getRoomDetail(String room_id) {
@@ -220,8 +225,56 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
 
     //TODO: isi bagian ini bang!!
 
-    void storeReview(RoomReview roomReview){
+    void storeReview(){
+        StringRequest stringRequest = new StringRequest(POST, ReviewApi.CREATE_REVIEW_URL,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
 
+                        RoomReviewResponse roomReviewResponse =
+                                gson.fromJson(response, RoomReviewResponse.class);
+                        Toast.makeText(binding.getRoot().getContext(), roomReviewResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data,
+                            StandardCharsets.UTF_8);
+                    JSONObject errors = new JSONObject(responseBody);
+                    Toast.makeText(binding.getRoot().getContext(),
+                            errors.getString("message"), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(binding.getRoot().getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                Gson gson = new Gson();
+
+                RoomReview storeReview = roomReview; //kalau tidak pakai ini bisa error:hati-hati bang!
+
+                String requestBody = gson.toJson(storeReview);
+                return requestBody.getBytes(StandardCharsets.UTF_8);
+            }
+
+            // Mendeklarasikan content type dari request body yang ditambahkan
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        // Menambahkan request ke request queue
+        queue.add(stringRequest);
     }
 
     @BindingAdapter("dateToString")
