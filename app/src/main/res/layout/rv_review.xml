@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:textSize="10sp"
-                android:text="@{String.valueOf(review.review_date)}"
+                app:dateToString="@{review.review_date}"
                 android:textStyle="italic"/>
 
             <com.google.android.material.textview.MaterialTextView

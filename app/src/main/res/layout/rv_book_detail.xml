@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="3dp"
                         android:fontFamily="sans-serif-medium"
-                        android:text="Username :"
+                        android:text="Booked by :"
                         android:textColor="@color/black"
                         android:textSize="13sp" />
 
@@ -149,13 +149,13 @@
                         android:textColor="@color/black"
                         android:textSize="13sp" />
 
-                    <TextView
+                    <com.google.android.material.textview.MaterialTextView
                         android:id="@+id/tvDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="16dp"
                         android:layout_marginBottom="3dp"
-                        android:text="@{String.valueOf(bookingDetail.booking_date)}"
+                        app:dateToString="@{bookingDetail.booking_date}"
                         android:textColor="@color/black"
                         android:textSize="11sp" />
                 </LinearLayout>

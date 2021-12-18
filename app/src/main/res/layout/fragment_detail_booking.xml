@@ -79,6 +79,33 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialTextView3" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnEdit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="120dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/teal_700"
+            android:text="edit booking"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="1.0"
+            app:layout_constraintStart_toStartOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/materialTextViewCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:text="IFH -"
+            android:textSize="24dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
+
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/materialTextView2"
             android:layout_width="wrap_content"
@@ -87,16 +114,17 @@
             android:text="@{String.valueOf(bookDetail.fk_room_id)}"
             android:textSize="24dp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@id/materialTextViewCode"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/materialTextView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:textStyle="italic"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:text="@{String.valueOf(bookDetail.booking_date)}"
+            app:dateToString="@{bookDetail.booking_date}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/materialTextView2" />
 
@@ -161,7 +189,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(bookDetail.check_in_date)}" />
+                    app:dateToString="@{bookDetail.check_in_date}"/>
 
             </LinearLayout>
 
@@ -180,7 +208,7 @@
                 <com.google.android.material.textview.MaterialTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{String.valueOf(bookDetail.check_out_date)}" />
+                    app:dateToString="@{bookDetail.check_out_date}" />
             </LinearLayout>
 
         </LinearLayout>

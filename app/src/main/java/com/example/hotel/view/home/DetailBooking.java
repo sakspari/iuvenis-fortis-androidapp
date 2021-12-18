@@ -1,6 +1,7 @@
 package com.example.hotel.view.home;
 
 import static com.android.volley.Request.Method.GET;
+import static com.android.volley.Request.Method.PUT;
 
 import android.app.Dialog;
 import android.graphics.Bitmap;
@@ -14,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
@@ -27,12 +29,15 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.hotel.R;
+import com.example.hotel.adapter.BookingDialogListener;
 import com.example.hotel.adapter.ReviewListener;
+import com.example.hotel.api.BookDetailApi;
 import com.example.hotel.api.RoomApi;
 import com.example.hotel.api.RoomDetailApi;
 import com.example.hotel.api.UserApi;
 import com.example.hotel.databinding.FragmentDetailBookingBinding;
 import com.example.hotel.model.BookDetail;
+import com.example.hotel.model.BookDetailResponse;
 import com.example.hotel.model.HotelRoom;
 import com.example.hotel.model.HotelRoomResponse;
 import com.example.hotel.model.RoomDetail;
@@ -44,6 +49,7 @@ import com.example.hotel.preferences.UserLoginPreferences;
 import com.example.hotel.view.home.dialog.BookingDialog;
 import com.example.hotel.view.home.dialog.ReviewDialog;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
@@ -51,8 +57,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.nio.charset.StandardCharsets;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -60,13 +69,14 @@ import java.util.Map;
  * Use the {@link DetailBooking#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DetailBooking extends Fragment implements ReviewListener {
+public class DetailBooking extends Fragment implements ReviewListener, BookingDialogListener {
     private FragmentDetailBookingBinding binding;
-    private int id_booking;
     private RoomReview roomReview;
     ReviewListener listener;
+    BookingDialogListener bookingDialogListener;
     private RequestQueue queue;
     private RoomDetail roomDetail;
+    private BookDetail bookDetail;
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -114,15 +124,11 @@ public class DetailBooking extends Fragment implements ReviewListener {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_detail_booking, container, false);
         queue = Volley.newRequestQueue(binding.getRoot().getContext());
 
-        //set User
-//        User user = new UserLoginPreferences(binding.getRoot().getContext()).getUserLogin();
-//        binding.setUser(user);
-
         //get bundle of id booking
         Bundle bundle = getArguments();
         Gson gson = new Gson();
         User user = gson.fromJson(bundle.getString("user"),User.class);
-        BookDetail bookDetail = gson.fromJson(bundle.getString("book_detail"),BookDetail.class);
+        bookDetail = gson.fromJson(bundle.getString("book_detail"),BookDetail.class);
         HotelRoom hotelRoom = gson.fromJson(bundle.getString("hotel_room"),HotelRoom.class);
 
         binding.setHotelRoom(hotelRoom);
@@ -144,11 +150,19 @@ public class DetailBooking extends Fragment implements ReviewListener {
         getRoomDetail(String.valueOf(bookDetail.getFk_room_id()));
 
         this.listener = (ReviewListener) this;
+        this.bookingDialogListener = (BookingDialogListener) this;
 
         binding.btnReviewNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 new ReviewDialog(listener).show(getActivity().getSupportFragmentManager(),"review_dialog");
+            }
+        });
+
+        binding.btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new BookingDialog(bookingDialogListener).show(getActivity().getSupportFragmentManager(),"BOOKING_DIALOG");
             }
         });
 
@@ -179,14 +193,10 @@ public class DetailBooking extends Fragment implements ReviewListener {
                 } else {
                     binding.setRoomDetail(new RoomDetail(null, null, "No Details Available for this Room!"));
                 }
-//                adapter.setHotelRoomList(hotelRoomResponse.getHotelRoomList());
-//                recyclerView.setAdapter(adapter);
-//                srHotelRoom.setRefreshing(false);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                srHotelRoom.setRefreshing(false);
                 try {
                     String responseBody = new String(error.networkResponse.data,
                             StandardCharsets.UTF_8);
@@ -208,9 +218,82 @@ public class DetailBooking extends Fragment implements ReviewListener {
         queue.add(stringRequest);
     }
 
+    //TODO: isi bagian ini bang!!
+
     void storeReview(RoomReview roomReview){
 
     }
 
+    @BindingAdapter("dateToString")
+    public static void dateToString(MaterialTextView materialTextView, Date date){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy");
+        String strDate = formatter.format(date);
+        materialTextView.setText(strDate);
+    }
 
+
+    @Override
+    public void onBookPress(String checkInDate, String checkOutDate) {
+        SimpleDateFormat dateFormatter = new SimpleDateFormat("dd-MM-yy", Locale.US);
+        try {
+            bookDetail.setCheck_in_date(dateFormatter.parse(checkInDate));
+            bookDetail.setCheck_out_date(dateFormatter.parse(checkOutDate));
+            binding.setBookDetail(bookDetail);
+            updateBooking();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void updateBooking(){
+        StringRequest stringRequest = new StringRequest(PUT, BookDetailApi.UPDATE_BOOKINGS_URL+bookDetail.getBook_detail_id(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+
+                        BookDetailResponse bookDetailResponse =
+                                gson.fromJson(response, BookDetailResponse.class);
+                        Toast.makeText(binding.getRoot().getContext(), bookDetailResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data,
+                            StandardCharsets.UTF_8);
+                    JSONObject errors = new JSONObject(responseBody);
+                    Toast.makeText(binding.getRoot().getContext(),
+                            errors.getString("message"), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(binding.getRoot().getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                Gson gson = new Gson();
+
+                BookDetail bookDetailUpdate = bookDetail; //kalau tidak pakai ini bisa error:hati-hati bang!
+
+                String requestBody = gson.toJson(bookDetailUpdate);
+                return requestBody.getBytes(StandardCharsets.UTF_8);
+            }
+
+            // Mendeklarasikan content type dari request body yang ditambahkan
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        // Menambahkan request ke request queue
+        queue.add(stringRequest);
+    }
 }

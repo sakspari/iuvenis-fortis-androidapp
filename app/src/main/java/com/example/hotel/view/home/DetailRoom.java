@@ -229,14 +229,11 @@ public class DetailRoom extends Fragment implements BookingDialogListener {
                 } else {
                     binding.setRoomDetail(new RoomDetail(null, null, "No Details Available for this Room!"));
                 }
-//                adapter.setHotelRoomList(hotelRoomResponse.getHotelRoomList());
-//                recyclerView.setAdapter(adapter);
-//                srHotelRoom.setRefreshing(false);
+
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-//                srHotelRoom.setRefreshing(false);
                 try {
                     String responseBody = new String(error.networkResponse.data,
                             StandardCharsets.UTF_8);
