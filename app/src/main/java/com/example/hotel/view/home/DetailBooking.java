@@ -150,7 +150,9 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
         roomReview = new RoomReview();
         roomReview.setFk_room_id(bookDetail.getFk_room_id());
         roomReview.setFk_username(user.getUser_id());
+
         getRoomDetail(String.valueOf(bookDetail.getFk_room_id()));
+        getUserRoomReview();
 
         this.listener = (ReviewListener) this;
         this.bookingDialogListener = (BookingDialogListener) this;
@@ -158,7 +160,13 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
         binding.btnReviewNow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new ReviewDialog(listener).show(getActivity().getSupportFragmentManager(),"review_dialog");
+                Bundle reviewDialogBundle = new Bundle();
+                if(binding.getRoomReview()!=null)
+                    reviewDialogBundle.putString("desc",binding.getRoomReview().getReview_description());
+                ReviewDialog reviewDialog = new ReviewDialog(listener);
+                reviewDialog.setArguments(reviewDialogBundle);
+
+                reviewDialog.show(getActivity().getSupportFragmentManager(),"review_dialog");
             }
         });
 
@@ -174,15 +182,70 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
     }
 
     @Override
-    public void onReviewSubmit(String review_desc) {
-        Toast.makeText(getContext(), review_desc, Toast.LENGTH_SHORT).show();
+    public void onReviewSubmit(String review_desc, String command) {
         roomReview.setReview_date(new Date());
         roomReview.setReview_description(review_desc);
         roomReview.setFk_room_id(Integer.parseInt(roomDetail.getFk_room_id()));
         roomReview.setFk_username(binding.getUser().getUser_id());
         binding.setRoomReview(roomReview);
-        storeReview();
+        if(command.equalsIgnoreCase("CREATE"))
+            storeReview();
+        else
+            updateReview();
     }
+
+    private void updateReview(){
+        StringRequest stringRequest = new StringRequest(PUT, ReviewApi.UPDATE_REVIEW_URL+roomReview.getReview_id(),
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Gson gson = new Gson();
+
+                        RoomReviewResponse roomReviewResponse =
+                                gson.fromJson(response, RoomReviewResponse.class);
+                        Toast.makeText(binding.getRoot().getContext(), roomReviewResponse.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data,
+                            StandardCharsets.UTF_8);
+                    JSONObject errors = new JSONObject(responseBody);
+                    Toast.makeText(binding.getRoot().getContext(),
+                            errors.getString("message"), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(binding.getRoot().getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                return headers;
+            }
+
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                Gson gson = new Gson();
+
+                RoomReview updateReview = roomReview; //kalau tidak pakai ini bisa error:hati-hati bang!
+
+                String requestBody = gson.toJson(updateReview);
+                return requestBody.getBytes(StandardCharsets.UTF_8);
+            }
+
+            // Mendeklarasikan content type dari request body yang ditambahkan
+            @Override
+            public String getBodyContentType() {
+                return "application/json";
+            }
+        };
+        // Menambahkan request ke request queue
+        queue.add(stringRequest);
+    }
+
 
     void getRoomDetail(String room_id) {
         StringRequest stringRequest = new StringRequest(GET, RoomDetailApi.GET_DETAIL_URL + room_id, new Response.Listener<String>() {
@@ -224,7 +287,6 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
     }
 
     //TODO: isi bagian ini bang!!
-
     void storeReview(){
         StringRequest stringRequest = new StringRequest(POST, ReviewApi.CREATE_REVIEW_URL,
                 new Response.Listener<String>() {
@@ -344,6 +406,47 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
             @Override
             public String getBodyContentType() {
                 return "application/json";
+            }
+        };
+        // Menambahkan request ke request queue
+        queue.add(stringRequest);
+    }
+
+    private void getUserRoomReview(){
+        StringRequest stringRequest = new StringRequest(GET,
+                ReviewApi.GET_USER_REVIEW_ROOM_URL + bookDetail.getFk_room_id()+"/"+bookDetail.getFk_user_id(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Gson gson = new Gson();
+
+                RoomReviewResponse roomReviewResponse =
+                        gson.fromJson(response, RoomReviewResponse.class);
+                RoomReview userReviews = roomReviewResponse.getRoomReviewList().get(0);
+
+                binding.setRoomReview(userReviews);
+                roomReview = userReviews;
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data,
+                            StandardCharsets.UTF_8);
+                    JSONObject errors = new JSONObject(responseBody);
+                    Toast.makeText(binding.getRoot().getContext(), errors.getString("message"),
+                            Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(binding.getRoot().getContext(), e.getMessage(),
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            // Menambahkan header pada request
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                return headers;
             }
         };
         // Menambahkan request ke request queue

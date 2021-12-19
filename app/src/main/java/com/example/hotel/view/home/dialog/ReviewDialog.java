@@ -31,18 +31,27 @@ public class ReviewDialog extends AppCompatDialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-
+        String command = "CREATE";
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         LayoutInflater inflater = getActivity().getLayoutInflater();
         binding = DataBindingUtil.inflate(inflater, R.layout.review_dialog, null, false);
+        Bundle bundle = getArguments();
+        binding.setReviewDesc(bundle.getString("desc"));
 
+        if(binding.getReviewDesc()==null)
         builder.setView(binding.getRoot())
                 .setTitle("Create new Review for This Room!");
+        else {
+            builder.setView(binding.getRoot())
+                    .setTitle("Update Your Review for This Room!");
+            command = "UPDATE";
+        }
 
+        String finalCommand = command;
         binding.btnSubmitReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onReviewSubmit(binding.getReviewDesc());
+                listener.onReviewSubmit(binding.getReviewDesc(), finalCommand);
                 dismiss();
             }
         });
