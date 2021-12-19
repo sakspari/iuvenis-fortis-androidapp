@@ -29,15 +29,19 @@ import com.example.hotel.R;
 import com.example.hotel.adapter.BookingDialogListener;
 import com.example.hotel.adapter.RVReview;
 import com.example.hotel.api.BookDetailApi;
+import com.example.hotel.api.ReviewApi;
+import com.example.hotel.api.RoomApi;
 import com.example.hotel.api.RoomDetailApi;
 import com.example.hotel.api.UserApi;
 import com.example.hotel.databinding.FragmentDetailRoomBinding;
 import com.example.hotel.model.BookDetail;
 import com.example.hotel.model.BookDetailResponse;
 import com.example.hotel.model.HotelRoom;
+import com.example.hotel.model.HotelRoomResponse;
 import com.example.hotel.model.RoomDetail;
 import com.example.hotel.model.RoomDetailResponse;
 import com.example.hotel.model.RoomReview;
+import com.example.hotel.model.RoomReviewResponse;
 import com.example.hotel.model.User;
 import com.example.hotel.model.UserResponse;
 import com.example.hotel.view.home.dialog.BookingDialog;
@@ -71,6 +75,7 @@ public class DetailRoom extends Fragment implements BookingDialogListener {
     String dataKamar;
     HotelRoom hotelRoom;
     private RequestQueue queue;
+    RVReview adapter;
     User user;
     RoomDetail roomDetail;
     BookDetail bookDetail;
@@ -126,6 +131,8 @@ public class DetailRoom extends Fragment implements BookingDialogListener {
         queue = Volley.newRequestQueue(getContext());
         this.listener = (BookingDialogListener) this;
 
+        adapter = new RVReview();
+        recyclerView = binding.getRoot().findViewById(R.id.rv_layout);
         bookDetail = new BookDetail();
 
         dateFormatter = new SimpleDateFormat("dd-MM-yy", Locale.US);
@@ -142,16 +149,17 @@ public class DetailRoom extends Fragment implements BookingDialogListener {
         Bundle bundle = getArguments();
         dataKamar = bundle.getString("data_kamar");
         hotelRoom = new Gson().fromJson(dataKamar, HotelRoom.class);
-
         binding.setHotelRoom(hotelRoom);
-        getRoomDetail(String.valueOf(hotelRoom.getRoom_id()));
 
-        if (roomReviewList != null) {
-            recyclerView = binding.getRoot().findViewById(R.id.rv_layout);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
-            recyclerView.setAdapter(new RVReview(roomReviewList));
-        }
+        getRoomDetail(String.valueOf(hotelRoom.getRoom_id()));
+        getRoomReviews();
+
+//        if (roomReviewList != null) {
+//            recyclerView = binding.getRoot().findViewById(R.id.rv_layout);
+//            recyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false));
+//            recyclerView.setItemAnimator(new DefaultItemAnimator());
+////            recyclerView.setAdapter(new RVReview(roomReviewList));
+//        }
 
         //action for booking button
         binding.btnBooking.setOnClickListener(new View.OnClickListener() {
@@ -169,6 +177,45 @@ public class DetailRoom extends Fragment implements BookingDialogListener {
         });
 
         return binding.getRoot();
+    }
+
+    private void getRoomReviews(){
+        StringRequest stringRequest = new StringRequest(GET, ReviewApi.GET_ALL_REVIEW_ROOMS_URL+binding.getHotelRoom().getRoom_id(), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Gson gson = new Gson();
+                RoomReviewResponse roomReviewResponse =
+                        gson.fromJson(response, RoomReviewResponse.class);
+                adapter.setRoomReviewList(roomReviewResponse.getRoomReviewList());
+
+                UserResponse userResponse = gson.fromJson(response, UserResponse.class);
+
+                adapter.setListUser(userResponse.getUserList());
+                recyclerView.setAdapter(adapter);
+                Toast.makeText(getContext(), roomReviewResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data,
+                            StandardCharsets.UTF_8);
+                    JSONObject errors = new JSONObject(responseBody);
+                    Toast.makeText(getContext(), errors.getString("message"), Toast.LENGTH_SHORT).show();
+                } catch (JSONException e) {
+                    Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                return headers;
+            }
+        };
+        //add to queue req
+        queue.add(stringRequest);
     }
 
     void getCurrentUser(String email) {

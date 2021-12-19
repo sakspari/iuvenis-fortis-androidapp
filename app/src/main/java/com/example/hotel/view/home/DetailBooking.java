@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,6 +153,7 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
         roomReview.setFk_username(user.getUser_id());
 
         getRoomDetail(String.valueOf(bookDetail.getFk_room_id()));
+
         getUserRoomReview();
 
         this.listener = (ReviewListener) this;
@@ -422,6 +424,10 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
                 RoomReviewResponse roomReviewResponse =
                         gson.fromJson(response, RoomReviewResponse.class);
                 RoomReview userReviews = roomReviewResponse.getRoomReviewList().get(0);
+
+                if(userReviews ==  null){
+                    binding.btnDeleteReview.setVisibility(View.INVISIBLE);
+                }
 
                 binding.setRoomReview(userReviews);
                 roomReview = userReviews;

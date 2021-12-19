@@ -47,7 +47,7 @@ public class ReviewDialog extends AppCompatDialogFragment {
             command = "UPDATE";
         }
 
-        String finalCommand = command;
+       String finalCommand = command;
         binding.btnSubmitReview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

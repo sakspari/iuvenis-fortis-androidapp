@@ -259,6 +259,17 @@ public class ProfilFragment extends Fragment {
                 .into(view);
     }
 
+    @BindingAdapter("loadImageFromBase64")
+    public static void loadb64Image(ImageView view, String b64Image){
+        byte[] imageByteArray = Base64.decode(b64Image, Base64.DEFAULT);
+        Bitmap imageProfile = BitmapFactory.decodeByteArray(imageByteArray,0,imageByteArray.length); //convert kembali ke bitmap
+
+        Glide.with(view.getContext())
+                .load(imageProfile)
+                .placeholder(R.drawable.ic_baseline_person_24)
+                .into(view);
+    }
+
     // load image
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

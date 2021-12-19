@@ -10,29 +10,22 @@ import com.google.gson.annotations.SerializedName;
 import java.util.Date;
 
 
-@Entity(tableName = "room_review")
 public class RoomReview {
 
-    @NonNull
     @PrimaryKey(autoGenerate = true)
-    @ColumnInfo(name = "review_id")
+    @NonNull
     @SerializedName("id")
     private int review_id;
 
-//    @NonNull
-    @ColumnInfo(name = "fk_room_id")
     @SerializedName("room_id")
     private int fk_room_id;
 
-//    @NonNull
-    @ColumnInfo(name = "fk_user_id")
     @SerializedName("user_id")
     private int fk_username;
 
-    @ColumnInfo(name = "review_date")
+    @SerializedName("review_date")
     private Date review_date;
 
-    @ColumnInfo(name = "review_description")
     @SerializedName("description")
     private String review_description;
 
