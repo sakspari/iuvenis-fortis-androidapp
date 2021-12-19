@@ -7,4 +7,5 @@ public class ReviewApi {
     public static final String GET_USER_REVIEW_ROOM_URL = BASE_URL + "user-room-reviews/";
     public static final String CREATE_REVIEW_URL = BASE_URL + "review";
     public static final String UPDATE_REVIEW_URL = BASE_URL + "review/";
+    public static final String DELETE_REVIEW_URL = BASE_URL + "review/";
 }

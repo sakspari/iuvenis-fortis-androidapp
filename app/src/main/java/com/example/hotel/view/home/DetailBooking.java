@@ -1,27 +1,22 @@
 package com.example.hotel.view.home;
 
+import static com.android.volley.Request.Method.DELETE;
 import static com.android.volley.Request.Method.GET;
 import static com.android.volley.Request.Method.POST;
 import static com.android.volley.Request.Method.PUT;
 
-import android.app.Dialog;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
-import androidx.room.Room;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.RequestQueue;
@@ -35,26 +30,19 @@ import com.example.hotel.adapter.BookingDialogListener;
 import com.example.hotel.adapter.ReviewListener;
 import com.example.hotel.api.BookDetailApi;
 import com.example.hotel.api.ReviewApi;
-import com.example.hotel.api.RoomApi;
 import com.example.hotel.api.RoomDetailApi;
-import com.example.hotel.api.UserApi;
 import com.example.hotel.databinding.FragmentDetailBookingBinding;
 import com.example.hotel.model.BookDetail;
 import com.example.hotel.model.BookDetailResponse;
 import com.example.hotel.model.HotelRoom;
-import com.example.hotel.model.HotelRoomResponse;
 import com.example.hotel.model.RoomDetail;
 import com.example.hotel.model.RoomDetailResponse;
 import com.example.hotel.model.RoomReview;
 import com.example.hotel.model.RoomReviewResponse;
 import com.example.hotel.model.User;
-import com.example.hotel.model.UserResponse;
-import com.example.hotel.preferences.UserLoginPreferences;
 import com.example.hotel.view.home.dialog.BookingDialog;
 import com.example.hotel.view.home.dialog.ReviewDialog;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textview.MaterialTextView;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -155,6 +143,15 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
         getRoomDetail(String.valueOf(bookDetail.getFk_room_id()));
 
         getUserRoomReview();
+
+        binding.btnDeleteReview.setVisibility(View.INVISIBLE);
+
+        binding.btnDeleteReview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteReview(roomReview.getReview_id());
+            }
+        });
 
         this.listener = (ReviewListener) this;
         this.bookingDialogListener = (BookingDialogListener) this;
@@ -425,8 +422,8 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
                         gson.fromJson(response, RoomReviewResponse.class);
                 RoomReview userReviews = roomReviewResponse.getRoomReviewList().get(0);
 
-                if(userReviews ==  null){
-                    binding.btnDeleteReview.setVisibility(View.INVISIBLE);
+                if(userReviews !=  null){
+                    binding.btnDeleteReview.setVisibility(View.VISIBLE);
                 }
 
                 binding.setRoomReview(userReviews);
@@ -444,6 +441,45 @@ public class DetailBooking extends Fragment implements ReviewListener, BookingDi
                 } catch (Exception e) {
                     Toast.makeText(binding.getRoot().getContext(), e.getMessage(),
                             Toast.LENGTH_SHORT).show();
+                }
+            }
+        }) {
+            // Menambahkan header pada request
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Accept", "application/json");
+                return headers;
+            }
+        };
+        // Menambahkan request ke request queue
+        queue.add(stringRequest);
+    }
+
+    private void deleteReview(int review_id){
+        StringRequest stringRequest = new StringRequest(DELETE,
+                ReviewApi.DELETE_REVIEW_URL + String.valueOf(review_id), new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Gson gson = new Gson();
+
+                RoomReviewResponse roomReviewResponse = gson.fromJson(response, RoomReviewResponse.class);
+                RoomReview temp = new RoomReview();
+                temp.setReview_description("");
+                binding.setRoomReview(temp);
+                binding.btnDeleteReview.setVisibility(View.INVISIBLE);
+                Toast.makeText(binding.getRoot().getContext(), roomReviewResponse.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                try {
+                    String responseBody = new String(error.networkResponse.data,
+                            StandardCharsets.UTF_8);
+                    JSONObject errors = new JSONObject(responseBody);
+                    Toast.makeText(binding.getRoot().getContext(), errors.getString("message"), Toast.LENGTH_SHORT).show();
+                } catch (Exception e) {
+                    Toast.makeText(binding.getRoot().getContext(), e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
             }
         }) {

@@ -117,7 +117,6 @@ public class UrBookedRoom extends Fragment implements OnBookingClickListener {
 
         mAuth = FirebaseAuth.getInstance();
         queue = Volley.newRequestQueue(getContext());
-//        layoutLoading = getActivity().findViewById(R.id.layout_loading);
         layoutLoading = binding.getRoot().findViewById(R.id.layout_loading);
         swipeRefreshLayout = binding.getRoot().findViewById(R.id.sr_all_user_bookings);
 
